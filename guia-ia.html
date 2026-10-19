@@ -1,0 +1,1108 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Onde a IA entra no seu negócio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Guia prático da SyncoHub para pequenas e médias empresas: 30 aplicações de IA, a conta de quanto cada uma devolve e um plano de 30 dias.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+<style>
+/* Layout: coluna editorial de 720px dentro de faixas de largura total; partes abrem em faixa magenta; peças interativas quebram a coluna até 1080px. */
+:root {
+  --magenta: #990066;
+  --vibrante: #CC0099;
+  --ameixa: #2E0020;
+  --rosa: #F2CCE6;
+  --enfase: #E680CC;
+  --branco: #FFFFFF;
+
+  --bg: #FBF8FA;
+  --surface: #FFFFFF;
+  --surface-2: #F4EEF2;
+  --linha: #EADFE6;
+  --ink: #2E0020;
+  --muted: #6E5667;
+  --soft: #8F7A88;
+  --accent: #990066;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #FBEFF7;
+  --manual: #E9E3E7;
+  --manual-ink: #6F6470;
+  --bom: #2E7D5B;
+
+  --f-sans: "Poppins", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --col: 720px;
+  --wide: 1080px;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #170511; --surface: #220A1A; --surface-2: #2B1022; --linha: #3D1B31;
+    --ink: #F7ECF3; --muted: #C2A8B8; --soft: #A08896;
+    --accent: #E680CC; --accent-ink: #2E0020; --accent-soft: #34112A;
+    --manual: #33202D; --manual-ink: #B9A3B1; --bom: #6FCF9E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #170511; --surface: #220A1A; --surface-2: #2B1022; --linha: #3D1B31;
+  --ink: #F7ECF3; --muted: #C2A8B8; --soft: #A08896;
+  --accent: #E680CC; --accent-ink: #2E0020; --accent-soft: #34112A;
+  --manual: #33202D; --manual-ink: #B9A3B1; --bom: #6FCF9E;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--f-sans); font-size: 16.5px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased; font-variant-numeric: lining-nums;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--ameixa); }
+h1, h2, h3, h4 { margin: 0; line-height: 1.15; text-wrap: balance; font-weight: 600; letter-spacing: -0.02em; }
+p { margin: 0; text-wrap: pretty; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--vibrante); outline-offset: 3px; border-radius: 6px; }
+button { font: inherit; color: inherit; }
+.wrap { width: 100%; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.col { max-width: var(--col); margin: 0 auto; }
+.wide { max-width: var(--wide); margin: 0 auto; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Barra ---------- */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--ameixa); color: var(--branco);
+}
+.bar .in { display: flex; align-items: center; gap: 18px; height: 60px; }
+.bar img { height: 22px; display: block; }
+.bar nav { display: flex; gap: 4px; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+.bar nav::-webkit-scrollbar { display: none; }
+.bar nav a { color: var(--rosa); text-decoration: none; font-size: 13.5px; padding: 6px 10px; border-radius: 99px; white-space: nowrap; }
+.bar nav a:hover, .bar nav a.on { background: rgba(255,255,255,.12); color: var(--branco); }
+.bar .cta-mini { background: var(--vibrante); color: var(--branco); text-decoration: none; font-weight: 600; font-size: 13.5px; padding: 8px 14px; border-radius: 99px; white-space: nowrap; }
+.prog { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--vibrante); transform-origin: left; transform: scaleX(0); }
+@media (max-width: 760px) { .bar nav { display: none; } .bar .cta-mini { margin-left: auto; } }
+
+/* ---------- Capa ---------- */
+.hero { background: var(--magenta); color: var(--branco); overflow: hidden; }
+.hero .in { padding-block: 64px 56px; display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; }
+.hero .ed { font-size: 13px; color: var(--rosa); font-weight: 500; }
+.hero h1 { font-size: clamp(44px, 7.4vw, 86px); line-height: .98; letter-spacing: -0.045em; margin: 14px 0 22px; font-weight: 700; }
+.hero .sub { font-size: 18.5px; line-height: 1.55; color: var(--rosa); max-width: 34ch; }
+.hero .autor { margin-top: 30px; display: flex; gap: 14px; align-items: center; font-size: 14px; color: var(--rosa); }
+.hero .autor strong { color: var(--branco); display: block; font-size: 15px; }
+.hero .autor .av { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.14); display: grid; place-items: center; }
+.hero .autor .av img { width: 26px; }
+@media (max-width: 860px) { .hero .in { grid-template-columns: 1fr; gap: 36px; padding-block: 44px 40px; } }
+
+/* O interruptor */
+.palco { position: relative; background: rgba(46,0,32,.28); border-radius: 22px; padding: 22px; min-width: 0; }
+.palco .mesa { position: relative; height: 270px; }
+.chip {
+  position: absolute; left: var(--x); top: var(--y);
+  background: rgba(255,255,255,.16); color: rgba(255,255,255,.9);
+  padding: 9px 15px; border-radius: 10px; font-size: 14px; font-weight: 500; white-space: nowrap;
+  transform: rotate(var(--r)); transition: transform .7s cubic-bezier(.6,-0.2,.3,1.2), opacity .5s, left .7s cubic-bezier(.6,-0.2,.3,1.2), top .7s cubic-bezier(.6,-0.2,.3,1.2);
+  transition-delay: var(--d);
+}
+.fios { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity .4s; }
+.um-clique {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(.6); opacity: 0;
+  background: var(--branco); color: var(--magenta); border-radius: 999px; padding: 18px 30px;
+  font-size: 26px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap;
+  box-shadow: 0 18px 50px rgba(46,0,32,.45); transition: transform .5s .55s cubic-bezier(.3,1.5,.5,1), opacity .4s .55s;
+  display: flex; align-items: center; gap: 12px;
+}
+.um-clique svg { width: 28px; height: 28px; }
+.palco.auto .chip { left: 50%; top: 50%; transform: translate(-50%,-50%) rotate(0) scale(.4); opacity: 0; }
+.palco.auto .fios { opacity: 0; }
+.palco.auto .um-clique { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+.estado { position: absolute; left: 22px; top: 18px; font-size: 12.5px; font-weight: 600; color: var(--rosa); }
+.chave { display: flex; align-items: center; gap: 14px; justify-content: center; margin-top: 10px; font-size: 13px; font-weight: 600; letter-spacing: .08em; }
+.chave span { color: rgba(255,255,255,.5); transition: color .3s; }
+.palco:not(.auto) .chave .m, .palco.auto .chave .a { color: var(--branco); }
+.trilho {
+  width: 74px; height: 38px; border-radius: 99px; border: 0; padding: 0; cursor: pointer; position: relative;
+  background: rgba(255,255,255,.2); transition: background .3s;
+}
+.trilho::after { content: ""; position: absolute; top: 4px; left: 4px; width: 30px; height: 30px; border-radius: 50%; background: var(--branco); transition: transform .35s cubic-bezier(.3,1.4,.5,1); }
+.palco.auto .trilho { background: var(--vibrante); }
+.palco.auto .trilho::after { transform: translateX(36px); }
+@media (max-width: 520px) { .palco .mesa { height: 240px; } .chip { font-size: 12.5px; padding: 7px 11px; } .um-clique { font-size: 21px; padding: 14px 22px; } }
+@media (prefers-reduced-motion: reduce) { .chip, .um-clique, .fios, .trilho::after { transition: none !important; } }
+
+/* ---------- Seções ---------- */
+.sec { padding-block: 88px; }
+.sec + .sec { padding-top: 24px; }
+.olho { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 12px; display: block; }
+.sec h2 { font-size: clamp(30px, 4.2vw, 44px); letter-spacing: -0.03em; margin-bottom: 18px; }
+.lead { font-size: 19px; line-height: 1.6; color: var(--muted); }
+.texto p + p { margin-top: 16px; }
+.texto p { font-size: 17.5px; line-height: 1.75; }
+
+/* Abertura de parte */
+.parte { background: var(--magenta); color: var(--branco); }
+.parte .in { padding-block: 76px 70px; display: grid; grid-template-columns: auto 1fr; gap: 28px 44px; align-items: end; }
+.parte .n { font-size: clamp(110px, 16vw, 190px); font-weight: 800; line-height: .78; letter-spacing: -0.06em; color: rgba(255,255,255,.2); }
+.parte h2 { font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.035em; }
+.parte p { color: var(--rosa); font-size: 18px; margin-top: 14px; max-width: 52ch; }
+.parte .par { grid-column: 1 / -1; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 18px; }
+@media (max-width: 640px) { .parte .in { grid-template-columns: 1fr; } }
+
+.antes, .depois { border-radius: 12px; padding: 14px 18px; font-size: 15px; line-height: 1.45; max-width: 330px; }
+.antes { background: rgba(255,255,255,.14); color: rgba(255,255,255,.82); transform: rotate(-2deg); }
+.depois { background: var(--branco); color: var(--ameixa); font-weight: 500; }
+.antes b, .depois b { display: block; font-size: 11.5px; margin-bottom: 3px; font-weight: 600; }
+.depois b { color: var(--magenta); }
+.seta { width: 44px; flex: none; color: var(--branco); }
+
+/* Carta */
+.carta { display: grid; grid-template-columns: 1fr 260px; gap: 56px; }
+.carta .assina { display: flex; gap: 14px; align-items: center; margin-top: 28px; }
+.carta .assina img { width: 46px; }
+.carta .assina strong { display: block; }
+.carta .assina small { color: var(--muted); font-size: 13.5px; }
+.atalhos { display: grid; gap: 12px; align-content: start; }
+.atalho { display: block; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--linha); border-radius: var(--r); padding: 16px 18px; transition: border-color .2s, transform .2s; }
+.atalho:hover { border-color: var(--accent); transform: translateY(-2px); }
+.atalho strong { display: block; font-size: 15px; color: var(--accent); }
+.atalho span { font-size: 14px; color: var(--muted); line-height: 1.5; display: block; margin-top: 2px; }
+@media (max-width: 820px) { .carta { grid-template-columns: 1fr; gap: 36px; } }
+
+/* Três tipos */
+.tipos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 36px; }
+.tipo { background: var(--surface); border: 1px solid var(--linha); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.tipo svg { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 12px; }
+.tipo h3 { font-size: 21px; }
+.tipo p { font-size: 15px; color: var(--muted); line-height: 1.55; }
+.tipo .ex { font-size: 14px; border-top: 1px solid var(--linha); padding-top: 12px; color: var(--ink); }
+.tipo .ex b { color: var(--accent); font-weight: 600; }
+@media (max-width: 860px) { .tipos { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .segs { grid-template-columns: 1fr; } }
+.nota { margin-top: 28px; background: var(--accent-soft); border-radius: 18px; padding: 24px 26px; }
+.nota h3 { font-size: 20px; margin-bottom: 8px; }
+.nota p { color: var(--ink); font-size: 16px; }
+
+/* Mitos */
+.mitos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+.mito { border-top: 2px solid var(--ink); padding-top: 16px; }
+.mito .diz { font-size: 19px; font-weight: 600; text-decoration: line-through; text-decoration-color: var(--vibrante); text-decoration-thickness: 2px; color: var(--muted); }
+.mito p { margin-top: 8px; font-size: 15.5px; line-height: 1.6; }
+@media (max-width: 720px) { .mitos { grid-template-columns: 1fr; } }
+
+/* Números */
+.nums { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 40px; }
+.num { background: var(--surface); border: 1px solid var(--linha); border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.num.full { grid-column: 1 / -1; }
+.num .big { font-size: clamp(44px, 6vw, 64px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.num .big small { font-size: .4em; font-weight: 600; letter-spacing: -0.01em; color: var(--muted); margin-left: 6px; }
+.num .d { font-size: 16px; line-height: 1.55; }
+.num .f { font-size: 12.5px; color: var(--soft); margin-top: auto; }
+.num .f a { color: var(--soft); }
+@media (max-width: 760px) { .nums { grid-template-columns: 1fr; } }
+.pontos-par { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.pontos { display: grid; grid-template-columns: repeat(20, 1fr); gap: 4px; margin-top: 8px; }
+.pontos i { aspect-ratio: 1; border-radius: 50%; background: var(--linha); }
+.pontos i.on { background: var(--rosa); }
+.pontos.forte i.on { background: var(--accent); }
+.pontos-cap { display: flex; align-items: baseline; gap: 10px; }
+.pontos-cap b { font-size: 34px; font-weight: 700; letter-spacing: -0.03em; color: var(--accent); }
+.pontos-cap span { font-size: 14.5px; color: var(--muted); }
+@media (max-width: 560px) { .pontos-par { grid-template-columns: 1fr; } }
+.barras { display: grid; gap: 10px; }
+.barra { display: grid; grid-template-columns: 150px 1fr 54px; align-items: center; gap: 12px; font-size: 14px; }
+.barra .t { height: 14px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.barra .t i { display: block; height: 100%; border-radius: 99px; background: var(--rosa); }
+.barra.forte .t i { background: var(--accent); }
+.barra .v { font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) { .barra { grid-template-columns: 1fr 50px; } .barra .t { grid-column: 1 / -1; grid-row: 2; } }
+.anel { display: flex; align-items: center; gap: 22px; }
+.anel svg { width: 120px; height: 120px; flex: none; }
+.balões { display: flex; gap: 10px; flex-wrap: wrap; }
+.balao { flex: 1 1 0; min-width: 64px; border-radius: 14px 14px 14px 4px; padding: 12px; background: var(--surface-2); font-size: 12.5px; color: var(--muted); display: flex; flex-direction: column; gap: 8px; }
+.balao svg { width: 22px; height: 22px; }
+.balao.noite { background: var(--ameixa); color: var(--rosa); }
+:root[data-theme="dark"] .balao.noite { background: #000; }
+.semana { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.dia { border-radius: 8px; background: var(--surface-2); height: 64px; position: relative; overflow: hidden; display: flex; align-items: end; justify-content: center; padding-bottom: 6px; font-size: 12px; color: var(--muted); }
+.dia i { position: absolute; left: 0; bottom: 0; width: 100%; background: var(--accent); opacity: .9; }
+.dia span { position: relative; z-index: 1; }
+.dia.cheio span { color: var(--accent-ink); font-weight: 600; }
+.destaque { margin-top: 28px; background: var(--ameixa); color: var(--branco); border-radius: 20px; padding: 30px 32px; }
+.destaque h3 { font-size: 24px; margin-bottom: 10px; }
+.destaque p { color: var(--rosa); font-size: 16.5px; }
+
+/* ---------- Catálogo ---------- */
+.filtros { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 60px); z-index: 10; background: var(--bg); padding-block: 14px; border-bottom: 1px solid var(--linha); }
+.filtros .in { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.fchip { border: 1px solid var(--linha); background: var(--surface); padding: 7px 13px; border-radius: 99px; font-size: 13.5px; cursor: pointer; color: var(--ink); }
+.fchip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.ramo { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--muted); margin-left: auto; }
+.ramo select { font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--linha); border-radius: 10px; padding: 7px 10px; max-width: 260px; }
+@media (max-width: 760px) { .filtros .in > * { min-width: 0; } .ramo { margin-left: 0; width: 100%; min-width: 0; } .ramo select { flex: 1; max-width: none; min-width: 0; width: 100%; } .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; width: 100%; } .fchip { white-space: nowrap; } }
+.aviso-ramo { margin-top: 22px; background: var(--accent-soft); border-radius: 14px; padding: 16px 20px; font-size: 15px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.aviso-ramo button { margin-left: auto; background: none; border: 1px solid var(--accent); color: var(--accent); border-radius: 99px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+.area-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 52px 0 8px; border-bottom: 2px solid var(--ink); padding-bottom: 10px; flex-wrap: wrap; }
+.area-h h3 { font-size: 28px; }
+.area-h span { font-size: 13px; color: var(--muted); }
+.area-intro { color: var(--muted); font-size: 15.5px; margin-bottom: 18px; max-width: 70ch; }
+.apps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+.apps > .app { grid-column: span 2; }
+.apps.n5 > .app:nth-child(-n+2) { grid-column: span 3; }
+.apps.n2 > .app, .apps.n1 > .app { grid-column: span 3; }
+@media (max-width: 980px) { .apps { grid-template-columns: 1fr 1fr; } .apps > .app, .apps.n5 > .app:nth-child(-n+2), .apps.n2 > .app, .apps.n1 > .app { grid-column: auto; } .apps.n5 > .app:first-child { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .apps { grid-template-columns: 1fr; } }
+.app { background: var(--surface); border: 1px solid var(--linha); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; transition: border-color .2s, box-shadow .2s; }
+.app.marcada { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.app .top { display: flex; gap: 12px; align-items: flex-start; }
+.app .n { font-size: 15px; font-weight: 700; color: var(--accent-ink); background: var(--accent); width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; font-variant-numeric: tabular-nums; }
+.app h4 { font-size: 17.5px; line-height: 1.3; padding-top: 4px; }
+.estados { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.hoje, .ia { border-radius: 12px; padding: 12px 14px; font-size: 14.5px; line-height: 1.5; }
+.hoje { background: var(--manual); color: var(--manual-ink); }
+.ia { background: var(--accent-soft); color: var(--ink); }
+.hoje b, .ia b { display: block; font-size: 11.5px; font-weight: 600; margin-bottom: 2px; }
+.ia b { color: var(--accent); }
+.app .meta { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted); margin-top: auto; padding-top: 4px; border-top: 1px dashed var(--linha); padding-top: 12px; }
+.app .meta strong { color: var(--ink); font-weight: 600; }
+.esf { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 4px; }
+.esf i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--accent); }
+.esf i.on { background: var(--accent); }
+.legenda-esf { margin-top: 26px; font-size: 13.5px; color: var(--muted); display: flex; gap: 18px; flex-wrap: wrap; }
+.vazio { padding: 40px; text-align: center; color: var(--muted); }
+
+/* Segmentos */
+.segs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 32px; }
+.seg { text-align: left; cursor: pointer; background: var(--surface); border: 1px solid var(--linha); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: border-color .2s, transform .2s; }
+.seg:hover { border-color: var(--accent); transform: translateY(-2px); }
+.seg h4 { font-size: 17px; }
+.seg .dor { font-size: 14px; color: var(--muted); line-height: 1.5; }
+.seg ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.seg li { display: grid; grid-template-columns: 30px 1fr; align-items: center; }
+.seg li span { font-weight: 700; color: var(--accent); font-size: 13px; font-variant-numeric: tabular-nums; }
+.seg .ver { font-size: 13px; font-weight: 600; color: var(--accent); margin-top: 4px; }
+
+/* ---------- Ferramentas interativas ---------- */
+.ferr { background: var(--surface); border: 1px solid var(--linha); border-radius: 24px; padding: 30px; margin-top: 36px; }
+.ferr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+@media (max-width: 860px) { .ferr-grid { grid-template-columns: 1fr; } .ferr { padding: 22px; } }
+.campo label { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; }
+.campo input[type="text"] { width: 100%; font: inherit; font-size: 16px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--linha); background: var(--bg); color: var(--ink); }
+.sinais { display: grid; gap: 10px; margin-top: 18px; }
+.sinal { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; padding: 14px 16px; border: 1px solid var(--linha); border-radius: 14px; background: var(--bg); cursor: pointer; }
+.sinal strong { font-size: 15.5px; }
+.sinal small { grid-column: 1; font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+.sinal input { grid-row: 1 / 3; grid-column: 2; width: 22px; height: 22px; accent-color: var(--magenta); }
+.sinal:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.matriz { display: grid; grid-template-columns: 26px 1fr 1fr; grid-template-rows: 1fr 1fr 26px; gap: 6px; aspect-ratio: 1 / .92; position: relative; }
+.q { border-radius: 14px; padding: 14px; font-size: 13px; line-height: 1.45; color: var(--muted); transition: outline-color .3s; outline: 3px solid transparent; outline-offset: -3px; }
+.q h5 { margin: 0 0 4px; font-size: 15.5px; color: var(--ink); }
+.q1 { background: var(--magenta); color: var(--rosa); }
+.q1 h5 { color: var(--branco); }
+.q2 { background: var(--accent-soft); }
+.q3 { background: var(--surface-2); }
+.q4 { border: 1.5px dashed var(--linha); }
+.q.aqui { outline-color: var(--vibrante); }
+.eixo-y { grid-row: 1 / 3; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); }
+.eixo-x { grid-column: 2 / 4; text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); }
+.alvo { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--vibrante); border: 3px solid var(--branco); box-shadow: 0 4px 14px rgba(46,0,32,.4); transform: translate(-50%,-50%); transition: left .4s cubic-bezier(.3,1.3,.5,1), top .4s cubic-bezier(.3,1.3,.5,1); }
+.veredito { margin-top: 18px; border-radius: 16px; padding: 18px 20px; background: var(--ameixa); color: var(--branco); }
+.veredito strong { display: block; font-size: 19px; margin-bottom: 4px; }
+.veredito span { color: var(--rosa); font-size: 15px; }
+
+/* Calculadora */
+.slider { margin-bottom: 22px; }
+.slider .l { display: flex; justify-content: space-between; align-items: baseline; font-size: 14.5px; margin-bottom: 8px; gap: 12px; }
+.slider .l output { font-size: 20px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.slider input[type="range"] { width: 100%; accent-color: var(--magenta); height: 28px; }
+.slider small { font-size: 13px; color: var(--muted); }
+.result { background: var(--magenta); color: var(--branco); border-radius: 20px; padding: 26px; }
+.result .r1 { font-size: 13.5px; color: var(--rosa); }
+.result .big { font-size: clamp(40px, 6vw, 58px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.result .linha { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid rgba(255,255,255,.22); padding-top: 12px; margin-top: 14px; font-size: 15px; color: var(--rosa); }
+.result .linha b { color: var(--branco); font-variant-numeric: tabular-nums; }
+.result p { font-size: 13px; color: var(--rosa); margin-top: 14px; }
+.exemplo-tag { display: inline-block; font-size: 12px; font-weight: 600; background: var(--accent-soft); color: var(--accent); border-radius: 99px; padding: 4px 10px; margin-bottom: 18px; }
+.extra { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+.extra div { border-top: 2px solid var(--accent); padding-top: 12px; font-size: 15px; }
+.extra strong { display: block; margin-bottom: 4px; }
+@media (max-width: 760px) { .extra { grid-template-columns: 1fr; } }
+
+/* Agente */
+.agente { display: grid; grid-template-columns: 340px 1fr; gap: 40px; margin-top: 36px; align-items: start; }
+@media (max-width: 900px) { .agente { grid-template-columns: 1fr; } }
+.fone { background: #0B141A; border-radius: 34px; padding: 12px; box-shadow: 0 24px 60px rgba(46,0,32,.25); max-width: 340px; margin: 0 auto; width: 100%; }
+.fone .tela { background: #ECE5DD; border-radius: 24px; overflow: hidden; }
+.fone .cab { background: #075E54; color: #fff; padding: 12px 14px; display: flex; gap: 10px; align-items: center; font-size: 14px; }
+.fone .cab .av { width: 34px; height: 34px; border-radius: 50%; background: var(--magenta); display: grid; place-items: center; }
+.fone .cab .av img { width: 20px; }
+.fone .cab small { display: block; font-size: 11.5px; opacity: .8; }
+.msgs { padding: 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; line-height: 1.45; color: #111B21; }
+.msg { max-width: 86%; padding: 7px 10px 6px; border-radius: 10px; background: #fff; box-shadow: 0 1px .5px rgba(0,0,0,.13); }
+.msg.eu { align-self: flex-end; background: #D9FDD3; }
+.msg .hora { display: block; text-align: right; font-size: 10.5px; color: #667781; margin-top: 2px; }
+.msg.lista { padding: 0; overflow: hidden; }
+.msg.lista .c { padding: 7px 10px; }
+.msg.lista .bt { border-top: 1px solid #E9EDEF; text-align: center; color: #027EB5; padding: 8px; font-weight: 500; }
+.fone-cap { font-size: 13px; color: var(--muted); text-align: center; margin-top: 12px; }
+.check { display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
+@media (max-width: 640px) { .check { grid-template-columns: 1fr; } }
+.ck { display: grid; grid-template-columns: 28px 1fr; gap: 4px; padding: 13px 0; border-bottom: 1px solid var(--linha); cursor: pointer; }
+.ck input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--magenta); }
+.ck strong { font-size: 15px; display: block; }
+.ck span { font-size: 13.5px; color: var(--muted); line-height: 1.5; display: block; margin-top: 2px; }
+.placar { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; background: var(--accent-soft); border-radius: 14px; padding: 14px 18px; }
+.placar b { font-size: 28px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.placar .t { flex: 1; height: 10px; border-radius: 99px; background: var(--surface); overflow: hidden; }
+.placar .t i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+
+/* Cuidados */
+.dois { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 36px; }
+@media (max-width: 820px) { .dois { grid-template-columns: 1fr; } }
+.bloco { background: var(--surface); border: 1px solid var(--linha); border-radius: 20px; padding: 26px; }
+.bloco h3 { font-size: 21px; margin-bottom: 16px; }
+.bloco ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.bloco li { font-size: 15px; line-height: 1.55; padding-left: 20px; position: relative; }
+.bloco li::before { content: ""; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.preco { display: grid; gap: 10px; margin: 6px 0 18px; }
+.preco .barra { grid-template-columns: 96px 1fr 104px; }
+.preco .barra .v { white-space: nowrap; }
+
+/* Plano */
+.trilha { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 40px; position: relative; }
+.trilha::before { content: ""; position: absolute; left: 0; right: 0; top: 20px; height: 3px; background: var(--linha); }
+.etapa { position: relative; padding-right: 22px; }
+.etapa .bola { width: 42px; height: 42px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-weight: 700; position: relative; }
+.etapa small { display: block; margin-top: 16px; font-size: 12.5px; font-weight: 600; color: var(--accent); }
+.etapa h3 { font-size: 22px; margin: 2px 0 10px; }
+.etapa p { font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+.etapa .ent { margin-top: 12px; font-size: 13.5px; font-weight: 600; color: var(--ink); background: var(--accent-soft); border-radius: 10px; padding: 10px 12px; }
+@media (max-width: 860px) { .trilha { grid-template-columns: 1fr; gap: 30px; } .trilha::before { left: 20px; right: auto; top: 0; bottom: 0; width: 3px; height: auto; } .etapa { padding-left: 64px; padding-right: 0; } .etapa .bola { position: absolute; left: 0; top: 0; } .etapa small { margin-top: 0; } }
+
+/* Erros */
+.erros { margin-top: 32px; display: grid; gap: 0; }
+.erro { display: grid; grid-template-columns: 56px 1fr 1.3fr; gap: 20px; padding: 20px 0; border-top: 1px solid var(--linha); align-items: start; }
+.erro .x { width: 40px; height: 40px; border-radius: 12px; background: var(--manual); display: grid; place-items: center; color: var(--vibrante); }
+.erro h4 { font-size: 18px; }
+.erro p { font-size: 15.5px; color: var(--muted); }
+@media (max-width: 720px) { .erro { grid-template-columns: 48px 1fr; } .erro p { grid-column: 2; } }
+
+/* Nível */
+.quiz { display: grid; gap: 0; }
+.qq { display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--linha); font-size: 15px; }
+.qq .i { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.sn { display: inline-flex; border: 1px solid var(--linha); border-radius: 99px; overflow: hidden; }
+.sn button { border: 0; background: var(--surface); padding: 6px 14px; font-size: 13.5px; cursor: pointer; color: var(--muted); }
+.sn button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.nivel-box { position: sticky; top: 150px; }
+.regua { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 14px 0 18px; }
+.regua div { height: 12px; border-radius: 99px; background: var(--surface-2); transition: background .3s; }
+.regua div.on { background: var(--accent); }
+.nivel-nome { font-size: 34px; font-weight: 700; letter-spacing: -0.03em; }
+.nivel-pts { font-size: 14px; color: var(--muted); }
+.nivel-txt { font-size: 15.5px; margin-top: 10px; }
+.nivel-apps { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.nivel-apps a { text-decoration: none; font-size: 13.5px; background: var(--accent-soft); color: var(--accent); padding: 6px 12px; border-radius: 99px; font-weight: 500; }
+
+/* Final */
+.final { background: var(--ameixa); color: var(--branco); }
+.final .in { padding-block: 88px; }
+.final h2 { font-size: clamp(32px, 4.6vw, 50px); max-width: 18ch; letter-spacing: -0.035em; }
+.final .lead { color: var(--rosa); margin-top: 16px; max-width: 58ch; }
+.passos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin: 44px 0; }
+.passo { border-top: 2px solid var(--vibrante); padding-top: 14px; }
+.passo b { font-size: 26px; color: var(--enfase); }
+.passo h4 { font-size: 17px; margin: 6px 0 4px; }
+.passo p { font-size: 14.5px; color: var(--rosa); }
+@media (max-width: 760px) { .passos { grid-template-columns: 1fr 1fr; } }
+.cta { display: grid; grid-template-columns: 1fr 190px; gap: 32px; align-items: center; background: var(--magenta); border-radius: 26px; padding: 34px; }
+.cta h3 { font-size: 27px; }
+.cta p { color: var(--rosa); margin-top: 10px; font-size: 16px; }
+.botao { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; background: var(--branco); color: var(--magenta); text-decoration: none; font-weight: 700; padding: 14px 22px; border-radius: 14px; font-size: 16px; }
+.botao svg { width: 20px; height: 20px; }
+.cta .fone-num { display: block; margin-top: 12px; font-size: 14px; color: var(--rosa); user-select: all; }
+.qr { background: var(--branco); border-radius: 18px; padding: 14px; text-align: center; }
+.qr img { width: 100%; display: block; }
+.qr small { display: block; color: var(--ameixa); font-size: 12px; margin-top: 6px; font-weight: 500; }
+@media (max-width: 680px) { .cta { grid-template-columns: 1fr; } .qr { max-width: 200px; } }
+
+.fontes ol { padding-left: 20px; display: grid; gap: 8px; font-size: 14px; color: var(--muted); margin-top: 20px; }
+.fontes a { word-break: break-word; }
+.rodape { padding-block: 32px 48px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--linha); }
+</style></head><body>
+
+<div class="bar">
+  <div class="wrap"><div class="wide in">
+    <a href="#topo" aria-label="Início"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyODcuNjAxNiA0NC44MzU5IiB3aWR0aD0iMjg3LjYwIiBoZWlnaHQ9IjQ0Ljg0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlN5bmNvSHViIj4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI2NC41NzQyIC0zODMuODA4NikiPgo8ZyBmaWxsPSIjRkZGRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPgo8cGF0aCBkPSJNIDMwMy40MDIzNDQgMzgzLjgwODU5NCBMIDMwMy40MDIzNDQgMzk4LjUwNzgxMiBMIDI3Ni44NDc2NTYgMzk4LjUwNzgxMiBMIDI3Ni44NDc2NTYgMzk2LjA4OTg0NCBMIDMwMC45NDkyMTkgMzk2LjA4OTg0NCBMIDMwMC45NDkyMTkgMzgzLjgxNjQwNiBMIDI3MS43MzgyODEgMzgzLjgxNjQwNiBDIDI2Ny43ODEyNSAzODMuODE2NDA2IDI2NC41NzQyMTkgMzg3LjAyMzQzOCAyNjQuNTc0MjE5IDM5MC45ODA0NjkgTCAyNjQuNTc0MjE5IDQwMC4xODc1IEwgMjY0LjU5Mzc1IDQwMC4xODc1IEwgMjY0LjU5Mzc1IDQwMy42MTcxODggQyAyNjQuNTkzNzUgNDA3LjU3NDIxOSAyNjcuODAwNzgxIDQxMC43ODEyNSAyNzEuNzU3ODEyIDQxMC43ODEyNSBMIDMwMy40MDIzNDQgNDEwLjc4MTI1IEwgMzAzLjQwMjM0NCA0MjUuNTI3MzQ0IEwgMzA4LjYzMjgxMiA0MjUuNTI3MzQ0IEMgMzEyLjUyMzQzOCA0MjUuNTI3MzQ0IDMxNS42NzU3ODEgNDIyLjM3NSAzMTUuNjc1NzgxIDQxOC40ODQzNzUgTCAzMTUuNjc1NzgxIDM4My44MDg1OTQgWiBNIDMwMy40MDIzNDQgMzgzLjgwODU5NCIvPgo8cGF0aCBkPSJNIDI2NC42NTIzNDQgNDEzLjIzMDQ2OSBMIDI5Mi43NjE3MTkgNDEzLjIzMDQ2OSBMIDI5Mi43NjE3MTkgNDI1LjUwMzkwNiBMIDI3MS42OTUzMTIgNDI1LjUwMzkwNiBDIDI2Ny44MDQ2ODggNDI1LjUwMzkwNiAyNjQuNjUyMzQ0IDQyMi4zNTE1NjIgMjY0LjY1MjM0NCA0MTguNDYwOTM4IFogTSAyNjQuNjUyMzQ0IDQxMy4yMzA0NjkiLz4KPHBhdGggZD0iTSAzMzMuNDM3NSA0MTcuMTQ0NTMxIEwgMzM1LjA4MjAzMSA0MTQuMjQ2MDk0IEMgMzM3Ljk4MDQ2OSA0MTcuMDc4MTI1IDM0MS41MjM0MzggNDE4LjQ5NjA5NCAzNDUuNzEwOTM4IDQxOC40OTYwOTQgQyAzNDcuOTMzNTk0IDQxOC40OTYwOTQgMzQ5Ljg3NSA0MTguMDA3ODEyIDM1MS41MzEyNSA0MTcuMDIzNDM4IEMgMzUzLjE5MTQwNiA0MTYuMDM5MDYyIDM1NC4wMjM0MzggNDE0LjY0ODQzOCAzNTQuMDIzNDM4IDQxMi44NDM3NSBDIDM1NC4wMjM0MzggNDExLjcxNDg0NCAzNTMuNjUyMzQ0IDQxMC43OTY4NzUgMzUyLjkxMDE1NiA0MTAuMDg5ODQ0IEMgMzUyLjE2Nzk2OSA0MDkuMzgyODEyIDM1MS4yNjU2MjUgNDA4LjgzMjAzMSAzNTAuMjAzMTI1IDQwOC40NDUzMTIgQyAzNDkuMTQwNjI1IDQwOC4wNTg1OTQgMzQ3LjcyMjY1NiA0MDcuNjQwNjI1IDM0NS45NTMxMjUgNDA3LjE5MTQwNiBDIDM0My42MzI4MTIgNDA2LjYwOTM3NSAzNDEuNjkxNDA2IDQwNiAzNDAuMTI4OTA2IDQwNS4zNTU0NjkgQyAzMzguNTY2NDA2IDQwNC43MTA5MzggMzM3LjI4MTI1IDQwMy44MDg1OTQgMzM2LjI2NTYyNSA0MDIuNjQ4NDM4IEMgMzM1LjI1IDQwMS40ODgyODEgMzM0Ljc0MjE4OCA0MDAuMDA3ODEyIDMzNC43NDIxODggMzk4LjIwMzEyNSBDIDMzNC43NDIxODggMzk2LjM5ODQzOCAzMzUuMjUgMzk0Ljg1OTM3NSAzMzYuMjY1NjI1IDM5My41ODk4NDQgQyAzMzcuMjgxMjUgMzkyLjMxNjQwNiAzMzguNjI1IDM5MS4zNTkzNzUgMzQwLjI5Njg3NSAzOTAuNzE0ODQ0IEMgMzQxLjk3MjY1NiAzOTAuMDcwMzEyIDM0My43NzczNDQgMzg5Ljc0NjA5NCAzNDUuNzEwOTM4IDM4OS43NDYwOTQgQyAzNDkuODM1OTM4IDM4OS43NDYwOTQgMzUzLjM0Mzc1IDM5MC45MDYyNSAzNTYuMjQ2MDk0IDM5My4yMjY1NjIgTCAzNTQuNjQ4NDM4IDM5Ni4xNzE4NzUgQyAzNTIuMTY3OTY5IDM5NC4yMzgyODEgMzQ5LjE4NzUgMzkzLjI3MzQzOCAzNDUuNzEwOTM4IDM5My4yNzM0MzggQyAzNDMuOTA2MjUgMzkzLjI3MzQzOCAzNDIuMjgxMjUgMzkzLjY5MTQwNiAzNDAuODMyMDMxIDM5NC41MzEyNSBDIDMzOS4zODI4MTIgMzk1LjM2NzE4OCAzMzguNjU2MjUgMzk2LjU5Mzc1IDMzOC42NTYyNSAzOTguMjAzMTI1IEMgMzM4LjY1NjI1IDM5OS4yMzQzNzUgMzM4Ljk5NjA5NCA0MDAuMDc4MTI1IDMzOS42NzE4NzUgNDAwLjczODI4MSBDIDM0MC4zNDc2NTYgNDAxLjM5ODQzOCAzNDEuMjA3MDMxIDQwMS45MjE4NzUgMzQyLjI1MzkwNiA0MDIuMzA4NTk0IEMgMzQzLjMwNDY4OCA0MDIuNjk1MzEyIDM0NC42OTUzMTIgNDAzLjExMzI4MSAzNDYuNDMzNTk0IDQwMy41NjY0MDYgQyAzNDguNzg1MTU2IDQwNC4xNDQ1MzEgMzUwLjc4NTE1NiA0MDQuNzgxMjUgMzUyLjQyNTc4MSA0MDUuNDcyNjU2IEMgMzU0LjA3MDMxMiA0MDYuMTY3OTY5IDM1NS40MjE4NzUgNDA3LjEwOTM3NSAzNTYuNDg0Mzc1IDQwOC4zMDA3ODEgQyAzNTcuNTUwNzgxIDQwOS40OTIxODggMzU4LjA4MjAzMSA0MTEuMDA3ODEyIDM1OC4wODIwMzEgNDEyLjg0Mzc1IEMgMzU4LjA4MjAzMSA0MTQuODcxMDk0IDM1Ny40ODQzNzUgNDE2LjU4MjAzMSAzNTYuMjkyOTY5IDQxNy45NjQ4NDQgQyAzNTUuMTAxNTYyIDQxOS4zNTE1NjIgMzUzLjU2MjUgNDIwLjM3NSAzNTEuNjc5Njg4IDQyMS4wMzUxNTYgQyAzNDkuNzkyOTY5IDQyMS42OTUzMTIgMzQ3Ljc4OTA2MiA0MjIuMDIzNDM4IDM0NS42NjQwNjIgNDIyLjAyMzQzOCBDIDM0MC41NzQyMTkgNDIyLjAyMzQzOCAzMzYuNDk2MDk0IDQyMC4zOTg0MzggMzMzLjQzNzUgNDE3LjE0NDUzMSIvPgo8cGF0aCBkPSJNIDM2OC40NDUzMTIgNDI0LjMyMDMxMiBDIDM2OS4yOTY4NzUgNDIzLjc1MzkwNiAzNzAuMTA5Mzc1IDQyMi42Njc5NjkgMzcwLjg4MjgxMiA0MjEuMDU4NTk0IEwgMzcxLjQxNzk2OSA0MTkuOTk2MDk0IEwgMzYwLjgzNTkzOCAzOTguMDA3ODEyIEwgMzY0LjY1MjM0NCAzOTguMDA3ODEyIEwgMzcyLjA0Mjk2OSA0MTMuODA4NTk0IEMgMzcyLjI2OTUzMSA0MTQuMjYxNzE5IDM3Mi40ODQzNzUgNDE0Ljc3NzM0NCAzNzIuNjk1MzEyIDQxNS4zNTU0NjkgQyAzNzIuOTA2MjUgNDE1LjkzNzUgMzczLjA0Mjk2OSA0MTYuMzA0Njg4IDM3My4xMDkzNzUgNDE2LjQ2ODc1IEMgMzczLjE3MTg3NSA0MTYuMjQyMTg4IDM3My4zMTY0MDYgNDE1Ljg1NTQ2OSAzNzMuNTQyOTY5IDQxNS4zMDg1OTQgQyAzNzMuNzY1NjI1IDQxNC43NjE3MTkgMzczLjk5MjE4OCA0MTQuMjE0ODQ0IDM3NC4yMTg3NSA0MTMuNjY0MDYyIEwgMzgxLjIyNjU2MiAzOTguMDA3ODEyIEwgMzg0Ljk5MjE4OCAzOTguMDA3ODEyIEwgMzczLjc4NTE1NiA0MjIuNjk5MjE5IEMgMzcyLjk3NjU2MiA0MjQuNDQxNDA2IDM3Mi4xMDE1NjIgNDI1Ljc0NjA5NCAzNzEuMTQ4NDM4IDQyNi42MTMyODEgQyAzNzAuMTk5MjE5IDQyNy40ODQzNzUgMzY5LjI1IDQyOC4wMzkwNjIgMzY4LjMwMDc4MSA0MjguMjgxMjUgQyAzNjcuMzQ3NjU2IDQyOC41MjM0MzggMzY2LjI5Mjk2OSA0MjguNjQ0NTMxIDM2NS4xMzI4MTIgNDI4LjY0NDUzMSBMIDM2NS4xMzI4MTIgNDI1LjE2NDA2MiBDIDM2Ni40ODgyODEgNDI1LjE2NDA2MiAzNjcuNTg5ODQ0IDQyNC44ODI4MTIgMzY4LjQ0NTMxMiA0MjQuMzIwMzEyIi8+CjxwYXRoIGQ9Ik0gMzkyLjE0NDUzMSAzOTguMDA3ODEyIEwgMzkyLjE0NDUzMSA0MDIuMDE5NTMxIEMgMzkyLjk0OTIxOSA0MDAuNjAxNTYyIDM5NC4wNzgxMjUgMzk5LjUgMzk1LjUyNzM0NCAzOTguNzEwOTM4IEMgMzk2Ljk3NjU2MiAzOTcuOTIxODc1IDM5OC41NzAzMTIgMzk3LjUyNzM0NCA0MDAuMzEyNSAzOTcuNTI3MzQ0IEMgNDA1Ljk4MDQ2OSAzOTcuNTI3MzQ0IDQwOC44MTY0MDYgNDAwLjc4MTI1IDQwOC44MTY0MDYgNDA3LjI4OTA2MiBMIDQwOC44MTY0MDYgNDIxLjUzOTA2MiBMIDQwNS4xNDA2MjUgNDIxLjUzOTA2MiBMIDQwNS4xNDA2MjUgNDA3Ljc2OTUzMSBDIDQwNS4xNDA2MjUgNDA1LjUxNTYyNSA0MDQuNjgzNTk0IDQwMy44Mzk4NDQgNDAzLjc2NTYyNSA0MDIuNzQ2MDk0IEMgNDAyLjg0NzY1NiA0MDEuNjQ4NDM4IDQwMS4zNTU0NjkgNDAxLjEwMTU2MiAzOTkuMjk2ODc1IDQwMS4xMDE1NjIgQyAzOTcuOTQxNDA2IDQwMS4xMDE1NjIgMzk2LjcxODc1IDQwMS40MjU3ODEgMzk1LjYyNSA0MDIuMDY2NDA2IEMgMzk0LjUyNzM0NCA0MDIuNzE0ODQ0IDM5My42NzU3ODEgNDAzLjU4OTg0NCAzOTMuMDYyNSA0MDQuNzAzMTI1IEMgMzkyLjQ0OTIxOSA0MDUuODEyNSAzOTIuMTQ0NTMxIDQwNy4wMTE3MTkgMzkyLjE0NDUzMSA0MDguMzAwNzgxIEwgMzkyLjE0NDUzMSA0MjEuNTM5MDYyIEwgMzg4LjQ3MjY1NiA0MjEuNTM5MDYyIEwgMzg4LjQ3MjY1NiAzOTguMDA3ODEyIFogTSAzOTIuMTQ0NTMxIDM5OC4wMDc4MTIiLz4KPHBhdGggZD0iTSA0MTkuNzgxMjUgNDIwLjQwNjI1IEMgNDE3Ljg4MjgxMiA0MTkuMzI4MTI1IDQxNi4zODI4MTIgNDE3Ljg1NTQ2OSA0MTUuMjg5MDYyIDQxNS45ODQzNzUgQyA0MTQuMTk1MzEyIDQxNC4xMTcxODggNDEzLjY0NDUzMSA0MTIuMDU0Njg4IDQxMy42NDQ1MzEgNDA5LjgwMDc4MSBDIDQxMy42NDQ1MzEgNDA3LjU0Njg3NSA0MTQuMTk1MzEyIDQwNS40ODQzNzUgNDE1LjI4OTA2MiA0MDMuNjEzMjgxIEMgNDE2LjM4MjgxMiA0MDEuNzQ2MDk0IDQxNy44ODI4MTIgNDAwLjI2NTYyNSA0MTkuNzgxMjUgMzk5LjE2Nzk2OSBDIDQyMS42ODM1OTQgMzk4LjA3NDIxOSA0MjMuNzYxNzE5IDM5Ny41MjczNDQgNDI2LjAxNTYyNSAzOTcuNTI3MzQ0IEMgNDI3LjYyNSAzOTcuNTI3MzQ0IDQyOS4xNDg0MzggMzk3LjgwMDc4MSA0MzAuNTgyMDMxIDM5OC4zNDc2NTYgQyA0MzIuMDE1NjI1IDM5OC44OTQ1MzEgNDMzLjI5Njg3NSAzOTkuNjY3OTY5IDQzNC40MjE4NzUgNDAwLjY2Nzk2OSBMIDQzMi4xMDU0NjkgNDAzLjI3NzM0NCBDIDQzMS4zNjMyODEgNDAyLjU5NzY1NiA0MzAuNDc2NTYyIDQwMi4wNjY0MDYgNDI5LjQ0OTIxOSA0MDEuNjc5Njg4IEMgNDI4LjQxNDA2MiA0MDEuMjkyOTY5IDQyNy4yODkwNjIgNDAxLjEwMTU2MiA0MjYuMDY2NDA2IDQwMS4xMDE1NjIgQyA0MjQuNDUzMTI1IDQwMS4xMDE1NjIgNDIyLjk4ODI4MSA0MDEuNDgwNDY5IDQyMS42Njc5NjkgNDAyLjIzODI4MSBDIDQyMC4zNDc2NTYgNDAyLjk5NjA5NCA0MTkuMzA4NTk0IDQwNC4wMzUxNTYgNDE4LjU1MDc4MSA0MDUuMzU1NDY5IEMgNDE3Ljc5Mjk2OSA0MDYuNjc1NzgxIDQxNy40MTQwNjIgNDA4LjE1NjI1IDQxNy40MTQwNjIgNDA5LjgwMDc4MSBDIDQxNy40MTQwNjIgNDExLjQxMDE1NiA0MTcuNzg1MTU2IDQxMi44NzUgNDE4LjUyNzM0NCA0MTQuMTk1MzEyIEMgNDE5LjI2NTYyNSA0MTUuNTE1NjI1IDQyMC4zMDQ2ODggNDE2LjU1ODU5NCA0MjEuNjQ0NTMxIDQxNy4zMTI1IEMgNDIyLjk4MDQ2OSA0MTguMDcwMzEyIDQyNC40ODgyODEgNDE4LjQ0OTIxOSA0MjYuMTYwMTU2IDQxOC40NDkyMTkgQyA0MjcuNDgwNDY5IDQxOC40NDkyMTkgNDI4LjcyMjY1NiA0MTguMjE0ODQ0IDQyOS44ODI4MTIgNDE3Ljc0NjA5NCBDIDQzMS4wNDI5NjkgNDE3LjI4MTI1IDQzMi4wMzkwNjIgNDE2LjYyODkwNiA0MzIuODc4OTA2IDQxNS43OTI5NjkgTCA0MzUuMDAzOTA2IDQxOC41NDI5NjkgQyA0MzMuODQzNzUgNDE5LjY0MDYyNSA0MzIuNDkyMTg4IDQyMC40OTYwOTQgNDMwLjk0NTMxMiA0MjEuMTA1NDY5IEMgNDI5LjM5ODQzOCA0MjEuNzE4NzUgNDI3Ljc1MzkwNiA0MjIuMDIzNDM4IDQyNi4wMTU2MjUgNDIyLjAyMzQzOCBDIDQyMy43NjE3MTkgNDIyLjAyMzQzOCA0MjEuNjgzNTk0IDQyMS40ODQzNzUgNDE5Ljc4MTI1IDQyMC40MDYyNSIvPgo8cGF0aCBkPSJNIDQ1NC42NDQ1MzEgNDE3LjMxMjUgQyA0NTUuOTQ5MjE5IDQxNi41NTg1OTQgNDU2Ljk4MDQ2OSA0MTUuNTE1NjI1IDQ1Ny43MzgyODEgNDE0LjE5NTMxMiBDIDQ1OC40OTYwOTQgNDEyLjg3NSA0NTguODcxMDk0IDQxMS40MTAxNTYgNDU4Ljg3MTA5NCA0MDkuODAwNzgxIEMgNDU4Ljg3MTA5NCA0MDguMTU2MjUgNDU4LjQ5NjA5NCA0MDYuNjc1NzgxIDQ1Ny43MzgyODEgNDA1LjM1NTQ2OSBDIDQ1Ni45ODA0NjkgNDA0LjAzNTE1NiA0NTUuOTQ5MjE5IDQwMi45OTYwOTQgNDU0LjY0NDUzMSA0MDIuMjM4MjgxIEMgNDUzLjMzOTg0NCA0MDEuNDgwNDY5IDQ1MS44ODI4MTIgNDAxLjEwMTU2MiA0NTAuMjczNDM4IDQwMS4xMDE1NjIgQyA0NDguNjYwMTU2IDQwMS4xMDE1NjIgNDQ3LjIwMzEyNSA0MDEuNDgwNDY5IDQ0NS44OTg0MzggNDAyLjIzODI4MSBDIDQ0NC41OTM3NSA0MDIuOTk2MDk0IDQ0My41NjI1IDQwNC4wMzUxNTYgNDQyLjgwODU5NCA0MDUuMzU1NDY5IEMgNDQyLjA1MDc4MSA0MDYuNjc1NzgxIDQ0MS42NzE4NzUgNDA4LjE1NjI1IDQ0MS42NzE4NzUgNDA5LjgwMDc4MSBDIDQ0MS42NzE4NzUgNDExLjQxMDE1NiA0NDIuMDUwNzgxIDQxMi44NzUgNDQyLjgwODU5NCA0MTQuMTk1MzEyIEMgNDQzLjU2MjUgNDE1LjUxNTYyNSA0NDQuNTkzNzUgNDE2LjU1ODU5NCA0NDUuODk4NDM4IDQxNy4zMTI1IEMgNDQ3LjIwMzEyNSA0MTguMDcwMzEyIDQ0OC42NjAxNTYgNDE4LjQ0OTIxOSA0NTAuMjczNDM4IDQxOC40NDkyMTkgQyA0NTEuODgyODEyIDQxOC40NDkyMTkgNDUzLjMzOTg0NCA0MTguMDcwMzEyIDQ1NC42NDQ1MzEgNDE3LjMxMjUgTSA0NDQuMDM5MDYyIDQyMC4zODI4MTIgQyA0NDIuMTM2NzE5IDQxOS4yODUxNTYgNDQwLjY0MDYyNSA0MTcuODA0Njg4IDQzOS41NDY4NzUgNDE1LjkzNzUgQyA0MzguNDQ5MjE5IDQxNC4wNjY0MDYgNDM3LjkwMjM0NCA0MTIuMDIzNDM4IDQzNy45MDIzNDQgNDA5LjgwMDc4MSBDIDQzNy45MDIzNDQgNDA3LjU0Njg3NSA0MzguNDQ5MjE5IDQwNS40ODQzNzUgNDM5LjU0Njg3NSA0MDMuNjEzMjgxIEMgNDQwLjY0MDYyNSA0MDEuNzQ2MDk0IDQ0Mi4xMzY3MTkgNDAwLjI2NTYyNSA0NDQuMDM5MDYyIDM5OS4xNjc5NjkgQyA0NDUuOTM3NSAzOTguMDc0MjE5IDQ0OC4wMTU2MjUgMzk3LjUyNzM0NCA0NTAuMjczNDM4IDM5Ny41MjczNDQgQyA0NTIuNTI3MzQ0IDM5Ny41MjczNDQgNDU0LjYwNTQ2OSAzOTguMDc0MjE5IDQ1Ni41MDM5MDYgMzk5LjE2Nzk2OSBDIDQ1OC40MDYyNSA0MDAuMjY1NjI1IDQ1OS45MDIzNDQgNDAxLjc0NjA5NCA0NjEgNDAzLjYxMzI4MSBDIDQ2Mi4wOTM3NSA0MDUuNDg0Mzc1IDQ2Mi42NDA2MjUgNDA3LjU0Njg3NSA0NjIuNjQwNjI1IDQwOS44MDA3ODEgQyA0NjIuNjQwNjI1IDQxMi4wMjM0MzggNDYyLjA5Mzc1IDQxNC4wNjY0MDYgNDYxIDQxNS45Mzc1IEMgNDU5LjkwMjM0NCA0MTcuODA0Njg4IDQ1OC40MDYyNSA0MTkuMjg1MTU2IDQ1Ni41MDM5MDYgNDIwLjM4MjgxMiBDIDQ1NC42MDU0NjkgNDIxLjQ3NjU2MiA0NTIuNTI3MzQ0IDQyMi4wMjM0MzggNDUwLjI3MzQzOCA0MjIuMDIzNDM4IEMgNDQ4LjAxNTYyNSA0MjIuMDIzNDM4IDQ0NS45Mzc1IDQyMS40NzY1NjIgNDQ0LjAzOTA2MiA0MjAuMzgyODEyIi8+CjxwYXRoIGQ9Ik0gNDc0LjYyNSAzOTAuMjMwNDY5IEwgNDc0LjYyNSA0MDIuNDUzMTI1IEwgNDg4LjAwNzgxMiA0MDIuNDUzMTI1IEwgNDg4LjAwNzgxMiAzOTAuMjMwNDY5IEwgNDk0Ljc3MzQzOCAzOTAuMjMwNDY5IEwgNDk0Ljc3MzQzOCA0MTguMzYzMjgxIEMgNDk0Ljc3MzQzOCA0MjAuMTE3MTg4IDQ5My4zNTE1NjIgNDIxLjUzOTA2MiA0OTEuNTk3NjU2IDQyMS41MzkwNjIgTCA0ODguMDA3ODEyIDQyMS41MzkwNjIgTCA0ODguMDA3ODEyIDQwOC4yNTM5MDYgTCA0NzQuNjI1IDQwOC4yNTM5MDYgTCA0NzQuNjI1IDQyMS41MzkwNjIgTCA0NjcuODU5Mzc1IDQyMS41MzkwNjIgTCA0NjcuODU5Mzc1IDM5MC4yMzA0NjkgWiBNIDQ3NC42MjUgMzkwLjIzMDQ2OSIvPgo8cGF0aCBkPSJNIDUwMi4wNDY4NzUgNDE5LjQzNzUgQyA1MDAuNzA3MDMxIDQxNy43MTQ4NDQgNTAwLjAzOTA2MiA0MTUuMTc5Njg4IDUwMC4wMzkwNjIgNDExLjgyODEyNSBMIDUwMC4wMzkwNjIgMzk3LjM4MjgxMiBMIDUwNi41MTU2MjUgMzk3LjM4MjgxMiBMIDUwNi41MTU2MjUgNDEwLjk1NzAzMSBDIDUwNi41MTU2MjUgNDEyLjYzMjgxMiA1MDYuODc1IDQxMy44NzUgNTA3LjYwMTU2MiA0MTQuNjc5Njg4IEMgNTA4LjMyODEyNSA0MTUuNDg0Mzc1IDUwOS40NDUzMTIgNDE1Ljg4NjcxOSA1MTAuOTYwOTM4IDQxNS44ODY3MTkgQyA1MTIuNTcwMzEyIDQxNS44ODY3MTkgNTEzLjgxMjUgNDE1LjMwMDc4MSA1MTQuNjc5Njg4IDQxNC4xMjUgQyA1MTUuNTUwNzgxIDQxMi45NDkyMTkgNTE1Ljk4NDM3NSA0MTEuNDkyMTg4IDUxNS45ODQzNzUgNDA5Ljc1IEwgNTE1Ljk4NDM3NSAzOTcuMzgyODEyIEwgNTIyLjQ2MDkzOCAzOTcuMzgyODEyIEwgNTIyLjQ2MDkzOCA0MjEuNTM5MDYyIEwgNTE2LjM3MTA5NCA0MjEuNTM5MDYyIEwgNTE2LjM3MTA5NCA0MTguMTYwMTU2IEMgNTE1LjY2NDA2MiA0MTkuMzE2NDA2IDUxNC41OTM3NSA0MjAuMjUzOTA2IDUxMy4xNjAxNTYgNDIwLjk2MDkzOCBDIDUxMS43MjY1NjIgNDIxLjY2Nzk2OSA1MTAuMjg1MTU2IDQyMi4wMjM0MzggNTA4LjgzNTkzOCA0MjIuMDIzNDM4IEMgNTA1LjY0NDUzMSA0MjIuMDIzNDM4IDUwMy4zODI4MTIgNDIxLjE2NDA2MiA1MDIuMDQ2ODc1IDQxOS40Mzc1Ii8+CjxwYXRoIGQ9Ik0gNTQzLjkxNDA2MiA0MTQuMTcxODc1IEMgNTQ1LjA0Mjk2OSA0MTIuOTMzNTk0IDU0NS42MDU0NjkgNDExLjM2MzI4MSA1NDUuNjA1NDY5IDQwOS40NjA5MzggQyA1NDUuNjA1NDY5IDQwNy41NTg1OTQgNTQ1LjA0Mjk2OSA0MDUuOTg4MjgxIDU0My45MTQwNjIgNDA0Ljc1IEMgNTQyLjc4NTE1NiA0MDMuNTExNzE5IDU0MS4zNTE1NjIgNDAyLjg5MDYyNSA1MzkuNjEzMjgxIDQwMi44OTA2MjUgQyA1MzcuOTM3NSA0MDIuODkwNjI1IDUzNi41NjI1IDQwMy41MTE3MTkgNTM1LjQ4MDQ2OSA0MDQuNzUgQyA1MzQuNDAyMzQ0IDQwNS45ODgyODEgNTMzLjg2MzI4MSA0MDcuNTU4NTk0IDUzMy44NjMyODEgNDA5LjQ2MDkzOCBDIDUzMy44NjMyODEgNDExLjM5NDUzMSA1MzQuNDEwMTU2IDQxMi45NzI2NTYgNTM1LjUwNzgxMiA0MTQuMTk1MzEyIEMgNTM2LjYwMTU2MiA0MTUuNDIxODc1IDUzNy45NzI2NTYgNDE2LjAzMTI1IDUzOS42MTMyODEgNDE2LjAzMTI1IEMgNTQxLjM1MTU2MiA0MTYuMDMxMjUgNTQyLjc4NTE1NiA0MTUuNDE0MDYyIDU0My45MTQwNjIgNDE0LjE3MTg3NSBNIDUzNi45MDYyNSA0MjEuMTc5Njg4IEMgNTM1LjUyMzQzOCA0MjAuNjE3MTg4IDUzNC4zOTQ1MzEgNDE5Ljc2OTUzMSA1MzMuNTIzNDM4IDQxOC42NDA2MjUgTCA1MzMuNTIzNDM4IDQyMS41NDI5NjkgTCA1MjcuMzkwNjI1IDQyMS41NDI5NjkgTCA1MjcuMzkwNjI1IDM4OS43NDYwOTQgTCA1MzMuODYzMjgxIDM4OS43NDYwOTQgTCA1MzMuODYzMjgxIDQwMC4wODU5MzggQyA1MzQuNzM0Mzc1IDM5OS4wNTg1OTQgNTM1LjgxMjUgMzk4LjI2NTYyNSA1MzcuMTAxNTYyIDM5Ny43MTg3NSBDIDUzOC4zOTA2MjUgMzk3LjE3MTg3NSA1MzkuNzQyMTg4IDM5Ni44OTg0MzggNTQxLjE2MDE1NiAzOTYuODk4NDM4IEMgNTQzLjMxNjQwNiAzOTYuODk4NDM4IDU0NS4yMzQzNzUgMzk3LjQ1MzEyNSA1NDYuOTEwMTU2IDM5OC41NjY0MDYgQyA1NDguNTg1OTM4IDM5OS42NzU3ODEgNTQ5Ljg3ODkwNiA0MDEuMTkxNDA2IDU1MC44MDA3ODEgNDAzLjEwOTM3NSBDIDU1MS43MTg3NSA0MDUuMDIzNDM4IDU1Mi4xNzU3ODEgNDA3LjE0MDYyNSA1NTIuMTc1NzgxIDQwOS40NjA5MzggQyA1NTIuMTc1NzgxIDQxMS43ODEyNSA1NTEuNzIyNjU2IDQxMy44OTg0MzggNTUwLjgyNDIxOSA0MTUuODE2NDA2IEMgNTQ5LjkyMTg3NSA0MTcuNzMwNDY5IDU0OC42NDA2MjUgNDE5LjI0NjA5NCA1NDYuOTgwNDY5IDQyMC4zNTkzNzUgQyA1NDUuMzI0MjE5IDQyMS40Njg3NSA1NDMuNDE0MDYyIDQyMi4wMjM0MzggNTQxLjI1NzgxMiA0MjIuMDIzNDM4IEMgNTM5Ljc0MjE4OCA0MjIuMDIzNDM4IDUzOC4yOTI5NjkgNDIxLjc0MjE4OCA1MzYuOTA2MjUgNDIxLjE3OTY4OCIvPgo8L2c+CjxnIGZpbGw9IiNGRkZGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjAuMzUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgo8cGF0aCBkPSJNIDI4OC44MjAzMTIgNDI1LjUwMzkwNiBMIDI4OC44MjAzMTIgNDEwLjc3MzQzOCBMIDMwMS4wOTM3NSA0MTAuNzczNDM4IEwgMzAxLjA5Mzc1IDQxOC42OTE0MDYgQyAzMDEuMDkzNzUgNDIyLjQ1MzEyNSAyOTguMDQyOTY5IDQyNS41MDM5MDYgMjk0LjI4MTI1IDQyNS41MDM5MDYgWiBNIDI4OC44MjAzMTIgNDI1LjUwMzkwNiIvPgo8L2c+CjwvZz4KPC9zdmc+Cg==" alt="SyncoHub"></a>
+    <nav aria-label="Seções">
+      <a href="#entender">Entender</a>
+      <a href="#numeros">Números</a>
+      <a href="#aplicacoes">30 aplicações</a>
+      <a href="#ramo">Seu ramo</a>
+      <a href="#escolher">Escolher</a>
+      <a href="#conta">A conta</a>
+      <a href="#nivel">Seu nível</a>
+    </nav>
+    <a class="cta-mini" href="#conversar">Falar com o Raí</a>
+  </div></div>
+  <div class="prog" id="prog"></div>
+</div>
+
+<header class="hero" id="topo">
+  <div class="wrap"><div class="wide in">
+    <div>
+      <span class="ed">Edição Feira do Empreendedor Sebrae-SP 2026</span>
+      <h1>Onde a IA entra no seu negócio</h1>
+      <p class="sub">Guia prático para pequenas e médias empresas: 30 aplicações reais, a conta de quanto tempo cada uma devolve e um plano de 30 dias para começar.</p>
+      <div class="autor"><div class="av"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MS4xMDE2IDQxLjcxODgiIHdpZHRoPSI1MS4xMCIgaGVpZ2h0PSI0MS43MiIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJTeW5jb0h1YiI+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zODIuNDQxNCAtMTM5LjMyMDMpIj4KPGcgZmlsbD0iI0ZGRkZGRiIgZmlsbC1ydWxlPSJub256ZXJvIj4KPHBhdGggZD0iTSA0MjEuMjY5NTMxIDEzOS4zMjAzMTIgTCA0MjEuMjY5NTMxIDE1NC4wMTk1MzEgTCAzOTQuNzE0ODQ0IDE1NC4wMTk1MzEgTCAzOTQuNzE0ODQ0IDE1MS42MDE1NjIgTCA0MTguODE2NDA2IDE1MS42MDE1NjIgTCA0MTguODE2NDA2IDEzOS4zMjgxMjUgTCAzODkuNjA1NDY5IDEzOS4zMjgxMjUgQyAzODUuNjQ4NDM4IDEzOS4zMjgxMjUgMzgyLjQ0MTQwNiAxNDIuNTM1MTU2IDM4Mi40NDE0MDYgMTQ2LjQ5MjE4OCBMIDM4Mi40NDE0MDYgMTU1LjY5OTIxOSBMIDM4Mi40NjA5MzggMTU1LjY5OTIxOSBMIDM4Mi40NjA5MzggMTU5LjEyODkwNiBDIDM4Mi40NjA5MzggMTYzLjA4NTkzOCAzODUuNjY3OTY5IDE2Ni4yOTI5NjkgMzg5LjYyNSAxNjYuMjkyOTY5IEwgNDIxLjI2OTUzMSAxNjYuMjkyOTY5IEwgNDIxLjI2OTUzMSAxODEuMDM5MDYyIEwgNDI2LjUgMTgxLjAzOTA2MiBDIDQzMC4zOTA2MjUgMTgxLjAzOTA2MiA0MzMuNTQyOTY5IDE3Ny44ODY3MTkgNDMzLjU0Mjk2OSAxNzMuOTk2MDk0IEwgNDMzLjU0Mjk2OSAxMzkuMzIwMzEyIFogTSA0MjEuMjY5NTMxIDEzOS4zMjAzMTIiLz4KPHBhdGggZD0iTSAzODIuNTE1NjI1IDE2OC43NDIxODggTCA0MTAuNjI4OTA2IDE2OC43NDIxODggTCA0MTAuNjI4OTA2IDE4MS4wMTU2MjUgTCAzODkuNTYyNSAxODEuMDE1NjI1IEMgMzg1LjY3MTg3NSAxODEuMDE1NjI1IDM4Mi41MTU2MjUgMTc3Ljg2MzI4MSAzODIuNTE1NjI1IDE3My45NzI2NTYgWiBNIDM4Mi41MTU2MjUgMTY4Ljc0MjE4OCIvPgo8L2c+CjxnIGZpbGw9IiNGRkZGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjAuMzUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgo8cGF0aCBkPSJNIDQwNi42ODc1IDE4MS4wMTk1MzEgTCA0MDYuNjg3NSAxNjYuMjg1MTU2IEwgNDE4Ljk2MDkzOCAxNjYuMjg1MTU2IEwgNDE4Ljk2MDkzOCAxNzQuMjAzMTI1IEMgNDE4Ljk2MDkzOCAxNzcuOTY0ODQ0IDQxNS45MTAxNTYgMTgxLjAxOTUzMSA0MTIuMTQ4NDM4IDE4MS4wMTk1MzEgWiBNIDQwNi42ODc1IDE4MS4wMTk1MzEiLz4KPC9nPgo8L2c+Cjwvc3ZnPgo=" alt=""></div><div><strong>Raí Neves</strong>Fundador da SyncoHub</div></div>
+    </div>
+    <div class="palco" id="palco">
+      <div class="estado" id="estado">Hoje: várias etapas, várias pessoas</div>
+      <div class="mesa" aria-hidden="true">
+        <svg class="fios" viewBox="0 0 400 270" preserveAspectRatio="none" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5" stroke-dasharray="4 5"><path d="M60 62 C140 40 180 90 250 58 S330 120 320 150 C300 190 200 150 150 168 S60 230 110 228 C170 226 240 250 300 222"/></svg>
+        <span class="chip" style="--x:4%;--y:16%;--r:-6deg;--d:0s">Planilha</span>
+        <span class="chip" style="--x:52%;--y:9%;--r:5deg;--d:.04s">E-mail</span>
+        <span class="chip" style="--x:30%;--y:30%;--r:-3deg;--d:.08s">Copiar e colar</span>
+        <span class="chip" style="--x:66%;--y:40%;--r:8deg;--d:.12s">Responder</span>
+        <span class="chip" style="--x:8%;--y:52%;--r:4deg;--d:.16s">Conferir</span>
+        <span class="chip" style="--x:40%;--y:60%;--r:-7deg;--d:.2s">Aprovar</span>
+        <span class="chip" style="--x:14%;--y:80%;--r:-2deg;--d:.24s">Redigitar</span>
+        <span class="chip" style="--x:58%;--y:80%;--r:6deg;--d:.28s">Relatório</span>
+        <div class="um-clique"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63-4.54-2.26a1.3 1.3 0 0 0-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.44-.72a1.12 1.12 0 0 0-1.03.31l-.79.79 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.9-1.38z"/></svg>Um clique.</div>
+      </div>
+      <div class="chave">
+        <span class="m">MANUAL</span>
+        <button class="trilho" id="chave" role="switch" aria-checked="false" aria-label="Ligar o modo automático"></button>
+        <span class="a">AUTOMÁTICO</span>
+      </div>
+    </div>
+  </div></div>
+</header>
+
+<main>
+<section class="sec">
+  <div class="wrap"><div class="wide carta">
+    <div class="texto">
+      <span class="olho">Antes de começar</span>
+      <h2>Você não precisa entender de IA. Só do seu negócio.</h2>
+      <p>Toda semana eu converso com donos de pequenas empresas que têm a mesma sensação: todo mundo fala de inteligência artificial, parece urgente, e ninguém explica onde ela entra numa doceria, num escritório de contabilidade ou numa loja de bairro.</p>
+      <p>A resposta quase nunca é um robô que faz tudo. É uma tarefa específica, que hoje come horas de alguém e pode passar a acontecer sozinha. Uma resposta que chega em minutos em vez de amanhã. Um orçamento que sai na hora. Um documento que não precisa ser cobrado três vezes.</p>
+      <p>Este guia junta o que eu vejo funcionar nas empresas que a gente atende. E ele é para usar, não só para ler: tem calculadora, teste de prioridade e autodiagnóstico com resultado na hora.</p>
+      <div class="assina"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MS4xMDE2IDQxLjcxODgiIHdpZHRoPSI1MS4xMCIgaGVpZ2h0PSI0MS43MiIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJTeW5jb0h1YiI+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zODIuNDQxNCAtMTM5LjMyMDMpIj4KPGcgZmlsbD0iI0NDMDA5OSIgZmlsbC1ydWxlPSJub256ZXJvIj4KPHBhdGggZD0iTSA0MjEuMjY5NTMxIDEzOS4zMjAzMTIgTCA0MjEuMjY5NTMxIDE1NC4wMTk1MzEgTCAzOTQuNzE0ODQ0IDE1NC4wMTk1MzEgTCAzOTQuNzE0ODQ0IDE1MS42MDE1NjIgTCA0MTguODE2NDA2IDE1MS42MDE1NjIgTCA0MTguODE2NDA2IDEzOS4zMjgxMjUgTCAzODkuNjA1NDY5IDEzOS4zMjgxMjUgQyAzODUuNjQ4NDM4IDEzOS4zMjgxMjUgMzgyLjQ0MTQwNiAxNDIuNTM1MTU2IDM4Mi40NDE0MDYgMTQ2LjQ5MjE4OCBMIDM4Mi40NDE0MDYgMTU1LjY5OTIxOSBMIDM4Mi40NjA5MzggMTU1LjY5OTIxOSBMIDM4Mi40NjA5MzggMTU5LjEyODkwNiBDIDM4Mi40NjA5MzggMTYzLjA4NTkzOCAzODUuNjY3OTY5IDE2Ni4yOTI5NjkgMzg5LjYyNSAxNjYuMjkyOTY5IEwgNDIxLjI2OTUzMSAxNjYuMjkyOTY5IEwgNDIxLjI2OTUzMSAxODEuMDM5MDYyIEwgNDI2LjUgMTgxLjAzOTA2MiBDIDQzMC4zOTA2MjUgMTgxLjAzOTA2MiA0MzMuNTQyOTY5IDE3Ny44ODY3MTkgNDMzLjU0Mjk2OSAxNzMuOTk2MDk0IEwgNDMzLjU0Mjk2OSAxMzkuMzIwMzEyIFogTSA0MjEuMjY5NTMxIDEzOS4zMjAzMTIiLz4KPHBhdGggZD0iTSAzODIuNTE1NjI1IDE2OC43NDIxODggTCA0MTAuNjI4OTA2IDE2OC43NDIxODggTCA0MTAuNjI4OTA2IDE4MS4wMTU2MjUgTCAzODkuNTYyNSAxODEuMDE1NjI1IEMgMzg1LjY3MTg3NSAxODEuMDE1NjI1IDM4Mi41MTU2MjUgMTc3Ljg2MzI4MSAzODIuNTE1NjI1IDE3My45NzI2NTYgWiBNIDM4Mi41MTU2MjUgMTY4Ljc0MjE4OCIvPgo8L2c+CjxnIGZpbGw9IiM5OTAwNjYiIGZpbGwtcnVsZT0ibm9uemVybyI+CjxwYXRoIGQ9Ik0gNDA2LjY4NzUgMTgxLjAxOTUzMSBMIDQwNi42ODc1IDE2Ni4yODUxNTYgTCA0MTguOTYwOTM4IDE2Ni4yODUxNTYgTCA0MTguOTYwOTM4IDE3NC4yMDMxMjUgQyA0MTguOTYwOTM4IDE3Ny45NjQ4NDQgNDE1LjkxMDE1NiAxODEuMDE5NTMxIDQxMi4xNDg0MzggMTgxLjAxOTUzMSBaIE0gNDA2LjY4NzUgMTgxLjAxOTUzMSIvPgo8L2c+CjwvZz4KPC9zdmc+Cg==" alt=""><div><strong>Raí Neves</strong><small>Fundador da SyncoHub. Especialista em melhoria de processos, Black Belt em Lean Six Sigma.</small></div></div>
+    </div>
+    <div class="atalhos" aria-label="Atalhos">
+      <a class="atalho" href="#ramo"><strong>Tem 5 minutos?</strong><span>Escolha o seu ramo e veja as três aplicações que mais costumam dar resultado.</span></a>
+      <a class="atalho" href="#nivel"><strong>Quer saber onde está?</strong><span>Responda 12 perguntas e descubra o nível da sua empresa.</span></a>
+      <a class="atalho" href="#conta"><strong>Quer ver em reais?</strong><span>Coloque os seus números na calculadora e veja quanto volta por mês.</span></a>
+    </div>
+  </div></div>
+</section>
+
+<section class="parte" id="entender">
+  <div class="wrap"><div class="wide in">
+    <div class="n" aria-hidden="true">1</div>
+    <div><h2>Entender o que é, e o que não é</h2><p>IA virou uma palavra para muita coisa diferente. Antes de escolher, vale separar automação, IA e agente, e deixar alguns mitos para trás.</p></div>
+    <div class="par"><div class="antes"><b>Hoje</b>A IA parece coisa de empresa grande, cara e complicada.</div><svg class="seta" viewBox="0 0 52 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12 H48 M38 3 L49 12 L38 21"/></svg><div class="depois"><b>Com IA</b>Um processo de cada vez, moldado ao jeito que a sua empresa já trabalha.</div></div>
+  </div></div>
+</section>
+
+<section class="sec">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 1 · Entender</span>
+      <h2>Três coisas diferentes com o mesmo nome</h2>
+      <p class="lead">Quando alguém diz que vai colocar IA na empresa, pode estar falando de três coisas. Saber a diferença evita pagar caro por algo simples, ou esperar milagre de algo básico.</p>
+    </div>
+    <div class="tipos">
+      <article class="tipo">
+        <svg viewBox="0 0 280 120" role="img" aria-label="Quando acontece X, faz Y">
+          <rect x="18" y="40" width="96" height="40" rx="10" fill="none" stroke="var(--soft)" stroke-width="1.5"/>
+          <text x="66" y="65" text-anchor="middle" font-size="13" fill="var(--ink)" font-family="Poppins, sans-serif">Pedido pago</text>
+          <path d="M120 60H158" stroke="var(--accent)" stroke-width="2"/><path d="M152 53l9 7-9 7" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="166" y="40" width="96" height="40" rx="10" fill="var(--accent)"/>
+          <text x="214" y="65" text-anchor="middle" font-size="13" fill="var(--accent-ink)" font-family="Poppins, sans-serif" font-weight="600">Emite a nota</text>
+          <text x="140" y="104" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Poppins, sans-serif">regra fixa, sempre igual</text>
+        </svg>
+        <h3>Automação</h3>
+        <p>Segue regras: quando acontecer X, faça Y. Não pensa, mas não erra a regra e não cansa.</p>
+        <div class="ex"><b>Exemplo:</b> pedido pago na loja virtual gera a nota e manda o rastreio para o cliente.</div>
+      </article>
+      <article class="tipo">
+        <svg viewBox="0 0 280 120" role="img" aria-label="Um boleto vira campos organizados">
+          <rect x="22" y="18" width="70" height="86" rx="6" fill="var(--surface)" stroke="var(--soft)" stroke-width="1.5"/>
+          <path d="M34 36h46M34 46h36M34 56h42M34 66h28" stroke="var(--linha)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M34 84h6M44 84h2M50 84h6M60 84h2M66 84h4M74 84h4" stroke="var(--ink)" stroke-width="10"/>
+          <path d="M104 60H138" stroke="var(--accent)" stroke-width="2"/><path d="M132 53l9 7-9 7" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <g font-family="Poppins, sans-serif" font-size="11.5">
+            <rect x="150" y="22" width="112" height="22" rx="6" fill="var(--accent-soft)"/><text x="158" y="37" fill="var(--ink)">Valor: R$ 480</text>
+            <rect x="150" y="49" width="112" height="22" rx="6" fill="var(--accent-soft)"/><text x="158" y="64" fill="var(--ink)">Vence: 10/11</text>
+            <rect x="150" y="76" width="112" height="22" rx="6" fill="var(--accent-soft)"/><text x="158" y="91" fill="var(--ink)">Fornecedor</text>
+          </g>
+        </svg>
+        <h3>IA generativa</h3>
+        <p>Entende e escreve texto, lê documentos, imagens e áudios. Lida bem com o que não tem formato fixo.</p>
+        <div class="ex"><b>Exemplo:</b> ler o boleto que chegou por WhatsApp e tirar valor, vencimento e fornecedor.</div>
+      </article>
+      <article class="tipo">
+        <svg viewBox="0 0 280 120" role="img" aria-label="O agente conversa e age na agenda e no sistema">
+          <rect x="16" y="24" width="88" height="30" rx="12" fill="var(--surface)" stroke="var(--soft)" stroke-width="1.5"/>
+          <text x="60" y="44" text-anchor="middle" font-size="11.5" fill="var(--ink)" font-family="Poppins, sans-serif">Tem horário?</text>
+          <rect x="16" y="64" width="88" height="30" rx="12" fill="var(--accent)"/>
+          <text x="60" y="84" text-anchor="middle" font-size="11.5" fill="var(--accent-ink)" font-family="Poppins, sans-serif" font-weight="600">Quinta, 10h</text>
+          <circle cx="140" cy="60" r="20" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="140" y="65" text-anchor="middle" font-size="12" fill="var(--accent)" font-family="Poppins, sans-serif" font-weight="700">IA</text>
+          <path d="M106 52l14 4M106 72l14-4M160 52l26-16M160 68l26 16" stroke="var(--accent)" stroke-width="1.5"/>
+          <rect x="190" y="18" width="74" height="30" rx="8" fill="none" stroke="var(--soft)" stroke-width="1.5"/><text x="227" y="38" text-anchor="middle" font-size="11.5" fill="var(--ink)" font-family="Poppins, sans-serif">Agenda</text>
+          <rect x="190" y="72" width="74" height="30" rx="8" fill="none" stroke="var(--soft)" stroke-width="1.5"/><text x="227" y="92" text-anchor="middle" font-size="11.5" fill="var(--ink)" font-family="Poppins, sans-serif">Sistema</text>
+        </svg>
+        <h3>Agente de IA</h3>
+        <p>Junta as duas coisas: conversa, decide o próximo passo e age em outros sistemas, dentro de limites definidos.</p>
+        <div class="ex"><b>Exemplo:</b> atender no WhatsApp, entender o que o cliente quer, consultar a agenda e marcar o horário.</div>
+      </article>
+    </div>
+    <div class="nota">
+      <h3>E o ChatGPT que eu já uso?</h3>
+      <p>Ele é ótimo para você escrever, pensar e resumir. A diferença é que ele não está ligado ao seu WhatsApp, à sua agenda nem ao seu sistema, e não conhece as regras da sua empresa. Ele ajuda você a trabalhar. A automação e o agente fazem o trabalho acontecer sem você no meio.</p>
+    </div>
+
+    <div class="col" style="margin:72px 0 0">
+      <h2>Quatro ideias para deixar para trás</h2>
+      <p class="lead">São as frases que mais ouço no estande. Todas têm um fundo de verdade, e todas deixam muita empresa parada.</p>
+    </div>
+    <div class="mitos">
+      <div class="mito"><div class="diz">IA é cara e é para empresa grande.</div><p>Ferramenta pronta e cobrança por uso mudaram a conta. Dá para começar por um processo só, pagar pelo que usa e ver o retorno antes de ir para o próximo. A calculadora deste guia mostra se vale.</p></div>
+      <div class="mito"><div class="diz">A IA vai substituir a minha equipe.</div><p>Ela tira a parte repetitiva: copiar, colar, responder a mesma pergunta, cobrar. As pessoas ficam com o que precisa de gente: negociar, resolver o caso difícil, cuidar do cliente importante.</p></div>
+      <div class="mito"><div class="diz">Preciso entender de tecnologia.</div><p>Você precisa entender do seu negócio. Quem implanta molda a ferramenta ao seu processo, e a sua equipe continua usando o WhatsApp e as telas que já conhece.</p></div>
+      <div class="mito"><div class="diz">Meus dados vão parar na internet.</div><p>Depende de como é feito. Ferramentas com contrato e política de dados claros, acesso só ao necessário e cuidado com a LGPD resolvem a maior parte do risco.</p></div>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec" id="numeros">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 1 · Os números</span>
+      <h2>Quase todo mundo conhece. Pouca gente usa.</h2>
+      <p class="lead">Dados de pesquisas recentes sobre pequenas empresas, WhatsApp e velocidade de resposta. As fontes estão no fim do guia.</p>
+    </div>
+    <div class="nums">
+      <div class="num full">
+        <div class="pontos-par">
+          <div><div class="pontos-cap"><b>96%</b><span>das micro e pequenas empresas conhecem a IA generativa</span></div><div class="pontos" id="p96"></div></div>
+          <div><div class="pontos-cap"><b>15%</b><span>usam com frequência</span></div><div class="pontos forte" id="p15"></div></div>
+        </div>
+        <p class="d">Entre os MEIs, o obstáculo mais citado para usar IA é <strong>não saber como aplicar no negócio (23%)</strong>. O problema não é conhecer. É saber onde ela entra.</p>
+        <p class="f">Sebrae, FGV IBRE e Google, cerca de 5 mil empresas, set/2025 [1]</p>
+      </div>
+      <div class="num">
+        <div class="anel">
+          <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="16"/><circle cx="60" cy="60" r="50" fill="none" stroke="var(--accent)" stroke-width="16" stroke-dasharray="257.6 314.2" transform="rotate(-90 60 60)" stroke-linecap="round"/></svg>
+          <div><div class="big">82%</div></div>
+        </div>
+        <p class="d">dos pequenos negócios têm no <strong>WhatsApp</strong> o principal canal de comunicação e vendas.</p>
+        <p class="f">Sebrae, Pulso dos Pequenos Negócios, 12ª edição, 2026 [2]</p>
+      </div>
+      <div class="num">
+        <div class="balões" aria-hidden="true">
+          <div class="balao"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM11 1h2v3h-2zm0 19h2v3h-2zM3.5 4.9l1.4-1.4 2.1 2.1-1.4 1.4zm12.7 12.7 1.4-1.4 2.1 2.1-1.4 1.4zM1 11h3v2H1zm19 0h3v2h-3z"/></svg>9h</div>
+          <div class="balao"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM11 1h2v3h-2zm0 19h2v3h-2zM3.5 4.9l1.4-1.4 2.1 2.1-1.4 1.4zm12.7 12.7 1.4-1.4 2.1 2.1-1.4 1.4zM1 11h3v2H1zm19 0h3v2h-3z"/></svg>13h</div>
+          <div class="balao"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM11 1h2v3h-2zm0 19h2v3h-2zM3.5 4.9l1.4-1.4 2.1 2.1-1.4 1.4zm12.7 12.7 1.4-1.4 2.1 2.1-1.4 1.4zM1 11h3v2H1zm19 0h3v2h-3z"/></svg>16h</div>
+          <div class="balao noite"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.3 2a9 9 0 1 0 9.7 11.6A7 7 0 0 1 12.3 2z"/></svg>22h</div>
+        </div>
+        <div class="big">1 em 4</div>
+        <p class="d">mensagens enviadas a marcas chega <strong>fora do horário comercial</strong>: à noite ou no fim de semana.</p>
+        <p class="f">OmniChat, Chat Commerce Report 2026, dados de 2025 [3]</p>
+      </div>
+      <div class="num">
+        <div class="semana" aria-hidden="true">
+          <div class="dia cheio"><i style="height:100%"></i><span>Seg</span></div>
+          <div class="dia"><i style="height:12.5%"></i><span>Ter</span></div>
+          <div class="dia"><span>Qua</span></div><div class="dia"><span>Qui</span></div><div class="dia"><span>Sex</span></div>
+        </div>
+        <div class="big">9 horas</div>
+        <p class="d">por semana com <strong>burocracia financeira</strong>, em média. Mais de um dia útil inteiro, toda semana. No varejo, são 11.</p>
+        <p class="f">Nu Empresas e Bridge Research, 1.200 empreendedores, 2026 [4]</p>
+      </div>
+      <div class="num">
+        <div class="barras" aria-hidden="true">
+          <div class="barra forte"><span>Em até 1 hora</span><div class="t"><i style="width:100%"></i></div><span class="v">7×</span></div>
+          <div class="barra"><span>Na hora seguinte</span><div class="t"><i style="width:14.3%"></i></div><span class="v">1×</span></div>
+        </div>
+        <div class="big">7 vezes</div>
+        <p class="d">mais chance de <strong>qualificar um contato</strong> para quem responde em até 1 hora, comparado a quem responde na hora seguinte.</p>
+        <p class="f">Harvard Business Review, 2.241 empresas nos EUA, 2011 [5]</p>
+      </div>
+      <div class="num">
+        <div class="barras" aria-hidden="true">
+          <div class="barra"><span>Sem lembrete</span><div class="t"><i style="width:100%"></i></div><span class="v">21%</span></div>
+          <div class="barra forte"><span>Com lembrete</span><div class="t"><i style="width:71.4%"></i></div><span class="v">15%</span></div>
+        </div>
+        <div class="big">25%<small>menos faltas</small></div>
+        <p class="d">quando o paciente recebe <strong>lembretes digitais</strong> da consulta. A taxa de faltas cai de 21% para 15%.</p>
+        <p class="f">BMJ Open, revisão de 21 estudos, 2016 [6]</p>
+      </div>
+      <div class="num">
+        <div class="barras" aria-hidden="true">
+          <div class="barra"><span>Todos</span><div class="t"><i style="width:41%"></i></div><span class="v">+14%</span></div>
+          <div class="barra forte"><span>Novatos</span><div class="t"><i style="width:100%"></i></div><span class="v">+34%</span></div>
+        </div>
+        <div class="big">+14%</div>
+        <p class="d">de atendimentos resolvidos por hora com um <strong>assistente de IA</strong>. Para quem estava começando, +34%.</p>
+        <p class="f">Brynjolfsson, Li e Raymond, Quarterly Journal of Economics, 2025 [7]</p>
+      </div>
+    </div>
+    <div class="destaque">
+      <h3>Conhecer IA virou regra. Saber onde ela entra é que é raro.</h3>
+      <p>Quase todo pequeno empresário já ouviu falar de IA, mas poucos usam no dia a dia. Entre os MEIs, a barreira mais citada nem é o custo: é não saber onde aplicar. É isso que a próxima parte resolve.</p>
+    </div>
+  </div></div>
+</section>
+
+<section class="parte" id="aplicacoes">
+  <div class="wrap"><div class="wide in">
+    <div class="n" aria-hidden="true">2</div>
+    <div><h2>30 lugares onde a IA entra</h2><p>Organizados por área do negócio. Cada aplicação mostra como é hoje, como fica com IA, o sinal de que ela serve para você e o esforço para implantar.</p></div>
+    <div class="par"><div class="antes"><b>Hoje</b>Cliente pergunta o preço às 22h e espera até amanhã.</div><svg class="seta" viewBox="0 0 52 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12 H48 M38 3 L49 12 L38 21"/></svg><div class="depois"><b>Com IA</b>Resposta em minutos, com o preço da sua tabela.</div></div>
+  </div></div>
+</section>
+
+<div class="filtros" id="filtros">
+  <div class="wrap"><div class="wide in">
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por área"></div>
+    <label class="ramo" for="selRamo">Seu ramo
+      <select id="selRamo"><option value="">Todos os ramos</option></select>
+    </label>
+  </div></div>
+</div>
+
+<section class="sec" style="padding-top:8px">
+  <div class="wrap"><div class="wide">
+    <div id="avisoRamo" hidden></div>
+    <div id="catalogo"></div>
+    <div class="legenda-esf"><span><strong>Esforço:</strong></span><span>rápido <span class="esf"><i class="on"></i><i></i><i></i></span></span><span>médio <span class="esf"><i class="on"></i><i class="on"></i><i></i></span></span><span>projeto <span class="esf"><i class="on"></i><i class="on"></i><i class="on"></i></span></span></div>
+  </div></div>
+</section>
+
+<section class="sec" id="ramo">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 2 · Por ramo</span>
+      <h2>Por onde o seu ramo costuma começar</h2>
+      <p class="lead">As três aplicações que mais aparecem quando a gente faz o diagnóstico em cada tipo de empresa. Toque no seu ramo para ver só essas três no catálogo.</p>
+    </div>
+    <div class="segs" id="segs"></div>
+  </div></div>
+</section>
+
+<section class="parte" id="comecar">
+  <div class="wrap"><div class="wide in">
+    <div class="n" aria-hidden="true">3</div>
+    <div><h2>Começar, do jeito certo</h2><p>Escolher a primeira tarefa, fazer a conta, saber se um agente de WhatsApp é bom, cuidar dos dados e colocar tudo de pé em 30 dias.</p></div>
+    <div class="par"><div class="antes"><b>Hoje</b>A ideia boa nunca sai do papel porque ninguém sabe por onde começar.</div><svg class="seta" viewBox="0 0 52 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12 H48 M38 3 L49 12 L38 21"/></svg><div class="depois"><b>Com IA</b>Uma tarefa escolhida, medida e funcionando em 30 dias.</div></div>
+  </div></div>
+</section>
+
+<section class="sec" id="escolher">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 3 · Escolher</span>
+      <h2>O teste dos 5 sinais</h2>
+      <p class="lead">Escreva uma tarefa da sua empresa e marque os sinais que ela tem. O teste coloca a tarefa na matriz de impacto e esforço e diz se é uma boa primeira escolha.</p>
+    </div>
+    <div class="ferr">
+      <div class="ferr-grid">
+        <div>
+          <div class="campo"><label for="tarefa">A tarefa</label><input type="text" id="tarefa" value="Responder pedidos de orçamento no WhatsApp" maxlength="80"></div>
+          <div class="sinais" id="sinais">
+            <label class="sinal"><strong>Repete</strong><small>Acontece toda semana, do mesmo jeito.</small><input type="checkbox" id="s1" checked></label>
+            <label class="sinal"><strong>Tem regra</strong><small>Dá para explicar o passo a passo para alguém novo.</small><input type="checkbox" id="s2" checked></label>
+            <label class="sinal"><strong>Está no digital</strong><small>Os dados já estão em mensagem, e-mail, planilha ou sistema.</small><input type="checkbox" id="s3" checked></label>
+            <label class="sinal"><strong>Pesa</strong><small>Come horas de alguém, ou trava outra pessoa.</small><input type="checkbox" id="s4" checked></label>
+            <label class="sinal"><strong>O cliente sente</strong><small>Quando atrasa, alguém do lado de fora percebe.</small><input type="checkbox" id="s5"></label>
+          </div>
+        </div>
+        <div>
+          <div class="matriz" id="matriz">
+            <div class="eixo-y">Impacto</div>
+            <div class="q q2" data-q="planeje"><h5>Planeje</h5>Muito impacto, mais esforço. Ótimo segundo projeto.</div>
+            <div class="q q1" data-q="comece"><h5>Comece aqui</h5>Muito impacto, pouco esforço. A primeira automação mora aqui.</div>
+            <div class="q q4" data-q="evite"><h5>Evite</h5>Pouco impacto, muito esforço.</div>
+            <div class="q q3" data-q="sobra"><h5>Se sobrar tempo</h5>Pouco impacto, pouco esforço.</div>
+            <div class="eixo-x">← mais esforço · menos esforço →</div>
+            <div class="alvo" id="alvo" aria-hidden="true"></div>
+          </div>
+          <div class="veredito" id="veredito" aria-live="polite"><strong>…</strong><span></span></div>
+          <p style="font-size:13px;color:var(--muted);margin-top:10px">Posição aproximada: impacto vem de “repete”, “pesa” e “o cliente sente”; facilidade vem de “tem regra” e “está no digital”.</p>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec" id="conta">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 3 · Fazer a conta</span>
+      <h2>Quanto tempo e dinheiro uma automação devolve</h2>
+      <p class="lead">Ajuste os três números para a tarefa que você escolheu. A calculadora já vem com um exemplo para você ver como funciona.</p>
+    </div>
+    <div class="ferr">
+      <span class="exemplo-tag">Exemplo: a Ana responde orçamentos 1h30 por dia</span>
+      <div class="ferr-grid">
+        <div>
+          <div class="slider"><div class="l"><label for="h">Horas por semana na tarefa</label><output id="oh" for="h">7,5 h</output></div><input type="range" id="h" min="0.5" max="40" step="0.5" value="7.5"></div>
+          <div class="slider"><div class="l"><label for="c">Custo da hora de quem faz</label><output id="oc" for="c">R$ 35</output></div><input type="range" id="c" min="10" max="200" step="1" value="35"><small>Salário com encargos dividido pelas horas trabalhadas no mês.</small></div>
+          <div class="slider"><div class="l"><label for="p">Quanto dá para automatizar</label><output id="op" for="p">70%</output></div><input type="range" id="p" min="30" max="90" step="5" value="70"><small>Em geral, entre 50% e 80% da tarefa.</small></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <div class="r1">Volta para a sua equipe, por mês</div>
+          <div class="big" id="rh">22 horas</div>
+          <div class="linha"><span>Em dinheiro, por mês</span><b id="rm">R$ 790</b></div>
+          <div class="linha"><span>Em um ano</span><b id="ra">R$ 9.482</b></div>
+          <div class="linha"><span>Dias úteis de 8 horas por ano</span><b id="rd">34 dias</b></div>
+          <p>Conta: horas por semana × 4,3 semanas × % automatizável × custo da hora.</p>
+        </div>
+      </div>
+      <div class="extra">
+        <div><strong>A venda que não se perde</strong>porque a resposta chegou em minutos, e não amanhã.</div>
+        <div><strong>O erro que não acontece</strong>porque ninguém redigitou o pedido.</div>
+        <div><strong>O que a equipe faz com o tempo</strong>atender melhor, vender mais, ir para casa no horário.</div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec" id="agente">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 3 · Agente no WhatsApp</span>
+      <h2>Os 12 pontos de um bom agente de IA no WhatsApp</h2>
+      <p class="lead">Use para avaliar o que você já tem, ou o que alguém quer te vender. Você acabou de conversar com um, a Synthia, e pode julgar por ela também.</p>
+    </div>
+    <div class="agente">
+      <div>
+        <div class="fone" aria-label="Exemplo de conversa com um agente de IA">
+          <div class="tela">
+            <div class="cab"><div class="av"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MS4xMDE2IDQxLjcxODgiIHdpZHRoPSI1MS4xMCIgaGVpZ2h0PSI0MS43MiIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJTeW5jb0h1YiI+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zODIuNDQxNCAtMTM5LjMyMDMpIj4KPGcgZmlsbD0iI0ZGRkZGRiIgZmlsbC1ydWxlPSJub256ZXJvIj4KPHBhdGggZD0iTSA0MjEuMjY5NTMxIDEzOS4zMjAzMTIgTCA0MjEuMjY5NTMxIDE1NC4wMTk1MzEgTCAzOTQuNzE0ODQ0IDE1NC4wMTk1MzEgTCAzOTQuNzE0ODQ0IDE1MS42MDE1NjIgTCA0MTguODE2NDA2IDE1MS42MDE1NjIgTCA0MTguODE2NDA2IDEzOS4zMjgxMjUgTCAzODkuNjA1NDY5IDEzOS4zMjgxMjUgQyAzODUuNjQ4NDM4IDEzOS4zMjgxMjUgMzgyLjQ0MTQwNiAxNDIuNTM1MTU2IDM4Mi40NDE0MDYgMTQ2LjQ5MjE4OCBMIDM4Mi40NDE0MDYgMTU1LjY5OTIxOSBMIDM4Mi40NjA5MzggMTU1LjY5OTIxOSBMIDM4Mi40NjA5MzggMTU5LjEyODkwNiBDIDM4Mi40NjA5MzggMTYzLjA4NTkzOCAzODUuNjY3OTY5IDE2Ni4yOTI5NjkgMzg5LjYyNSAxNjYuMjkyOTY5IEwgNDIxLjI2OTUzMSAxNjYuMjkyOTY5IEwgNDIxLjI2OTUzMSAxODEuMDM5MDYyIEwgNDI2LjUgMTgxLjAzOTA2MiBDIDQzMC4zOTA2MjUgMTgxLjAzOTA2MiA0MzMuNTQyOTY5IDE3Ny44ODY3MTkgNDMzLjU0Mjk2OSAxNzMuOTk2MDk0IEwgNDMzLjU0Mjk2OSAxMzkuMzIwMzEyIFogTSA0MjEuMjY5NTMxIDEzOS4zMjAzMTIiLz4KPHBhdGggZD0iTSAzODIuNTE1NjI1IDE2OC43NDIxODggTCA0MTAuNjI4OTA2IDE2OC43NDIxODggTCA0MTAuNjI4OTA2IDE4MS4wMTU2MjUgTCAzODkuNTYyNSAxODEuMDE1NjI1IEMgMzg1LjY3MTg3NSAxODEuMDE1NjI1IDM4Mi41MTU2MjUgMTc3Ljg2MzI4MSAzODIuNTE1NjI1IDE3My45NzI2NTYgWiBNIDM4Mi41MTU2MjUgMTY4Ljc0MjE4OCIvPgo8L2c+CjxnIGZpbGw9IiNGRkZGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjAuMzUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgo8cGF0aCBkPSJNIDQwNi42ODc1IDE4MS4wMTk1MzEgTCA0MDYuNjg3NSAxNjYuMjg1MTU2IEwgNDE4Ljk2MDkzOCAxNjYuMjg1MTU2IEwgNDE4Ljk2MDkzOCAxNzQuMjAzMTI1IEMgNDE4Ljk2MDkzOCAxNzcuOTY0ODQ0IDQxNS45MTAxNTYgMTgxLjAxOTUzMSA0MTIuMTQ4NDM4IDE4MS4wMTk1MzEgWiBNIDQwNi42ODc1IDE4MS4wMTk1MzEiLz4KPC9nPgo8L2c+Cjwvc3ZnPgo=" alt=""></div><div><strong>Synthia · SyncoHub</strong><small>agente de IA</small></div></div>
+            <div class="msgs">
+              <div class="msg eu">Oi! Vocês têm horário quinta à tarde?<span class="hora">22:14</span></div>
+              <div class="msg">Oi, Mariana! Eu sou a Synthia, agente de IA da SyncoHub. Quinta, 30/10, tenho 14h, 15h e 16h livres.<span class="hora">22:14</span></div>
+              <div class="msg lista"><div class="c">Qual fica melhor?</div><div class="bt">Ver horários</div></div>
+              <div class="msg eu">14h<span class="hora">22:15</span></div>
+              <div class="msg">Agendado! Quinta, 30/10, às 14h, pelo Google Meet. O convite foi para o seu e-mail e eu te lembro na véspera.<span class="hora">22:15</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="fone-cap">Diz que é IA, responde às 22h, consulta a agenda real e marca.</p>
+      </div>
+      <div>
+        <div class="placar"><b id="ckN">0</b><div class="t"><i id="ckBar"></i></div><span style="font-size:14px;color:var(--muted)">de 12</span></div>
+        <div class="check" id="check"></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec" id="cuidados">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 3 · Cuidados</span>
+      <h2>Dados, LGPD e custos do WhatsApp</h2>
+      <p class="lead">O básico que todo dono precisa saber antes de colocar IA em contato com cliente. Não substitui orientação jurídica, mas evita os erros mais comuns.</p>
+    </div>
+    <div class="dois">
+      <div class="bloco"><h3>Dados de clientes e a LGPD</h3><ul id="lgpd"></ul></div>
+      <div class="bloco">
+        <h3>Como o WhatsApp oficial cobra</h3>
+        <div class="preco" aria-label="Preço por mensagem no Brasil, em dólar">
+          <div class="barra forte"><span>Marketing</span><div class="t"><i style="width:100%"></i></div><span class="v">US$ 0,0625</span></div>
+          <div class="barra"><span>Utilidade</span><div class="t"><i style="width:10.9%"></i></div><span class="v">US$ 0,0068</span></div>
+        </div>
+        <ul>
+          <li><strong>A cobrança é por mensagem entregue,</strong> desde julho de 2025. O preço depende da categoria e do país de quem recebe.</li>
+          <li><strong>Desde 1º de outubro de 2026,</strong> as respostas dentro da janela de 24 horas depois que o cliente escreve também são cobradas, por mensagem. Conversas que começam por anúncio de clique para o WhatsApp têm 72 horas grátis.</li>
+          <li><strong>Na prática, atendimento custa centavos.</strong> Vinte respostas ao preço de utilidade ficam perto de US$ 0,14. O que pesa no bolso é a campanha de marketing.</li>
+          <li><strong>Fora da janela, só com modelo aprovado</strong> pela Meta, e com autorização do cliente.</li>
+        </ul>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec" id="plano">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 3 · Plano</span>
+      <h2>O plano de 30 dias</h2>
+      <p class="lead">Uma tarefa, quatro semanas. No fim, você tem uma automação funcionando, o número de antes e depois e a próxima tarefa escolhida.</p>
+    </div>
+    <div class="trilha">
+      <div class="etapa"><div class="bola">1</div><small>Semana 1</small><h3>Mapear</h3><p>Durante cinco dias, cada pessoa anota as tarefas repetitivas: o que é, quantas vezes, quanto tempo. Desenhe como a tarefa principal acontece hoje, do jeito que é.</p><div class="ent">No fim: a lista com horas e o desenho do processo atual.</div></div>
+      <div class="etapa"><div class="bola">2</div><small>Semana 2</small><h3>Escolher</h3><p>Passe as tarefas pelo teste dos 5 sinais e pela calculadora. Escolha uma. Defina o número que vai provar o resultado e anote o valor de hoje.</p><div class="ent">No fim: uma tarefa, um número e o valor de partida.</div></div>
+      <div class="etapa"><div class="bola">3</div><small>Semana 3</small><h3>Montar e testar</h3><p>Monte a menor versão que resolve o caminho mais comum. Defina quando volta para uma pessoa. Teste com a equipe e poucos clientes de confiança.</p><div class="ent">No fim: a automação rodando para um grupo pequeno.</div></div>
+      <div class="etapa"><div class="bola">4</div><small>Semana 4</small><h3>Medir e decidir</h3><p>Abra para todos. Compare o número com o de partida e pergunte à equipe o que mudou. Decida: ajustar, ampliar ou partir para a próxima.</p><div class="ent">No fim: o antes e depois, e a próxima tarefa.</div></div>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec" id="erros">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 3 · Cuidados</span>
+      <h2>Sete erros que fazem a automação morrer</h2>
+      <p class="lead">Quase todo projeto que não deu certo caiu em um destes. Todos são evitáveis.</p>
+    </div>
+    <div class="erros" id="listaErros"></div>
+  </div></div>
+</section>
+
+<section class="sec" id="nivel">
+  <div class="wrap"><div class="wide">
+    <div class="col" style="margin-left:0">
+      <span class="olho">Parte 3 · Autodiagnóstico</span>
+      <h2>Em que nível está a sua empresa?</h2>
+      <p class="lead">Responda com a sua equipe. Cada “sim” vale um ponto. São os mesmos quatro níveis do mapa que a Synthia enviou para você.</p>
+    </div>
+    <div class="ferr">
+      <div class="ferr-grid" style="grid-template-columns:1.4fr 1fr">
+        <div class="quiz" id="quiz"></div>
+        <div class="nivel-box" aria-live="polite">
+          <div class="nivel-pts" id="nvPts">0 de 12 pontos</div>
+          <div class="nivel-nome" id="nvNome">Manual</div>
+          <div class="regua" id="regua"><div></div><div></div><div></div><div></div></div>
+          <p class="nivel-txt" id="nvTxt"></p>
+          <div class="nivel-apps" id="nvApps"></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+</main>
+
+<section class="final" id="conversar">
+  <div class="wrap"><div class="wide in">
+    <h2>Se quiser fazer isso com alguém do lado</h2>
+    <p class="lead">A SyncoHub cria agentes de IA no WhatsApp, automações e dashboards para pequenas e médias empresas. A ferramenta é moldada ao seu processo, e não o contrário: a sua equipe continua trabalhando do jeito que sabe, com menos trabalho repetitivo.</p>
+    <div class="passos">
+      <div class="passo"><b>1</b><h4>Diagnóstico</h4><p>Mapeamos para onde vai o seu tempo.</p></div>
+      <div class="passo"><b>2</b><h4>Desenho sob medida</h4><p>A solução nasce do seu processo.</p></div>
+      <div class="passo"><b>3</b><h4>Implantação</h4><p>Integramos ao que você já usa.</p></div>
+      <div class="passo"><b>4</b><h4>Suporte contínuo</h4><p>A gente segue junto, ajustando.</p></div>
+    </div>
+    <div class="cta">
+      <div>
+        <h3>Diagnóstico aprofundado, sem custo</h3>
+        <p>Uma conversa de 45 minutos, online, com o Raí Neves. Saímos com o mapa do seu processo e por onde começar.</p>
+        <a class="botao" href="https://wa.me/5511941768980?text=Quero%20agendar%20o%20diagn%C3%B3stico%20aprofundado" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2s.2-1.1.1-1.2-.2-.2-.4-.3z"/></svg>Agendar pelo WhatsApp</a>
+        <span class="fone-num">(11) 97661-4047 · syncohub.com.br · @syncohub.ia</span>
+      </div>
+      <div class="qr"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPHN2ZyB3aWR0aD0iNDFtbSIgaGVpZ2h0PSI0MW1tIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA0MSA0MSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCwwSDFWMUgwek0xLDBIMlYxSDF6TTIsMEgzVjFIMnpNMywwSDRWMUgzek00LDBINVYxSDR6TTUsMEg2VjFINXpNNiwwSDdWMUg2ek05LDBIMTBWMUg5ek0xMCwwSDExVjFIMTB6TTE0LDBIMTVWMUgxNHpNMTUsMEgxNlYxSDE1ek0xNywwSDE4VjFIMTd6TTE4LDBIMTlWMUgxOHpNMTksMEgyMFYxSDE5ek0yMCwwSDIxVjFIMjB6TTIxLDBIMjJWMUgyMXpNMjIsMEgyM1YxSDIyek0yMywwSDI0VjFIMjN6TTI0LDBIMjVWMUgyNHpNMjUsMEgyNlYxSDI1ek0yNiwwSDI3VjFIMjZ6TTI4LDBIMjlWMUgyOHpNMzEsMEgzMlYxSDMxek0zNCwwSDM1VjFIMzR6TTM1LDBIMzZWMUgzNXpNMzYsMEgzN1YxSDM2ek0zNywwSDM4VjFIMzd6TTM4LDBIMzlWMUgzOHpNMzksMEg0MFYxSDM5ek00MCwwSDQxVjFINDB6TTAsMUgxVjJIMHpNNiwxSDdWMkg2ek0xMCwxSDExVjJIMTB6TTEyLDFIMTNWMkgxMnpNMTMsMUgxNFYySDEzek0xNywxSDE4VjJIMTd6TTIxLDFIMjJWMkgyMXpNMjUsMUgyNlYySDI1ek0yNiwxSDI3VjJIMjZ6TTI3LDFIMjhWMkgyN3pNMjgsMUgyOVYySDI4ek0zMCwxSDMxVjJIMzB6TTMyLDFIMzNWMkgzMnpNMzQsMUgzNVYySDM0ek00MCwxSDQxVjJINDB6TTAsMkgxVjNIMHpNMiwySDNWM0gyek0zLDJINFYzSDN6TTQsMkg1VjNINHpNNiwySDdWM0g2ek04LDJIOVYzSDh6TTksMkgxMFYzSDl6TTExLDJIMTJWM0gxMXpNMTYsMkgxN1YzSDE2ek0xNywySDE4VjNIMTd6TTE4LDJIMTlWM0gxOHpNMTksMkgyMFYzSDE5ek0yMSwySDIyVjNIMjF6TTIyLDJIMjNWM0gyMnpNMjUsMkgyNlYzSDI1ek0zMSwySDMyVjNIMzF6TTM0LDJIMzVWM0gzNHpNMzYsMkgzN1YzSDM2ek0zNywySDM4VjNIMzd6TTM4LDJIMzlWM0gzOHpNNDAsMkg0MVYzSDQwek0wLDNIMVY0SDB6TTIsM0gzVjRIMnpNMywzSDRWNEgzek00LDNINVY0SDR6TTYsM0g3VjRINnpNOCwzSDlWNEg4ek0xMCwzSDExVjRIMTB6TTExLDNIMTJWNEgxMXpNMTIsM0gxM1Y0SDEyek0xMywzSDE0VjRIMTN6TTE0LDNIMTVWNEgxNHpNMTUsM0gxNlY0SDE1ek0xNiwzSDE3VjRIMTZ6TTIwLDNIMjFWNEgyMHpNMjEsM0gyMlY0SDIxek0yNCwzSDI1VjRIMjR6TTI2LDNIMjdWNEgyNnpNMjcsM0gyOFY0SDI3ek0yOCwzSDI5VjRIMjh6TTMwLDNIMzFWNEgzMHpNMzQsM0gzNVY0SDM0ek0zNiwzSDM3VjRIMzZ6TTM3LDNIMzhWNEgzN3pNMzgsM0gzOVY0SDM4ek00MCwzSDQxVjRINDB6TTAsNEgxVjVIMHpNMiw0SDNWNUgyek0zLDRINFY1SDN6TTQsNEg1VjVINHpNNiw0SDdWNUg2ek04LDRIOVY1SDh6TTEwLDRIMTFWNUgxMHpNMTMsNEgxNFY1SDEzek0xNCw0SDE1VjVIMTR6TTE3LDRIMThWNUgxN3pNMTgsNEgxOVY1SDE4ek0xOSw0SDIwVjVIMTl6TTIyLDRIMjNWNUgyMnpNMjMsNEgyNFY1SDIzek0yNSw0SDI2VjVIMjV6TTMxLDRIMzJWNUgzMXpNMzIsNEgzM1Y1SDMyek0zNCw0SDM1VjVIMzR6TTM2LDRIMzdWNUgzNnpNMzcsNEgzOFY1SDM3ek0zOCw0SDM5VjVIMzh6TTQwLDRINDFWNUg0MHpNMCw1SDFWNkgwek02LDVIN1Y2SDZ6TTgsNUg5VjZIOHpNMTAsNUgxMVY2SDEwek0xMSw1SDEyVjZIMTF6TTEzLDVIMTRWNkgxM3pNMTQsNUgxNVY2SDE0ek0xNSw1SDE2VjZIMTV6TTE4LDVIMTlWNkgxOHpNMjEsNUgyMlY2SDIxek0yNCw1SDI1VjZIMjR6TTI1LDVIMjZWNkgyNXpNMjYsNUgyN1Y2SDI2ek0yNyw1SDI4VjZIMjd6TTI5LDVIMzBWNkgyOXpNMzIsNUgzM1Y2SDMyek0zNCw1SDM1VjZIMzR6TTQwLDVINDFWNkg0MHpNMCw2SDFWN0gwek0xLDZIMlY3SDF6TTIsNkgzVjdIMnpNMyw2SDRWN0gzek00LDZINVY3SDR6TTUsNkg2VjdINXpNNiw2SDdWN0g2ek04LDZIOVY3SDh6TTEwLDZIMTFWN0gxMHpNMTIsNkgxM1Y3SDEyek0xNCw2SDE1VjdIMTR6TTE2LDZIMTdWN0gxNnpNMTgsNkgxOVY3SDE4ek0yMCw2SDIxVjdIMjB6TTIyLDZIMjNWN0gyMnpNMjQsNkgyNVY3SDI0ek0yNiw2SDI3VjdIMjZ6TTI4LDZIMjlWN0gyOHpNMzAsNkgzMVY3SDMwek0zMiw2SDMzVjdIMzJ6TTM0LDZIMzVWN0gzNHpNMzUsNkgzNlY3SDM1ek0zNiw2SDM3VjdIMzZ6TTM3LDZIMzhWN0gzN3pNMzgsNkgzOVY3SDM4ek0zOSw2SDQwVjdIMzl6TTQwLDZINDFWN0g0MHpNOCw3SDlWOEg4ek0xNCw3SDE1VjhIMTR6TTE4LDdIMTlWOEgxOHpNMTksN0gyMFY4SDE5ek0yMSw3SDIyVjhIMjF6TTIyLDdIMjNWOEgyMnpNMjMsN0gyNFY4SDIzek0yNiw3SDI3VjhIMjZ6TTMyLDdIMzNWOEgzMnpNMCw4SDFWOUgwek0yLDhIM1Y5SDJ6TTMsOEg0VjlIM3pNNCw4SDVWOUg0ek01LDhINlY5SDV6TTYsOEg3VjlINnpNOSw4SDEwVjlIOXpNMTEsOEgxMlY5SDExek0xMyw4SDE0VjlIMTN6TTE3LDhIMThWOUgxN3pNMTgsOEgxOVY5SDE4ek0yMCw4SDIxVjlIMjB6TTIzLDhIMjRWOUgyM3pNMjUsOEgyNlY5SDI1ek0yNyw4SDI4VjlIMjd6TTI5LDhIMzBWOUgyOXpNMzIsOEgzM1Y5SDMyek0zNCw4SDM1VjlIMzR6TTM1LDhIMzZWOUgzNXpNMzYsOEgzN1Y5SDM2ek0zNyw4SDM4VjlIMzd6TTM4LDhIMzlWOUgzOHpNMiw5SDNWMTBIMnpNMyw5SDRWMTBIM3pNNSw5SDZWMTBINXpNNyw5SDhWMTBIN3pNOCw5SDlWMTBIOHpNOSw5SDEwVjEwSDl6TTEwLDlIMTFWMTBIMTB6TTExLDlIMTJWMTBIMTF6TTE2LDlIMTdWMTBIMTZ6TTE5LDlIMjBWMTBIMTl6TTIxLDlIMjJWMTBIMjF6TTIyLDlIMjNWMTBIMjJ6TTIzLDlIMjRWMTBIMjN6TTI0LDlIMjVWMTBIMjR6TTI2LDlIMjdWMTBIMjZ6TTMwLDlIMzFWMTBIMzB6TTMxLDlIMzJWMTBIMzF6TTMyLDlIMzNWMTBIMzJ6TTMzLDlIMzRWMTBIMzN6TTM0LDlIMzVWMTBIMzR6TTM1LDlIMzZWMTBIMzV6TTM2LDlIMzdWMTBIMzZ6TTM4LDlIMzlWMTBIMzh6TTM5LDlINDBWMTBIMzl6TTQwLDlINDFWMTBINDB6TTMsMTBINFYxMUgzek00LDEwSDVWMTFINHpNNiwxMEg3VjExSDZ6TTgsMTBIOVYxMUg4ek0xMSwxMEgxMlYxMUgxMXpNMTgsMTBIMTlWMTFIMTh6TTIxLDEwSDIyVjExSDIxek0yMiwxMEgyM1YxMUgyMnpNMjcsMTBIMjhWMTFIMjd6TTI4LDEwSDI5VjExSDI4ek0zMiwxMEgzM1YxMUgzMnpNMzQsMTBIMzVWMTFIMzR6TTM1LDEwSDM2VjExSDM1ek0zNiwxMEgzN1YxMUgzNnpNMiwxMUgzVjEySDJ6TTQsMTFINVYxMkg0ek01LDExSDZWMTJINXpNNywxMUg4VjEySDd6TTEyLDExSDEzVjEySDEyek0xMywxMUgxNFYxMkgxM3pNMTQsMTFIMTVWMTJIMTR6TTE1LDExSDE2VjEySDE1ek0xOCwxMUgxOVYxMkgxOHpNMTksMTFIMjBWMTJIMTl6TTIwLDExSDIxVjEySDIwek0yMSwxMUgyMlYxMkgyMXpNMjQsMTFIMjVWMTJIMjR6TTI3LDExSDI4VjEySDI3ek0yOCwxMUgyOVYxMkgyOHpNMzEsMTFIMzJWMTJIMzF6TTMyLDExSDMzVjEySDMyek0zNCwxMUgzNVYxMkgzNHpNMzYsMTFIMzdWMTJIMzZ6TTM3LDExSDM4VjEySDM3ek0zOSwxMUg0MFYxMkgzOXpNNDAsMTFINDFWMTJINDB6TTIsMTJIM1YxM0gyek0zLDEySDRWMTNIM3pNNSwxMkg2VjEzSDV6TTYsMTJIN1YxM0g2ek03LDEySDhWMTNIN3pNOCwxMkg5VjEzSDh6TTksMTJIMTBWMTNIOXpNMTAsMTJIMTFWMTNIMTB6TTEyLDEySDEzVjEzSDEyek0xNCwxMkgxNVYxM0gxNHpNMTUsMTJIMTZWMTNIMTV6TTE2LDEySDE3VjEzSDE2ek0xNywxMkgxOFYxM0gxN3pNMjAsMTJIMjFWMTNIMjB6TTIyLDEySDIzVjEzSDIyek0yNCwxMkgyNVYxM0gyNHpNMjUsMTJIMjZWMTNIMjV6TTI2LDEySDI3VjEzSDI2ek0yNywxMkgyOFYxM0gyN3pNMjgsMTJIMjlWMTNIMjh6TTI5LDEySDMwVjEzSDI5ek0zMSwxMkgzMlYxM0gzMXpNMzMsMTJIMzRWMTNIMzN6TTM1LDEySDM2VjEzSDM1ek0zNywxMkgzOFYxM0gzN3pNMzgsMTJIMzlWMTNIMzh6TTQwLDEySDQxVjEzSDQwek0wLDEzSDFWMTRIMHpNMSwxM0gyVjE0SDF6TTMsMTNINFYxNEgzek03LDEzSDhWMTRIN3pNOSwxM0gxMFYxNEg5ek0xMCwxM0gxMVYxNEgxMHpNMTIsMTNIMTNWMTRIMTJ6TTEzLDEzSDE0VjE0SDEzek0xNSwxM0gxNlYxNEgxNXpNMTYsMTNIMTdWMTRIMTZ6TTE3LDEzSDE4VjE0SDE3ek0xOCwxM0gxOVYxNEgxOHpNMjEsMTNIMjJWMTRIMjF6TTI3LDEzSDI4VjE0SDI3ek0zMiwxM0gzM1YxNEgzMnpNMzMsMTNIMzRWMTRIMzN6TTM1LDEzSDM2VjE0SDM1ek0zNiwxM0gzN1YxNEgzNnpNMzcsMTNIMzhWMTRIMzd6TTM4LDEzSDM5VjE0SDM4ek00MCwxM0g0MVYxNEg0MHpNMCwxNEgxVjE1SDB6TTYsMTRIN1YxNUg2ek03LDE0SDhWMTVIN3pNOCwxNEg5VjE1SDh6TTExLDE0SDEyVjE1SDExek0xMiwxNEgxM1YxNUgxMnpNMTMsMTRIMTRWMTVIMTN6TTE3LDE0SDE4VjE1SDE3ek0yMCwxNEgyMVYxNUgyMHpNMjMsMTRIMjRWMTVIMjN6TTI0LDE0SDI1VjE1SDI0ek0yNiwxNEgyN1YxNUgyNnpNMjcsMTRIMjhWMTVIMjd6TTI4LDE0SDI5VjE1SDI4ek0yOSwxNEgzMFYxNUgyOXpNMzAsMTRIMzFWMTVIMzB6TTMxLDE0SDMyVjE1SDMxek0zMywxNEgzNFYxNUgzM3pNMzYsMTRIMzdWMTVIMzZ6TTM3LDE0SDM4VjE1SDM3ek0zOCwxNEgzOVYxNUgzOHpNMzksMTRINDBWMTVIMzl6TTAsMTVIMVYxNkgwek0yLDE1SDNWMTZIMnpNNCwxNUg1VjE2SDR6TTgsMTVIOVYxNkg4ek05LDE1SDEwVjE2SDl6TTEwLDE1SDExVjE2SDEwek0xNSwxNUgxNlYxNkgxNXpNMTYsMTVIMTdWMTZIMTZ6TTIxLDE1SDIyVjE2SDIxek0yMywxNUgyNFYxNkgyM3pNMjcsMTVIMjhWMTZIMjd6TTMxLDE1SDMyVjE2SDMxek0zMiwxNUgzM1YxNkgzMnpNMzQsMTVIMzVWMTZIMzR6TTM3LDE1SDM4VjE2SDM3ek0zOSwxNUg0MFYxNkgzOXpNNDAsMTVINDFWMTZINDB6TTAsMTZIMVYxN0gwek0zLDE2SDRWMTdIM3pNNSwxNkg2VjE3SDV6TTYsMTZIN1YxN0g2ek03LDE2SDhWMTdIN3pNOCwxNkg5VjE3SDh6TTEyLDE2SDEzVjE3SDEyek0xMywxNkgxNFYxN0gxM3pNMTQsMTZIMTVWMTdIMTR6TTE1LDE2SDE2VjE3SDE1ek0xNiwxNkgxN1YxN0gxNnpNMTcsMTZIMThWMTdIMTd6TTIwLDE2SDIxVjE3SDIwek0yMywxNkgyNFYxN0gyM3pNMjQsMTZIMjVWMTdIMjR6TTI1LDE2SDI2VjE3SDI1ek0yNiwxNkgyN1YxN0gyNnpNMjcsMTZIMjhWMTdIMjd6TTI4LDE2SDI5VjE3SDI4ek0yOSwxNkgzMFYxN0gyOXpNMzAsMTZIMzFWMTdIMzB6TTMxLDE2SDMyVjE3SDMxek0zMywxNkgzNFYxN0gzM3pNMzUsMTZIMzZWMTdIMzV6TTM3LDE2SDM4VjE3SDM3ek0zOCwxNkgzOVYxN0gzOHpNMzksMTZINDBWMTdIMzl6TTIsMTdIM1YxOEgyek00LDE3SDVWMThINHpNNSwxN0g2VjE4SDV6TTgsMTdIOVYxOEg4ek0xMCwxN0gxMVYxOEgxMHpNMTIsMTdIMTNWMThIMTJ6TTE2LDE3SDE3VjE4SDE2ek0xOCwxN0gxOVYxOEgxOHpNMTksMTdIMjBWMThIMTl6TTIwLDE3SDIxVjE4SDIwek0yMiwxN0gyM1YxOEgyMnpNMjMsMTdIMjRWMThIMjN6TTI0LDE3SDI1VjE4SDI0ek0yOCwxN0gyOVYxOEgyOHpNMjksMTdIMzBWMThIMjl6TTMwLDE3SDMxVjE4SDMwek0zMiwxN0gzM1YxOEgzMnpNMzQsMTdIMzVWMThIMzR6TTM1LDE3SDM2VjE4SDM1ek0zNiwxN0gzN1YxOEgzNnpNNDAsMTdINDFWMThINDB6TTAsMThIMVYxOUgwek0yLDE4SDNWMTlIMnpNNSwxOEg2VjE5SDV6TTYsMThIN1YxOUg2ek05LDE4SDEwVjE5SDl6TTEwLDE4SDExVjE5SDEwek0xNCwxOEgxNVYxOUgxNHpNMTgsMThIMTlWMTlIMTh6TTIyLDE4SDIzVjE5SDIyek0yNywxOEgyOFYxOUgyN3pNMjgsMThIMjlWMTlIMjh6TTI5LDE4SDMwVjE5SDI5ek0zMiwxOEgzM1YxOUgzMnpNMzYsMThIMzdWMTlIMzZ6TTM5LDE4SDQwVjE5SDM5ek0xLDE5SDJWMjBIMXpNNCwxOUg1VjIwSDR6TTcsMTlIOFYyMEg3ek04LDE5SDlWMjBIOHpNMTAsMTlIMTFWMjBIMTB6TTExLDE5SDEyVjIwSDExek0xNCwxOUgxNVYyMEgxNHpNMTYsMTlIMTdWMjBIMTZ6TTIzLDE5SDI0VjIwSDIzek0yNiwxOUgyN1YyMEgyNnpNMjksMTlIMzBWMjBIMjl6TTMwLDE5SDMxVjIwSDMwek0zMiwxOUgzM1YyMEgzMnpNMzMsMTlIMzRWMjBIMzN6TTM2LDE5SDM3VjIwSDM2ek0zNywxOUgzOFYyMEgzN3pNMzksMTlINDBWMjBIMzl6TTEsMjBIMlYyMUgxek01LDIwSDZWMjFINXpNNiwyMEg3VjIxSDZ6TTksMjBIMTBWMjFIOXpNMTEsMjBIMTJWMjFIMTF6TTE0LDIwSDE1VjIxSDE0ek0xNSwyMEgxNlYyMUgxNXpNMTgsMjBIMTlWMjFIMTh6TTIwLDIwSDIxVjIxSDIwek0yMSwyMEgyMlYyMUgyMXpNMjIsMjBIMjNWMjFIMjJ6TTIzLDIwSDI0VjIxSDIzek0yNCwyMEgyNVYyMUgyNHpNMjcsMjBIMjhWMjFIMjd6TTI4LDIwSDI5VjIxSDI4ek0zMiwyMEgzM1YyMUgzMnpNMzMsMjBIMzRWMjFIMzN6TTM4LDIwSDM5VjIxSDM4ek0zOSwyMEg0MFYyMUgzOXpNMCwyMUgxVjIySDB6TTMsMjFINFYyMkgzek00LDIxSDVWMjJINHpNNSwyMUg2VjIySDV6TTksMjFIMTBWMjJIOXpNMTMsMjFIMTRWMjJIMTN6TTE1LDIxSDE2VjIySDE1ek0xNiwyMUgxN1YyMkgxNnpNMTcsMjFIMThWMjJIMTd6TTE5LDIxSDIwVjIySDE5ek0yMSwyMUgyMlYyMkgyMXpNMjMsMjFIMjRWMjJIMjN6TTI2LDIxSDI3VjIySDI2ek0zMCwyMUgzMVYyMkgzMHpNMzEsMjFIMzJWMjJIMzF6TTMyLDIxSDMzVjIySDMyek0zNCwyMUgzNVYyMkgzNHpNMzUsMjFIMzZWMjJIMzV6TTM2LDIxSDM3VjIySDM2ek0zNywyMUgzOFYyMkgzN3pNMzksMjFINDBWMjJIMzl6TTQwLDIxSDQxVjIySDQwek0wLDIySDFWMjNIMHpNMywyMkg0VjIzSDN6TTUsMjJINlYyM0g1ek02LDIySDdWMjNINnpNOCwyMkg5VjIzSDh6TTksMjJIMTBWMjNIOXpNMTAsMjJIMTFWMjNIMTB6TTE4LDIySDE5VjIzSDE4ek0yMCwyMkgyMVYyM0gyMHpNMjEsMjJIMjJWMjNIMjF6TTIyLDIySDIzVjIzSDIyek0yNiwyMkgyN1YyM0gyNnpNMjcsMjJIMjhWMjNIMjd6TTI4LDIySDI5VjIzSDI4ek0zMCwyMkgzMVYyM0gzMHpNMzIsMjJIMzNWMjNIMzJ6TTM2LDIySDM3VjIzSDM2ek0wLDIzSDFWMjRIMHpNMSwyM0gyVjI0SDF6TTIsMjNIM1YyNEgyek0zLDIzSDRWMjRIM3pNNCwyM0g1VjI0SDR6TTcsMjNIOFYyNEg3ek0xMCwyM0gxMVYyNEgxMHpNMTEsMjNIMTJWMjRIMTF6TTE0LDIzSDE1VjI0SDE0ek0yMCwyM0gyMVYyNEgyMHpNMjEsMjNIMjJWMjRIMjF6TTI2LDIzSDI3VjI0SDI2ek0yNywyM0gyOFYyNEgyN3pNMjgsMjNIMjlWMjRIMjh6TTM0LDIzSDM1VjI0SDM0ek0zNSwyM0gzNlYyNEgzNXpNMzYsMjNIMzdWMjRIMzZ6TTM3LDIzSDM4VjI0SDM3ek0wLDI0SDFWMjVIMHpNNSwyNEg2VjI1SDV6TTYsMjRIN1YyNUg2ek03LDI0SDhWMjVIN3pNOCwyNEg5VjI1SDh6TTEyLDI0SDEzVjI1SDEyek0xNCwyNEgxNVYyNUgxNHpNMTYsMjRIMTdWMjVIMTZ6TTE3LDI0SDE4VjI1SDE3ek0xOCwyNEgxOVYyNUgxOHpNMjAsMjRIMjFWMjVIMjB6TTI1LDI0SDI2VjI1SDI1ek0yNywyNEgyOFYyNUgyN3pNMjksMjRIMzBWMjVIMjl6TTMwLDI0SDMxVjI1SDMwek0zOCwyNEgzOVYyNUgzOHpNMCwyNUgxVjI2SDB6TTEsMjVIMlYyNkgxek0yLDI1SDNWMjZIMnpNNCwyNUg1VjI2SDR6TTgsMjVIOVYyNkg4ek0xMiwyNUgxM1YyNkgxMnpNMTcsMjVIMThWMjZIMTd6TTE5LDI1SDIwVjI2SDE5ek0yMSwyNUgyMlYyNkgyMXpNMjIsMjVIMjNWMjZIMjJ6TTIzLDI1SDI0VjI2SDIzek0yNCwyNUgyNVYyNkgyNHpNMjYsMjVIMjdWMjZIMjZ6TTI4LDI1SDI5VjI2SDI4ek0zMCwyNUgzMVYyNkgzMHpNMzEsMjVIMzJWMjZIMzF6TTMzLDI1SDM0VjI2SDMzek0zNCwyNUgzNVYyNkgzNHpNMzUsMjVIMzZWMjZIMzV6TTM2LDI1SDM3VjI2SDM2ek0zNywyNUgzOFYyNkgzN3pNMzksMjVINDBWMjZIMzl6TTQwLDI1SDQxVjI2SDQwek0yLDI2SDNWMjdIMnpNNCwyNkg1VjI3SDR6TTUsMjZINlYyN0g1ek02LDI2SDdWMjdINnpNNywyNkg4VjI3SDd6TTgsMjZIOVYyN0g4ek0xMCwyNkgxMVYyN0gxMHpNMTIsMjZIMTNWMjdIMTJ6TTEzLDI2SDE0VjI3SDEzek0xNywyNkgxOFYyN0gxN3pNMjAsMjZIMjFWMjdIMjB6TTIxLDI2SDIyVjI3SDIxek0yNywyNkgyOFYyN0gyN3pNMjgsMjZIMjlWMjdIMjh6TTI5LDI2SDMwVjI3SDI5ek0zMCwyNkgzMVYyN0gzMHpNMzIsMjZIMzNWMjdIMzJ6TTM0LDI2SDM1VjI3SDM0ek0zNSwyNkgzNlYyN0gzNXpNMzYsMjZIMzdWMjdIMzZ6TTIsMjdIM1YyOEgyek03LDI3SDhWMjhIN3pNOSwyN0gxMFYyOEg5ek0xMCwyN0gxMVYyOEgxMHpNMTMsMjdIMTRWMjhIMTN6TTE1LDI3SDE2VjI4SDE1ek0xOSwyN0gyMFYyOEgxOXpNMjAsMjdIMjFWMjhIMjB6TTIxLDI3SDIyVjI4SDIxek0yMiwyN0gyM1YyOEgyMnpNMjQsMjdIMjVWMjhIMjR6TTI2LDI3SDI3VjI4SDI2ek0yNywyN0gyOFYyOEgyN3pNMjgsMjdIMjlWMjhIMjh6TTMwLDI3SDMxVjI4SDMwek0zMSwyN0gzMlYyOEgzMXpNMzIsMjdIMzNWMjhIMzJ6TTMzLDI3SDM0VjI4SDMzek0zNCwyN0gzNVYyOEgzNHpNMzcsMjdIMzhWMjhIMzd6TTAsMjhIMVYyOUgwek0yLDI4SDNWMjlIMnpNNiwyOEg3VjI5SDZ6TTEyLDI4SDEzVjI5SDEyek0xMywyOEgxNFYyOUgxM3pNMTUsMjhIMTZWMjlIMTV6TTE3LDI4SDE4VjI5SDE3ek0xOCwyOEgxOVYyOUgxOHpNMjIsMjhIMjNWMjlIMjJ6TTI1LDI4SDI2VjI5SDI1ek0yNiwyOEgyN1YyOUgyNnpNMjksMjhIMzBWMjlIMjl6TTMxLDI4SDMyVjI5SDMxek0zMiwyOEgzM1YyOUgzMnpNMzQsMjhIMzVWMjlIMzR6TTM1LDI4SDM2VjI5SDM1ek0zNywyOEgzOFYyOUgzN3pNMzgsMjhIMzlWMjlIMzh6TTAsMjlIMVYzMEgwek00LDI5SDVWMzBINHpNNSwyOUg2VjMwSDV6TTgsMjlIOVYzMEg4ek0xMCwyOUgxMVYzMEgxMHpNMTEsMjlIMTJWMzBIMTF6TTEyLDI5SDEzVjMwSDEyek0xNSwyOUgxNlYzMEgxNXpNMTgsMjlIMTlWMzBIMTh6TTIwLDI5SDIxVjMwSDIwek0yMSwyOUgyMlYzMEgyMXpNMjIsMjlIMjNWMzBIMjJ6TTI0LDI5SDI1VjMwSDI0ek0yNSwyOUgyNlYzMEgyNXpNMjcsMjlIMjhWMzBIMjd6TTI4LDI5SDI5VjMwSDI4ek0zMCwyOUgzMVYzMEgzMHpNMzMsMjlIMzRWMzBIMzN6TTM1LDI5SDM2VjMwSDM1ek0zNiwyOUgzN1YzMEgzNnpNMzcsMjlIMzhWMzBIMzd6TTQwLDI5SDQxVjMwSDQwek0wLDMwSDFWMzFIMHpNMiwzMEgzVjMxSDJ6TTQsMzBINVYzMUg0ek01LDMwSDZWMzFINXpNNiwzMEg3VjMxSDZ6TTcsMzBIOFYzMUg3ek04LDMwSDlWMzFIOHpNOSwzMEgxMFYzMUg5ek0xMCwzMEgxMVYzMUgxMHpNMTYsMzBIMTdWMzFIMTZ6TTE3LDMwSDE4VjMxSDE3ek0xOSwzMEgyMFYzMUgxOXpNMjEsMzBIMjJWMzFIMjF6TTMyLDMwSDMzVjMxSDMyek0zMywzMEgzNFYzMUgzM3pNMzQsMzBIMzVWMzFIMzR6TTM1LDMwSDM2VjMxSDM1ek0zNiwzMEgzN1YzMUgzNnpNMzksMzBINDBWMzFIMzl6TTAsMzFIMVYzMkgwek0zLDMxSDRWMzJIM3pNNCwzMUg1VjMySDR6TTUsMzFINlYzMkg1ek03LDMxSDhWMzJIN3pNOSwzMUgxMFYzMkg5ek0xMCwzMUgxMVYzMkgxMHpNMTMsMzFIMTRWMzJIMTN6TTE0LDMxSDE1VjMySDE0ek0xNSwzMUgxNlYzMkgxNXpNMTgsMzFIMTlWMzJIMTh6TTE5LDMxSDIwVjMySDE5ek0yMCwzMUgyMVYzMkgyMHpNMjEsMzFIMjJWMzJIMjF6TTI0LDMxSDI1VjMySDI0ek0yNiwzMUgyN1YzMkgyNnpNMjgsMzFIMjlWMzJIMjh6TTMzLDMxSDM0VjMySDMzek0zNCwzMUgzNVYzMkgzNHpNMzUsMzFIMzZWMzJIMzV6TTM2LDMxSDM3VjMySDM2ek0zNywzMUgzOFYzMkgzN3pNMCwzMkgxVjMzSDB6TTUsMzJINlYzM0g1ek02LDMySDdWMzNINnpNOCwzMkg5VjMzSDh6TTExLDMySDEyVjMzSDExek0xNCwzMkgxNVYzM0gxNHpNMTUsMzJIMTZWMzNIMTV6TTE2LDMySDE3VjMzSDE2ek0xNywzMkgxOFYzM0gxN3pNMTksMzJIMjBWMzNIMTl6TTIwLDMySDIxVjMzSDIwek0yMiwzMkgyM1YzM0gyMnpNMjQsMzJIMjVWMzNIMjR6TTI1LDMySDI2VjMzSDI1ek0yNiwzMkgyN1YzM0gyNnpNMjgsMzJIMjlWMzNIMjh6TTMyLDMySDMzVjMzSDMyek0zMywzMkgzNFYzM0gzM3pNMzQsMzJIMzVWMzNIMzR6TTM1LDMySDM2VjMzSDM1ek0zNiwzMkgzN1YzM0gzNnpNMzgsMzJIMzlWMzNIMzh6TTgsMzNIOVYzNEg4ek05LDMzSDEwVjM0SDl6TTEwLDMzSDExVjM0SDEwek0xNSwzM0gxNlYzNEgxNXpNMTYsMzNIMTdWMzRIMTZ6TTE3LDMzSDE4VjM0SDE3ek0xOSwzM0gyMFYzNEgxOXpNMjAsMzNIMjFWMzRIMjB6TTIxLDMzSDIyVjM0SDIxek0yMywzM0gyNFYzNEgyM3pNMjUsMzNIMjZWMzRIMjV6TTMwLDMzSDMxVjM0SDMwek0zMiwzM0gzM1YzNEgzMnpNMzYsMzNIMzdWMzRIMzZ6TTM3LDMzSDM4VjM0SDM3ek00MCwzM0g0MVYzNEg0MHpNMCwzNEgxVjM1SDB6TTEsMzRIMlYzNUgxek0yLDM0SDNWMzVIMnpNMywzNEg0VjM1SDN6TTQsMzRINVYzNUg0ek01LDM0SDZWMzVINXpNNiwzNEg3VjM1SDZ6TTExLDM0SDEyVjM1SDExek0xMiwzNEgxM1YzNUgxMnpNMTQsMzRIMTVWMzVIMTR6TTE3LDM0SDE4VjM1SDE3ek0yMCwzNEgyMVYzNUgyMHpNMjEsMzRIMjJWMzVIMjF6TTI1LDM0SDI2VjM1SDI1ek0yNiwzNEgyN1YzNUgyNnpNMjcsMzRIMjhWMzVIMjd6TTMwLDM0SDMxVjM1SDMwek0zMSwzNEgzMlYzNUgzMXpNMzIsMzRIMzNWMzVIMzJ6TTM0LDM0SDM1VjM1SDM0ek0zNiwzNEgzN1YzNUgzNnpNMzksMzRINDBWMzVIMzl6TTAsMzVIMVYzNkgwek02LDM1SDdWMzZINnpNOCwzNUg5VjM2SDh6TTEwLDM1SDExVjM2SDEwek0xMSwzNUgxMlYzNkgxMXpNMTIsMzVIMTNWMzZIMTJ6TTEzLDM1SDE0VjM2SDEzek0xNiwzNUgxN1YzNkgxNnpNMTcsMzVIMThWMzZIMTd6TTE4LDM1SDE5VjM2SDE4ek0yMSwzNUgyMlYzNkgyMXpNMjIsMzVIMjNWMzZIMjJ6TTIzLDM1SDI0VjM2SDIzek0yNCwzNUgyNVYzNkgyNHpNMjUsMzVIMjZWMzZIMjV6TTMyLDM1SDMzVjM2SDMyek0zNiwzNUgzN1YzNkgzNnpNMzcsMzVIMzhWMzZIMzd6TTM5LDM1SDQwVjM2SDM5ek0wLDM2SDFWMzdIMHpNMiwzNkgzVjM3SDJ6TTMsMzZINFYzN0gzek00LDM2SDVWMzdINHpNNiwzNkg3VjM3SDZ6TTgsMzZIOVYzN0g4ek0xMCwzNkgxMVYzN0gxMHpNMTEsMzZIMTJWMzdIMTF6TTE1LDM2SDE2VjM3SDE1ek0yMSwzNkgyMlYzN0gyMXpNMjQsMzZIMjVWMzdIMjR6TTI2LDM2SDI3VjM3SDI2ek0yNywzNkgyOFYzN0gyN3pNMzAsMzZIMzFWMzdIMzB6TTMyLDM2SDMzVjM3SDMyek0zMywzNkgzNFYzN0gzM3pNMzQsMzZIMzVWMzdIMzR6TTM1LDM2SDM2VjM3SDM1ek0zNiwzNkgzN1YzN0gzNnpNMzgsMzZIMzlWMzdIMzh6TTM5LDM2SDQwVjM3SDM5ek00MCwzNkg0MVYzN0g0MHpNMCwzN0gxVjM4SDB6TTIsMzdIM1YzOEgyek0zLDM3SDRWMzhIM3pNNCwzN0g1VjM4SDR6TTYsMzdIN1YzOEg2ek04LDM3SDlWMzhIOHpNOSwzN0gxMFYzOEg5ek0xMCwzN0gxMVYzOEgxMHpNMTEsMzdIMTJWMzhIMTF6TTEyLDM3SDEzVjM4SDEyek0xMywzN0gxNFYzOEgxM3pNMTQsMzdIMTVWMzhIMTR6TTE1LDM3SDE2VjM4SDE1ek0xNywzN0gxOFYzOEgxN3pNMTgsMzdIMTlWMzhIMTh6TTE5LDM3SDIwVjM4SDE5ek0yMSwzN0gyMlYzOEgyMXpNMjIsMzdIMjNWMzhIMjJ6TTIzLDM3SDI0VjM4SDIzek0yOSwzN0gzMFYzOEgyOXpNMzIsMzdIMzNWMzhIMzJ6TTMzLDM3SDM0VjM4SDMzek0zNSwzN0gzNlYzOEgzNXpNMCwzOEgxVjM5SDB6TTIsMzhIM1YzOUgyek0zLDM4SDRWMzlIM3pNNCwzOEg1VjM5SDR6TTYsMzhIN1YzOUg2ek04LDM4SDlWMzlIOHpNMTEsMzhIMTJWMzlIMTF6TTEyLDM4SDEzVjM5SDEyek0xMywzOEgxNFYzOUgxM3pNMTQsMzhIMTVWMzlIMTR6TTE2LDM4SDE3VjM5SDE2ek0xNywzOEgxOFYzOUgxN3pNMTgsMzhIMTlWMzlIMTh6TTIxLDM4SDIyVjM5SDIxek0yNiwzOEgyN1YzOUgyNnpNMjcsMzhIMjhWMzlIMjd6TTI4LDM4SDI5VjM5SDI4ek0yOSwzOEgzMFYzOUgyOXpNMzEsMzhIMzJWMzlIMzF6TTMyLDM4SDMzVjM5SDMyek0zMywzOEgzNFYzOUgzM3pNMzQsMzhIMzVWMzlIMzR6TTM1LDM4SDM2VjM5SDM1ek0zNiwzOEgzN1YzOUgzNnpNMzcsMzhIMzhWMzlIMzd6TTAsMzlIMVY0MEgwek02LDM5SDdWNDBINnpNMTIsMzlIMTNWNDBIMTJ6TTEzLDM5SDE0VjQwSDEzek0xNCwzOUgxNVY0MEgxNHpNMTYsMzlIMTdWNDBIMTZ6TTE4LDM5SDE5VjQwSDE4ek0xOSwzOUgyMFY0MEgxOXpNMjEsMzlIMjJWNDBIMjF6TTIyLDM5SDIzVjQwSDIyek0yMywzOUgyNFY0MEgyM3pNMjYsMzlIMjdWNDBIMjZ6TTI4LDM5SDI5VjQwSDI4ek0zMCwzOUgzMVY0MEgzMHpNMzEsMzlIMzJWNDBIMzF6TTM0LDM5SDM1VjQwSDM0ek0zNiwzOUgzN1Y0MEgzNnpNMzcsMzlIMzhWNDBIMzd6TTM5LDM5SDQwVjQwSDM5ek0wLDQwSDFWNDFIMHpNMSw0MEgyVjQxSDF6TTIsNDBIM1Y0MUgyek0zLDQwSDRWNDFIM3pNNCw0MEg1VjQxSDR6TTUsNDBINlY0MUg1ek02LDQwSDdWNDFINnpNOCw0MEg5VjQxSDh6TTEwLDQwSDExVjQxSDEwek0xMSw0MEgxMlY0MUgxMXpNMTMsNDBIMTRWNDFIMTN6TTE2LDQwSDE3VjQxSDE2ek0xOCw0MEgxOVY0MUgxOHpNMjAsNDBIMjFWNDFIMjB6TTI1LDQwSDI2VjQxSDI1ek0yOSw0MEgzMFY0MUgyOXpNMzEsNDBIMzJWNDFIMzF6TTM1LDQwSDM2VjQxSDM1ek0zNiw0MEgzN1Y0MUgzNnpNMzgsNDBIMzlWNDFIMzh6IiBmaWxsPSIjMDAwMDAwIi8+PC9zdmc+" alt="QR code para agendar pelo WhatsApp"><small>Aponte a câmera</small></div>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec fontes" id="fontes">
+  <div class="wrap"><div class="wide">
+    <span class="olho">Fontes</span>
+    <h2 style="font-size:28px">De onde vêm os números</h2>
+    <p style="color:var(--muted);font-size:15px;max-width:70ch">Dados de terceiros citados neste guia, na ordem em que aparecem. Os exemplos de aplicações e o exemplo da calculadora são ilustrativos, montados a partir da experiência da SyncoHub, e não pesquisas.</p>
+    <ol id="listaFontes"></ol>
+  </div></div>
+</section>
+<footer class="rodape"><div class="wrap"><div class="wide">Onde a IA entra no seu negócio. Edição Feira do Empreendedor Sebrae-SP 2026. © 2026 SyncoHub. Pode compartilhar com quem precisa, mantendo a autoria.</div></div></footer>
+
+<script>
+const DADOS = {"areas": [{"nome": "Atendimento", "faixa": "Aplicações 1 a 5", "intro": "Onde o cliente sente primeiro. Quem responde rápido vende mais, e o WhatsApp é a porta de entrada da maioria das pequenas empresas.", "apps": [["Resposta em minutos, 24 horas por dia", "A mensagem que chega às 22h fica para o dia seguinte. Até lá, o cliente já fechou com quem respondeu.", "Um agente responde dúvidas de preço, prazo, horário e disponibilidade na hora, com o jeito da sua empresa, e chama uma pessoa quando precisa.", "Mais de 20 mensagens por dia, ou muitas fora do horário.", 2], ["Triagem antes da pessoa entrar", "A atendente faz as mesmas quatro perguntas a todo cliente antes de começar a resolver.", "O agente coleta nome, o que a pessoa precisa, urgência e documentos, e entrega para a pessoa certa com um resumo pronto.", "Sua equipe repete o mesmo roteiro no começo de toda conversa.", 1], ["Status do pedido sem ninguém precisar olhar", "“Meu pedido já saiu?” toma a manhã de alguém que abre o sistema, procura e responde.", "O agente consulta o sistema ou a loja virtual e responde com o status e o código de rastreio.", "Mais de 10 perguntas de status por dia.", 2], ["Instagram respondido com o mesmo cuidado", "Direct e comentários perguntando preço ficam sem resposta por horas, ou para sempre.", "As mesmas regras do WhatsApp valem no direct, e o comentário “quanto custa?” vira conversa.", "Você posta com frequência e recebe perguntas nos comentários.", 2], ["Pesquisa de satisfação que volta respondida", "Ninguém pergunta ao cliente como foi, ou as respostas ficam num formulário que ninguém lê.", "Uma mensagem curta depois do atendimento coleta a nota. Nota baixa avisa o dono na hora, e tudo cai num painel.", "Você não sabe dizer, com número, se o cliente sai satisfeito.", 1]]}, {"nome": "Vendas", "faixa": "Aplicações 6 a 10", "intro": "A maior parte das vendas perdidas de uma pequena empresa não é por preço. É por demora e por esquecimento.", "apps": [["Orçamento na hora", "O orçamento depende de alguém calcular, montar o PDF e mandar. Quando sai, o cliente já pediu outros três.", "O agente pergunta medidas, quantidade ou modelo, calcula pela sua tabela e manda o orçamento formatado em minutos.", "Seus orçamentos seguem uma tabela ou uma regra de cálculo.", 2], ["Retorno do orçamento parado", "O orçamento foi enviado e ficou por isso mesmo. Ninguém tem tempo de ligar para todo mundo.", "Um lembrete no dia seguinte e outro na semana seguinte, no tom da casa. Quem responde volta para o vendedor.", "Você manda mais orçamentos do que consegue acompanhar.", 1], ["Qualificação de contatos", "O vendedor gasta a tarde com quem não tem perfil, e o cliente bom espera.", "O agente faz as perguntas de qualificação e só passa os contatos quentes, com nota e resumo.", "Muitos contatos chegam, poucos compram.", 1], ["Reativação de clientes antigos", "A lista de quem comprou e sumiu está parada numa planilha.", "Campanha por e-mail e WhatsApp, personalizada pelo histórico de cada cliente, com modelos de mensagem aprovados pela Meta.", "Você tem uma base de clientes antigos e nunca falou com ela de novo.", 2], ["Carrinho abandonado e pós-venda", "Quem desistiu no carrinho não recebe nada. Quem comprou nunca mais ouve falar da loja.", "Lembrete do carrinho, pedido de avaliação e sugestão de recompra no tempo certo de cada produto.", "Você vende online ou tem produtos de recompra.", 2]]}, {"nome": "Agenda", "faixa": "Aplicações 11 a 15", "intro": "Para quem vive de horário marcado, cada falta é dinheiro que não volta, e cada “tem horário quinta?” é tempo de alguém.", "apps": [["Agendamento pelo WhatsApp", "Cinco mensagens de vai e volta para achar um horário, e a recepção no meio de tudo.", "O agente mostra os horários livres da agenda real e marca na hora, sem conflito. Foi assim que você agendou com a gente.", "Boa parte dos agendamentos chega por mensagem.", 1], ["Confirmação e lembrete automáticos", "A recepção liga ou manda mensagem um por um na véspera.", "Confirmação com botões. Quem não confirma recebe outro lembrete, e o cancelamento libera o horário sozinho.", "Você tem faltas toda semana.", 1], ["Lista de espera que preenche o buraco", "O horário cancelado em cima da hora fica vazio.", "O horário liberado é oferecido na hora para quem está na lista de espera. O primeiro que aceitar fica com ele.", "Sua agenda vive cheia e às vezes sobra buraco.", 2], ["Retorno e recorrência no tempo certo", "O cliente que devia voltar em 30 dias esquece, e ninguém lembra de chamar.", "Mensagem no prazo certo de cada serviço: retorno, revisão, manutenção, renovação.", "Seu serviço tem um ciclo natural de volta.", 1], ["Equipe externa coordenada", "O técnico liga para o escritório para saber o próximo endereço, e o cliente não sabe a que horas ele chega.", "A rota do dia vai para o WhatsApp do técnico, o cliente recebe a janela de chegada e a foto do serviço fecha a ordem.", "Você tem equipe na rua.", 3]]}, {"nome": "Financeiro", "faixa": "Aplicações 16 a 20", "intro": "O financeiro de pequena empresa costuma ser o lugar com mais digitação repetida e mais coisa feita “quando der”.", "apps": [["Cobrança gentil e automática", "Alguém lembra de cobrar quando lembra, e fica desconfortável de insistir.", "Lembrete antes do vencimento, no dia e depois, com boleto ou Pix. A sequência para sozinha quando o pagamento entra.", "Você tem atraso recorrente ou muitos boletos por mês.", 2], ["Conciliação sem conferir linha por linha", "Conferir o extrato com a planilha de recebimentos leva horas no fim do mês.", "Extrato e vendas são cruzados automaticamente. Só as diferenças chegam para você olhar.", "Muitas vendas por Pix, cartão e boleto.", 2], ["Nota fiscal a partir do pedido", "Os dados do pedido são digitados de novo no emissor de nota.", "Pedido aprovado gera a nota no sistema e envia ao cliente, sem redigitar.", "Você emite muitas notas parecidas.", 2], ["Contas a pagar lidas sozinhas", "Boletos e notas chegam por e-mail e WhatsApp, e alguém lança um por um.", "A IA lê o documento, extrai valor, vencimento e fornecedor e deixa o lançamento pronto para você aprovar.", "Mais de 30 contas a pagar por mês.", 2], ["Caixa que avisa antes do aperto", "O aperto de caixa é descoberto quando já chegou.", "Projeção atualizada todo dia e um alerta no WhatsApp quando o saldo previsto fica abaixo do limite que você definir.", "Seu caixa oscila e você controla na planilha.", 2]]}, {"nome": "Operação e documentos", "faixa": "Aplicações 21 a 25", "intro": "Aqui moram as tarefas que ninguém vê, mas que comem o dia: copiar, colar, conferir, cobrar documento, explicar de novo.", "apps": [["Pedido do WhatsApp direto no sistema", "O pedido fechado na conversa é digitado de novo na planilha, no sistema ou na agenda de produção.", "Pedido confirmado entra sozinho onde precisa entrar, com todos os dados.", "Você fecha pedidos por mensagem.", 2], ["Coleta de documentos de clientes", "Pedir, cobrar, conferir e organizar documentos por WhatsApp e e-mail, cliente por cliente.", "O agente pede a lista certa, confere se está legível, renomeia, salva na pasta do cliente e cobra só o que falta.", "Contabilidade, corretora, imobiliária, escritório de serviços.", 2], ["Contratos e propostas a partir de modelo", "Copiar e colar dados do cliente num modelo de Word, revisar e gerar o PDF.", "Os dados do cadastro preenchem o modelo e o documento sai pronto para assinatura.", "Você emite documentos parecidos toda semana.", 1], ["Estoque que pede reposição", "A falta é descoberta quando o cliente pede.", "Alerta de estoque mínimo e rascunho do pedido ao fornecedor, para você só aprovar.", "Você trabalha com produto físico.", 2], ["Manual interno que responde", "O funcionário novo pergunta tudo para o dono, e o dono explica pela décima vez.", "Um assistente interno, treinado nos procedimentos da empresa, responde a equipe na hora.", "Você tem rotatividade ou equipe crescendo.", 2]]}, {"nome": "Gestão e dados", "faixa": "Aplicações 26 a 30", "intro": "Decidir com números não precisa de um analista. Precisa que os números estejam num lugar só, e em português.", "apps": [["Um painel com o negócio inteiro", "Vendas num sistema, atendimento em outro, financeiro na planilha. Para ver o todo, uma tarde.", "Um painel que junta tudo e se atualiza sozinho, no computador e no celular.", "Você usa mais de dois sistemas.", 2], ["Resumo da semana no seu WhatsApp", "Para saber como foi a semana, é preciso abrir quatro telas.", "Toda segunda, um resumo com os números principais e o que mudou, escrito em português claro.", "Você quer acompanhar sem parar para montar relatório.", 1], ["Pergunte aos seus dados", "“Qual produto mais vendeu em setembro?” vira uma tarde de planilha.", "Você pergunta em português e recebe a resposta, com o gráfico.", "Você tem histórico de vendas organizado em algum sistema.", 3], ["O que os clientes estão dizendo", "Centenas de conversas e avaliações que ninguém tem tempo de ler.", "A IA lê tudo e resume as reclamações, os elogios e os pedidos mais frequentes do mês.", "Você recebe muitas mensagens ou avaliações.", 1], ["Conteúdo a partir do que você já faz", "Falta tempo para postar, e a rede social fica parada.", "Rascunhos de posts, e-mails e respostas no tom da sua empresa, a partir de fotos e anotações. Você revisa e publica.", "Você sabe que precisa aparecer mais e não tem tempo.", 1]]}], "segmentos": [["Escritórios de contabilidade", "Documento que não chega, cliente perguntando a mesma coisa, fechamento apertado.", [22, 2, 27]], ["Clínicas e consultórios", "Faltas, confirmação manual e recepção sobrecarregada.", [11, 12, 14]], ["Salões, barbearias e estética", "Agenda pelo WhatsApp, buracos na agenda e cliente que some.", [11, 13, 14]], ["Varejo e lojas físicas", "Pergunta de preço e estoque o dia todo, base de clientes parada.", [1, 9, 24]], ["Lojas virtuais", "“Cadê meu pedido?”, carrinho abandonado, atendimento fora do horário.", [3, 10, 1]], ["Corretoras de seguros", "Cotação que depende de documento, renovação esquecida, retorno de proposta.", [22, 7, 14]], ["Alimentação: restaurantes, docerias e delivery", "Pedido e orçamento por mensagem, redigitação, cliente sem resposta.", [6, 21, 7]], ["Prestadores de serviço: manutenção, reforma, instalação", "Orçamento demorado, técnico na rua sem coordenação, cobrança.", [6, 15, 16]], ["Indústrias pequenas e distribuidoras", "Pedido de representante por WhatsApp, estoque e visão do todo.", [21, 24, 26]], ["Escolas, cursos e academias", "Muita pergunta antes da matrícula, mensalidade em atraso, aluno que some.", [8, 16, 14]]], "check": [["Usa a API oficial do WhatsApp", "Ferramentas não oficiais podem ter o número bloqueado pela Meta, e você perde o contato com todos os clientes."], ["Diz que é uma IA", "Transparência gera confiança. O cliente aceita bem falar com uma IA que resolve."], ["Responde só com o que a empresa sabe", "Preço, prazo e política vêm de uma base de informações da empresa. Na dúvida, o agente não inventa."], ["Tem saída para uma pessoa", "Quando o assunto pede, a conversa passa para a equipe com o resumo pronto. A política do WhatsApp exige um caminho fácil para falar com uma pessoa."], ["Fala do jeito da sua empresa", "Mesmo vocabulário, mesmo tom, mesmas regras que você daria a um funcionário novo."], ["Tem assunto definido", "Ele atende o seu negócio, não vira um assistente de assuntos gerais. Isso mantém a conversa útil e dentro das regras do WhatsApp."], ["Está ligado aos seus sistemas", "Consulta a agenda, o estoque e o pedido de verdade, em vez de prometer e pedir para esperar."], ["Escreve como gente no WhatsApp", "Mensagens curtas, uma pergunta por vez, botões e listas quando ajudam."], ["Entende áudio", "Muita gente prefere mandar áudio. Um bom agente transcreve e responde."], ["Respeita a LGPD", "Pede só o que precisa, explica para que vai usar e deixa a pessoa sair quando quiser."], ["Registra tudo", "Conversas, motivos de contato e resultados num painel, para você saber o que está acontecendo."], ["Tem alguém cuidando", "Nas primeiras semanas, alguém lê as conversas e ajusta as respostas. Depois, revisão periódica."]], "erros": [["Automatizar uma bagunça", "Se nem a equipe sabe explicar o processo, a automação só faz a bagunça andar mais rápido. Desenhe o processo como ele é hoje antes de mexer."], ["Começar pelo projeto mais difícil", "O primeiro projeto tem que dar certo rápido, para a equipe acreditar. Deixe o grande para o terceiro."], ["Agente sem saída para humano", "Cliente preso num robô que não entende vira cliente perdido, e reclama em público."], ["Usar WhatsApp não oficial", "É barato até o dia em que o número é bloqueado. Para atender cliente, use a API oficial."], ["Não medir o antes", "Sem saber quanto tempo levava, não dá para provar quanto a automação devolveu."], ["Deixar a IA livre demais", "Sem base de informações e sem limites, a IA preenche lacunas com palpites. Regras claras evitam isso."], ["Implantar e esquecer", "O processo muda, o preço muda, a equipe muda. A automação precisa acompanhar, com revisão periódica."]], "quiz": ["Clientes recebem resposta em menos de 15 minutos no horário comercial?", "Quem manda mensagem fora do horário recebe alguma resposta útil?", "Os contatos dos clientes ficam num lugar só, e não só no celular de alguém?", "Os orçamentos seguem um modelo ou uma tabela?", "Orçamentos sem resposta recebem um retorno programado?", "A agenda é digital e a equipe toda vê a mesma?", "Clientes recebem confirmação e lembrete sem ninguém precisar mandar?", "A cobrança segue uma sequência definida: antes, no dia e depois?", "Pedidos entram no sistema sem ninguém redigitar?", "Você sabe as vendas da semana sem abrir mais de um sistema?", "Algum processo da empresa já roda sozinho, sem alguém apertar botão?", "Os procedimentos principais estão escritos em algum lugar?"], "niveis": [["0 a 3 pontos", "Manual", "Quase tudo na mão e na memória. O maior ganho está em organizar e responder mais rápido. Comece por 11, 12 ou 1."], ["4 a 6 pontos", "Organizado", "Já tem planilhas e agenda, mas as pessoas copiam dados de um lugar para outro. Comece por 7, 21 ou 16."], ["7 a 9 pontos", "Conectado", "Usa sistemas. Falta ligar as pontas e tirar o trabalho do meio. Comece por 3, 22 ou 26."], ["10 a 12 pontos", "Automatizado", "Já automatiza. O próximo passo é IA que decide, responde e analisa. Olhe 1, 28 e 29."]], "fontes": [["Agência Sebrae de Notícias. Pequenos negócios abraçam a inteligência artificial para otimizar o tempo e inovar (pesquisa Sebrae, FGV IBRE e Google), 22/01/2026", "https://agenciasebrae.com.br/?p=37126"], ["Agência Sebrae de Notícias. WhatsApp se consolida nas vendas on-line (Pulso dos Pequenos Negócios, 12ª edição), 16/04/2026", "https://agenciasebrae.com.br/dados/whatsapp-se-consolida-nas-vendas-on-line-enquanto-facebook-e-lojas-proprias-perdem-folego/"], ["ABC da Comunicação. Chat Commerce Report 2026, da OmniChat, 03/05/2026", "https://www.abcdacomunicacao.com.br/sem-horario-comercial-vendas-migram-para-o-whatsapp-e-ia-impulsiona-resultados-aponta-chat-commerce-report-2026/"], ["Times Brasil/CNBC. Pequenos negócios dedicam nove horas por semana com burocracia financeira (Nu Empresas e Bridge Research), 08/10/2026", "https://timesbrasil.com.br/brasil/pequenos-negocios-dedicam-nove-horas-por-semana-com-burocracia-financeira-e-adiam-planos-de-crescimento-aponta-estudo/"], ["Oldroyd, McElheran e Elkington. The Short Life of Online Sales Leads. Harvard Business Review, março de 2011", "https://hbr.org/2011/03/the-short-life-of-online-sales-leads"], ["Robotham et al. Using digital notifications to improve attendance in clinic: systematic review and meta-analysis. BMJ Open, 2016", "https://pubmed.ncbi.nlm.nih.gov/27798006/"], ["Brynjolfsson, Li e Raymond. Generative AI at Work. Quarterly Journal of Economics, 2025", "https://www.nber.org/papers/w31161"], ["Meta for Developers. Pricing on the WhatsApp Business Platform, consultado em 16/10/2026", "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"], ["Meta for Developers. Non-template messages pricing, consultado em 16/10/2026", "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/non-template-messages"], ["Gupshup. Tabela de preços do WhatsApp Business Platform em dólar, outubro de 2025", "https://www.gupshup.ai/resources/wp-content/uploads/2025/10/USD_Oct2025.pdf"], ["WhatsApp. Business Messaging Policy", "https://whatsappbusiness.com/policy/"], ["Lei nº 13.709/2018, Lei Geral de Proteção de Dados Pessoais", "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"], ["Demarest. Resumo da Resolução CD/ANPD nº 2/2022, agentes de tratamento de pequeno porte", "https://www.demarest.com.br/conselho-diretor-aprova-regulamento-de-aplicacao-da-lgpd-para-agentes-de-tratamento-de-pequeno-porte/"], ["Mattos Filho. ANPD publica guia sobre legítimo interesse, 2024", "https://www.mattosfilho.com.br/unico/anpd-legitimo-interesse-lgpd/"], ["Contábeis. ANPD aplica primeira multa por infração à LGPD, 07/07/2023", "https://www.contabeis.com.br/noticias/60231/anpd-aplica-primeira-multa-por-infracao-a-lgpd/"]], "lgpd": [["Todo dado precisa de um motivo previsto na lei.", "Atender um pedido ou marcar um horário já é motivo. Para mandar conteúdo e ofertas, peça autorização ou tenha relação prévia com a pessoa, e deixe sair com um clique."], ["Pequena empresa não precisa de encarregado de dados,", "mas precisa de um canal para o cliente pedir informação, correção ou exclusão (Resolução ANPD nº 2/2022)."], ["Dado de saúde é sensível.", "Clínicas e consultórios precisam de cuidado redobrado e, para marketing, de consentimento expresso."], ["Não cole dados de clientes em ferramenta de IA gratuita.", "Use ferramentas com contrato e em que o fornecedor não treina modelos com os seus dados."], ["Se a IA decide sozinha, o cliente pode pedir revisão.", "Vale para aprovar crédito, recusar cadastro ou definir preço (art. 20 da LGPD)."], ["Não compre listas de contatos.", "A primeira multa da ANPD foi para uma microempresa que vendia listas de WhatsApp sem base legal."]]};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const guardar = (k, v) => { try { localStorage.setItem('guia-ia:' + k, JSON.stringify(v)); } catch (e) {} };
+const ler = (k, d) => { try { const v = localStorage.getItem('guia-ia:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
+const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Interruptor da capa */
+const palco = $('#palco'), chave = $('#chave'), estado = $('#estado');
+function liga(auto) {
+  palco.classList.toggle('auto', auto);
+  chave.setAttribute('aria-checked', String(auto));
+  chave.setAttribute('aria-label', auto ? 'Voltar para o modo manual' : 'Ligar o modo automático');
+  estado.textContent = auto ? 'Com IA: o processo acontece sozinho' : 'Hoje: várias etapas, várias pessoas';
+}
+chave.addEventListener('click', () => liga(!palco.classList.contains('auto')));
+if (!reduz) setTimeout(() => { if (!palco.dataset.tocado) liga(true); }, 1600);
+chave.addEventListener('pointerdown', () => palco.dataset.tocado = '1');
+
+/* Progresso e seção ativa */
+const prog = $('#prog');
+const links = [...document.querySelectorAll('.bar nav a')];
+const alvos = links.map(a => document.querySelector(a.getAttribute('href')));
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  prog.style.transform = `scaleX(${h.scrollTop / (h.scrollHeight - h.clientHeight || 1)})`;
+  let ativo = -1;
+  alvos.forEach((el, i) => { if (el && el.getBoundingClientRect().top < 140) ativo = i; });
+  links.forEach((a, i) => a.classList.toggle('on', i === ativo));
+}, { passive: true });
+
+/* Pontos 96 / 15 */
+['p96', 'p15'].forEach(id => {
+  const n = id === 'p96' ? 96 : 15;
+  $('#' + id).innerHTML = Array.from({ length: 100 }, (_, i) => `<i class="${i < n ? 'on' : ''}"></i>`).join('');
+});
+
+/* Catálogo */
+const APPS = [];
+DADOS.areas.forEach(a => a.apps.forEach(x => APPS.push({ area: a.nome, titulo: x[0], hoje: x[1], ia: x[2], sinal: x[3], esf: x[4], n: APPS.length + 1 })));
+const NOMES_ESF = { 1: 'rápido', 2: 'médio', 3: 'projeto' };
+let filtroArea = '', filtroRamo = ler('ramo', '');
+
+const chips = $('#chips');
+chips.innerHTML = ['Todas', ...DADOS.areas.map(a => a.nome)].map((n, i) => `<button class="fchip" type="button" data-a="${i ? esc(n) : ''}" aria-pressed="${i === 0}">${esc(n)}</button>`).join('');
+chips.addEventListener('click', e => {
+  const b = e.target.closest('.fchip'); if (!b) return;
+  filtroArea = b.dataset.a;
+  chips.querySelectorAll('.fchip').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  desenha();
+});
+const sel = $('#selRamo');
+DADOS.segmentos.forEach((s, i) => sel.insertAdjacentHTML('beforeend', `<option value="${i}">${esc(s[0])}</option>`));
+sel.addEventListener('change', () => { filtroRamo = sel.value; guardar('ramo', filtroRamo); desenha(); });
+
+function cartao(x, marcada) {
+  const bolas = [0, 1, 2].map(i => `<i class="${i < x.esf ? 'on' : ''}"></i>`).join('');
+  return `<article class="app${marcada ? ' marcada' : ''}" id="app-${x.n}">
+    <div class="top"><span class="n">${x.n}</span><h4>${esc(x.titulo)}</h4></div>
+    <div class="estados"><div class="hoje"><b>Hoje</b>${esc(x.hoje)}</div><div class="ia"><b>Com IA</b>${esc(x.ia)}</div></div>
+    <div class="meta"><span><strong>Serve para você se:</strong> ${esc(x.sinal)}</span><span style="white-space:nowrap">${NOMES_ESF[x.esf]}<span class="esf">${bolas}</span></span></div>
+  </article>`;
+}
+function desenha() {
+  sel.value = filtroRamo;
+  const ramo = filtroRamo === '' ? null : DADOS.segmentos[+filtroRamo];
+  const aviso = $('#avisoRamo');
+  if (ramo) {
+    aviso.hidden = false;
+    aviso.className = 'aviso-ramo';
+    aviso.innerHTML = `<span><strong>${esc(ramo[0])}:</strong> as três aplicações que esse ramo costuma priorizar.</span><button type="button" id="limpaRamo">Ver as 30</button>`;
+    $('#limpaRamo').onclick = () => { filtroRamo = ''; guardar('ramo', ''); desenha(); };
+  } else aviso.hidden = true;
+  let html = '';
+  DADOS.areas.forEach(a => {
+    if (filtroArea && a.nome !== filtroArea) return;
+    const lista = APPS.filter(x => x.area === a.nome && (!ramo || ramo[2].includes(x.n)));
+    if (!lista.length) return;
+    html += `<div class="area-h"><h3>${esc(a.nome)}</h3><span>${esc(a.faixa)}</span></div><p class="area-intro">${esc(a.intro)}</p><div class="apps n${lista.length}">${lista.map(x => cartao(x, !!ramo)).join('')}</div>`;
+  });
+  $('#catalogo').innerHTML = html || '<p class="vazio">Nenhuma aplicação desse ramo nesta área. Toque em Todas para ver as três.</p>';
+}
+desenha();
+
+/* Segmentos */
+const titulo = n => APPS[n - 1].titulo;
+$('#segs').innerHTML = DADOS.segmentos.map((s, i) => `<button class="seg" type="button" data-i="${i}">
+  <h4>${esc(s[0])}</h4><div class="dor">${esc(s[1])}</div>
+  <ol>${s[2].map(n => `<li><span>${n}</span>${esc(titulo(n))}</li>`).join('')}</ol>
+  <span class="ver">Ver no catálogo</span></button>`).join('');
+$('#segs').addEventListener('click', e => {
+  const b = e.target.closest('.seg'); if (!b) return;
+  filtroRamo = b.dataset.i; filtroArea = ''; guardar('ramo', filtroRamo);
+  chips.querySelectorAll('.fchip').forEach((x, i) => x.setAttribute('aria-pressed', String(i === 0)));
+  desenha();
+  $('#filtros').scrollIntoView({ behavior: reduz ? 'auto' : 'smooth' });
+});
+
+/* 5 sinais */
+const sinais = [1, 2, 3, 4, 5].map(i => $('#s' + i));
+const salvoS = ler('sinais', null);
+if (salvoS) sinais.forEach((s, i) => s.checked = !!salvoS[i]);
+const tarefa = $('#tarefa');
+tarefa.value = ler('tarefa', tarefa.value);
+function avalia() {
+  const v = sinais.map(s => s.checked);
+  guardar('sinais', v); guardar('tarefa', tarefa.value);
+  const impacto = (v[0] + v[3] + v[4]) / 3, facil = (v[1] + v[2]) / 2;
+  const total = v.filter(Boolean).length;
+  const q = impacto >= .6 ? (facil >= .5 ? 'comece' : 'planeje') : (facil >= .5 ? 'sobra' : 'evite');
+  document.querySelectorAll('.q').forEach(el => el.classList.toggle('aqui', el.dataset.q === q));
+  const m = $('#matriz').getBoundingClientRect();
+  const alvo = $('#alvo');
+  const x = 26 + 6 + (m.width - 38) * (0.1 + 0.8 * facil);
+  const y = (m.height - 32) * (0.9 - 0.8 * impacto);
+  alvo.style.left = x + 'px'; alvo.style.top = y + 'px';
+  const nome = tarefa.value.trim() || 'Essa tarefa';
+  const txt = {
+    comece: ['Forte candidata a primeira automação', 'Tem impacto e é simples de implantar. Faça a conta logo abaixo.'],
+    planeje: ['Vale a pena, mas como segundo projeto', 'O impacto é alto, mas falta regra clara ou dado digital. Organize isso primeiro.'],
+    sobra: ['Fácil, mas devolve pouco', 'Encaixe junto com outra automação, quando sobrar tempo.'],
+    evite: ['Deixe para depois', 'Pouco impacto e muito esforço. Escolha outra tarefa da lista.'],
+  }[q];
+  $('#veredito').innerHTML = `<strong>${esc(txt[0])}</strong><span>${esc(nome)}: ${total} de 5 sinais. ${esc(txt[1])}</span>`;
+}
+sinais.forEach(s => s.addEventListener('change', avalia));
+tarefa.addEventListener('input', avalia);
+addEventListener('resize', avalia);
+avalia();
+
+/* Calculadora */
+const fmt = (n, d = 0) => n.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+function calcula() {
+  const h = +$('#h').value, c = +$('#c').value, p = +$('#p').value / 100;
+  $('#oh').textContent = fmt(h, h % 1 ? 1 : 0) + ' h';
+  $('#oc').textContent = 'R$ ' + fmt(c);
+  $('#op').textContent = fmt(p * 100) + '%';
+  const horas = h * 4.3 * p, mes = horas * c;
+  $('#rh').textContent = fmt(Math.round(horas)) + (Math.round(horas) === 1 ? ' hora' : ' horas');
+  $('#rm').textContent = 'R$ ' + fmt(Math.round(mes));
+  $('#ra').textContent = 'R$ ' + fmt(Math.round(mes * 12));
+  $('#rd').textContent = fmt(Math.round(horas * 12 / 8)) + ' dias';
+}
+['h', 'c', 'p'].forEach(id => $('#' + id).addEventListener('input', calcula));
+calcula();
+
+/* Checklist do agente */
+const marcados = ler('check', []);
+$('#check').innerHTML = DADOS.check.map((c, i) => `<label class="ck"><input type="checkbox" id="ck${i}" ${marcados.includes(i) ? 'checked' : ''}><div><strong>${esc(c[0])}</strong><span>${esc(c[1])}</span></div></label>`).join('');
+function conta() {
+  const on = DADOS.check.map((_, i) => $('#ck' + i).checked);
+  const n = on.filter(Boolean).length;
+  $('#ckN').textContent = n; $('#ckBar').style.width = (n / 12 * 100) + '%';
+  guardar('check', on.map((v, i) => v ? i : -1).filter(i => i >= 0));
+}
+$('#check').addEventListener('change', conta); conta();
+
+/* LGPD, erros, fontes */
+$('#lgpd').innerHTML = DADOS.lgpd.map(l => `<li><strong>${esc(l[0])}</strong> ${esc(l[1])}</li>`).join('');
+$('#listaErros').innerHTML = DADOS.erros.map(e => `<div class="erro"><div class="x"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div><h4>${esc(e[0])}</h4><p>${esc(e[1])}</p></div>`).join('');
+$('#listaFontes').innerHTML = DADOS.fontes.map(f => `<li>${esc(f[0])}. <a href="${esc(f[1])}" target="_blank" rel="noopener">${esc(f[1])}</a></li>`).join('');
+
+/* Autodiagnóstico */
+const resp = ler('quiz', Array(12).fill(null));
+$('#quiz').innerHTML = DADOS.quiz.map((q, i) => `<div class="qq"><span class="i">${i + 1}</span><span>${esc(q)}</span>
+  <span class="sn" role="group" aria-label="Resposta da pergunta ${i + 1}"><button type="button" data-i="${i}" data-v="1" aria-pressed="${resp[i] === 1}">Sim</button><button type="button" data-i="${i}" data-v="0" aria-pressed="${resp[i] === 0}">Não</button></span></div>`).join('');
+const APPS_NIVEL = [[11, 12, 1], [7, 21, 16], [3, 22, 26], [1, 28, 29]];
+function nivel() {
+  const pts = resp.filter(v => v === 1).length, resp_n = resp.filter(v => v !== null).length;
+  const k = pts <= 3 ? 0 : pts <= 6 ? 1 : pts <= 9 ? 2 : 3;
+  const N = DADOS.niveis[k];
+  $('#nvPts').textContent = `${pts} de 12 pontos · ${resp_n} de 12 respondidas`;
+  $('#nvNome').textContent = N[1];
+  document.querySelectorAll('#regua div').forEach((d, i) => d.classList.toggle('on', i <= k));
+  $('#nvTxt').textContent = N[2];
+  $('#nvApps').innerHTML = APPS_NIVEL[k].map(n => `<a href="#app-${n}" data-n="${n}">${n}. ${esc(titulo(n))}</a>`).join('');
+  guardar('quiz', resp);
+}
+$('#quiz').addEventListener('click', e => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  const i = +b.dataset.i; resp[i] = +b.dataset.v;
+  b.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  nivel();
+});
+$('#nvApps').addEventListener('click', e => {
+  const a = e.target.closest('a[data-n]'); if (!a) return;
+  filtroArea = ''; filtroRamo = ''; desenha();
+  chips.querySelectorAll('.fchip').forEach((x, i) => x.setAttribute('aria-pressed', String(i === 0)));
+});
+nivel();
+</script>
+</body></html>

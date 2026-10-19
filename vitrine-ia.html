@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vitrine de IA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: um showroom escuro. Vitrine em grade no alto, e embaixo o balcão: a cena grande, o campo com o prompt e o passo a passo. */
+:root {
+  --bg: #14040F;
+  --palco: #1D0716;
+  --card: #26091D;
+  --card-2: #320F27;
+  --linha: #45193A;
+  --ink: #F9EEF5;
+  --muted: #C4A9BA;
+  --soft: #93798A;
+  --magenta: #CC0099;
+  --vinho: #990066;
+  --rosa: #F2CCE6;
+  --enfase: #E680CC;
+  --luz: #FF5CC8;
+  --ok: #7BE0B0;
+  --f-sans: "Poppins", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+h1, h2, h3, h4 { margin: 0; line-height: 1.12; text-wrap: balance; letter-spacing: -0.025em; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--luz); outline-offset: 3px; border-radius: 8px; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.max { max-width: 1160px; margin: 0 auto; }
+
+/* ---------- Topo ---------- */
+.hero { position: relative; overflow: hidden; padding-block: 56px 40px; }
+.hero::before { content: ""; position: absolute; inset: -40% -10% auto; height: 120%; background: radial-gradient(60% 60% at 30% 40%, rgba(204,0,153,.35), transparent 70%), radial-gradient(40% 50% at 85% 20%, rgba(230,128,204,.18), transparent 70%); pointer-events: none; }
+.hero .max { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+@media (max-width: 880px) { .hero .max { grid-template-columns: 1fr; gap: 32px; } .hero { padding-block: 36px 24px; } }
+.marca { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--muted); margin-bottom: 26px; }
+.marca img { height: 22px; }
+.hero h1 { font-size: clamp(46px, 8vw, 96px); letter-spacing: -0.05em; line-height: .95; font-weight: 800; }
+.hero h1 span { color: var(--luz); }
+.hero .sub { font-size: 19px; color: var(--muted); margin-top: 22px; max-width: 36ch; }
+.hero .contagem { display: flex; gap: 26px; margin-top: 28px; flex-wrap: wrap; }
+.hero .contagem div { font-size: 13.5px; color: var(--muted); }
+.hero .contagem b { display: block; font-size: 28px; color: var(--ink); letter-spacing: -0.02em; }
+
+.campo-hero { background: var(--card); border: 1px solid var(--linha); border-radius: 22px; padding: 18px; box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(255,92,200,.08); }
+.campo-hero .tela { height: 210px; border-radius: 14px; background: var(--palco); position: relative; overflow: hidden; }
+.entrada { display: flex; align-items: center; gap: 10px; margin-top: 14px; background: var(--palco); border: 1px solid var(--linha); border-radius: 14px; padding: 12px 12px 12px 16px; min-height: 54px; }
+.entrada .txt { flex: 1; font-size: 15px; color: var(--ink); min-width: 0; }
+.entrada .txt::after { content: ""; display: inline-block; width: 2px; height: 1.1em; background: var(--luz); vertical-align: -3px; margin-left: 2px; animation: pisca 1s steps(1) infinite; }
+.entrada .enviar { width: 34px; height: 34px; border-radius: 10px; background: var(--magenta); display: grid; place-items: center; flex: none; }
+.entrada .enviar svg { width: 16px; height: 16px; }
+@keyframes pisca { 50% { opacity: 0; } }
+
+/* ---------- Filtros e vitrine ---------- */
+.sec-h { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
+.sec-h h2 { font-size: clamp(28px, 4vw, 40px); }
+.sec-h p { color: var(--muted); max-width: 46ch; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { background: transparent; border: 1px solid var(--linha); color: var(--muted); padding: 8px 14px; border-radius: 99px; cursor: pointer; font-size: 14px; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 600; }
+.vitrine { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; padding-block: 8px 64px; }
+@media (max-width: 1100px) { .vitrine { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 860px) { .vitrine { grid-template-columns: repeat(2, 1fr); } }
+.peca { text-align: left; background: var(--card); border: 1px solid var(--linha); border-radius: 18px; padding: 10px; cursor: pointer; display: flex; flex-direction: column; gap: 10px; transition: transform .25s, border-color .25s, box-shadow .25s; min-width: 0; }
+.peca:hover { transform: translateY(-4px); border-color: var(--enfase); box-shadow: 0 18px 40px rgba(204,0,153,.18); }
+.peca[aria-current="true"] { border-color: var(--luz); box-shadow: 0 0 0 2px var(--luz), 0 18px 40px rgba(204,0,153,.25); }
+.peca .mini { aspect-ratio: 4 / 3; border-radius: 12px; background: var(--palco); position: relative; overflow: hidden; }
+.peca h3 { font-size: 15.5px; letter-spacing: -0.01em; padding: 0 4px; }
+.peca .rod { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--soft); padding: 0 4px 4px; }
+.peca .rod .tag { color: var(--enfase); }
+.peca[hidden] { display: none; }
+
+/* ---------- Balcão (detalhe) ---------- */
+.balcao { background: linear-gradient(180deg, var(--palco), var(--bg)); border-top: 1px solid var(--linha); padding-block: 64px 80px; scroll-margin-top: 0; }
+.balcao .topo { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.selo { font-size: 12.5px; font-weight: 600; background: rgba(204,0,153,.18); color: var(--enfase); padding: 5px 11px; border-radius: 99px; }
+.selo.claro { background: var(--card-2); color: var(--muted); }
+.balcao h2 { font-size: clamp(32px, 5vw, 56px); letter-spacing: -0.04em; }
+.balcao .resumo { font-size: 19px; color: var(--muted); margin-top: 14px; max-width: 60ch; }
+.grande { margin-top: 34px; aspect-ratio: 16 / 7; border-radius: 26px; background: var(--card); border: 1px solid var(--linha); position: relative; overflow: hidden; }
+@media (max-width: 720px) { .grande { aspect-ratio: 4 / 3; } }
+.grande .cena { position: absolute; inset: 0; }
+
+.campo { margin-top: 28px; background: var(--card); border: 1px solid var(--linha); border-radius: 22px; overflow: hidden; }
+.campo .cab { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--linha); font-size: 14px; color: var(--muted); }
+.campo .cab .bolas { display: flex; gap: 6px; }
+.campo .cab .bolas i { width: 10px; height: 10px; border-radius: 50%; background: var(--linha); }
+.campo .cab .bolas i:first-child { background: var(--magenta); }
+.campo .cab .copiar { margin-left: auto; background: var(--magenta); color: #fff; border: 0; border-radius: 10px; padding: 8px 14px; font-weight: 600; font-size: 14px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+.campo .cab .copiar svg { width: 16px; height: 16px; }
+.campo pre { margin: 0; padding: 22px; font-family: var(--f-mono); font-size: 14.5px; line-height: 1.75; white-space: pre-wrap; word-break: break-word; color: var(--ink); min-height: 120px; }
+.campo pre .ph { color: var(--luz); background: rgba(255,92,200,.1); border-radius: 4px; padding: 0 3px; }
+.campo .anexo { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 22px 18px; }
+.campo .anexo span { font-size: 13px; background: var(--card-2); border-radius: 10px; padding: 6px 10px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.campo .anexo svg { width: 14px; height: 14px; }
+.copiado { font-size: 13px; color: var(--ok); }
+.dica-ph { font-size: 13.5px; color: var(--soft); margin-top: 10px; }
+.dica-ph b { color: var(--luz); font-weight: 600; }
+
+.passos-h { margin-top: 52px; font-size: 26px; }
+.passos { list-style: none; margin: 22px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; counter-reset: p; }
+.passo { background: var(--card); border: 1px solid var(--linha); border-radius: 18px; padding: 20px; position: relative; counter-increment: p; }
+.passo::before { content: counter(p); display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--magenta); color: #fff; font-weight: 700; margin-bottom: 14px; }
+.passo h4 { font-size: 16.5px; margin-bottom: 6px; letter-spacing: -0.01em; }
+.passo p { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+.passo:not(:last-child)::after { content: ""; position: absolute; top: 38px; right: -14px; width: 14px; height: 2px; background: var(--linha); }
+.extra { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+@media (max-width: 720px) { .extra { grid-template-columns: 1fr; } }
+.extra div { border-radius: 18px; padding: 18px 20px; font-size: 15px; }
+.extra .dica { background: rgba(204,0,153,.12); border: 1px solid rgba(204,0,153,.35); }
+.extra .cuidado { background: var(--card); border: 1px solid var(--linha); color: var(--muted); }
+.extra b { display: block; color: var(--ink); margin-bottom: 4px; }
+.nav-pecas { display: flex; justify-content: space-between; margin-top: 36px; gap: 12px; }
+.nav-pecas button { background: var(--card); border: 1px solid var(--linha); border-radius: 14px; padding: 12px 18px; cursor: pointer; color: var(--ink); font-size: 14.5px; }
+.nav-pecas button:hover { border-color: var(--enfase); }
+
+.final { padding-block: 72px 88px; }
+.final .caixa { background: var(--vinho); border-radius: 28px; padding: 40px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: center; position: relative; overflow: hidden; }
+.final .caixa::after { content: ""; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(255,92,200,.45), transparent 70%); }
+.final h2 { font-size: clamp(28px, 4vw, 40px); }
+.final p { color: var(--rosa); margin-top: 12px; font-size: 17px; }
+.final .lado { position: relative; z-index: 1; display: grid; gap: 12px; }
+.final .lado div { background: rgba(0,0,0,.2); border-radius: 14px; padding: 14px 16px; font-size: 14.5px; color: var(--rosa); }
+.final .lado b { color: #fff; display: block; }
+.botao { display: inline-flex; gap: 10px; align-items: center; margin-top: 22px; background: #fff; color: var(--vinho); text-decoration: none; font-weight: 700; padding: 14px 20px; border-radius: 14px; }
+.final small { display: block; margin-top: 12px; color: var(--rosa); user-select: all; }
+@media (max-width: 760px) { .final .caixa { grid-template-columns: 1fr; padding: 28px; } }
+.fonte { font-size: 12.5px; color: var(--soft); padding-block: 0 40px; }
+.fonte a { color: var(--soft); }
+
+/* ================= CENAS ================= */
+.cena { --u: 1cqw; container-type: size; }
+.cena * { position: absolute; }
+.cena .lbl { font-family: var(--f-sans); font-size: clamp(9px, 3cqw, 22px); color: var(--muted); white-space: nowrap; }
+
+/* Vídeo */
+.v-fone { left: 8%; top: 8%; width: 24%; height: 84%; border-radius: 3cqw; background: #000; border: .6cqw solid #3b2034; overflow: hidden; animation: v-gira 7s infinite; }
+.v-img { inset: 0; background: linear-gradient(160deg, #5a1846, #1b0614 70%); }
+.v-rosto { left: 50%; top: 42%; width: 46%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #f3c3a6, #c98b6c); transform: translate(-50%,-50%); }
+.v-corpo { left: 50%; top: 72%; width: 84%; height: 40%; border-radius: 40% 40% 0 0; background: #3b1630; transform: translateX(-50%); }
+.v-titulo { left: 8%; top: 8%; width: 84%; height: 9%; border-radius: 1.2cqw; background: var(--magenta); transform: scaleX(0); transform-origin: left; animation: v-tit 7s infinite; }
+.v-linha { left: 38%; right: 6%; top: 62%; height: 14%; display: flex; }
+.v-linha i { position: relative; height: 100%; border-radius: 1cqw; margin-right: .8cqw; }
+.v-linha i.f { background: var(--enfase); flex: 3; }
+.v-linha i.s { background: #4a2a40; flex: 1.4; animation: v-corte 7s infinite; }
+.v-play { left: 38%; top: 56%; width: .5cqw; height: 26%; background: #fff; animation: v-play 7s infinite linear; }
+.v-tesoura { left: 52%; top: 30%; font-size: 11cqw; animation: v-tes 7s infinite; color: var(--luz); }
+.v-tag { left: 38%; top: 14%; }
+.v-tag.b { top: 82%; color: var(--ok); opacity: 0; animation: v-ok 7s infinite; }
+@keyframes v-corte { 0%, 30% { flex: 1.4; opacity: 1; } 45%, 100% { flex: 0.001; opacity: 0; margin-right: 0; } }
+@keyframes v-play { 0% { left: 38%; } 100% { left: 94%; } }
+@keyframes v-tit { 0%, 50% { transform: scaleX(0); } 60%, 100% { transform: scaleX(1); } }
+@keyframes v-tes { 0%, 20% { opacity: 0; transform: translateY(-2cqw) rotate(-20deg); } 30%, 42% { opacity: 1; transform: translateY(14cqw) rotate(0); } 50%, 100% { opacity: 0; transform: translateY(16cqw); } }
+@keyframes v-ok { 0%, 62% { opacity: 0; } 70%, 100% { opacity: 1; } }
+@keyframes v-gira { 0%, 100% { transform: none; } }
+
+/* Painel */
+.p-tab { left: 7%; top: 14%; width: 34%; height: 72%; border-radius: 2cqw; background: var(--card-2); }
+.p-tab i { left: 8%; right: 8%; height: 5%; border-radius: 99px; background: #5a3550; }
+.p-seta { left: 44%; top: 44%; font-size: 8cqw; color: var(--luz); font-family: var(--f-sans); animation: p-seta 5s infinite; }
+.p-graf { left: 56%; top: 14%; right: 6%; height: 72%; border-radius: 2cqw; background: var(--card-2); }
+.p-graf i { bottom: 12%; width: 10%; border-radius: 1cqw 1cqw 0 0; background: var(--magenta); transform-origin: bottom; animation: p-sobe 5s infinite; }
+.p-graf i:last-of-type { background: var(--luz); }
+.p-graf svg { inset: 10% 6% 30% 6%; width: 88%; height: 60%; overflow: visible; }
+.p-graf svg path { stroke-dasharray: 200; stroke-dashoffset: 200; animation: p-linha 5s infinite; }
+@keyframes p-sobe { 0%, 15% { transform: scaleY(0); } 40%, 100% { transform: scaleY(1); } }
+@keyframes p-linha { 0%, 40% { stroke-dashoffset: 200; } 65%, 100% { stroke-dashoffset: 0; } }
+@keyframes p-seta { 0%, 100% { transform: translateX(0); opacity: .5; } 50% { transform: translateX(2cqw); opacity: 1; } }
+
+/* Notas */
+.n-nota { left: 8%; top: 10%; width: 30%; height: 80%; background: #f6eef3; border-radius: 1.4cqw; transform: rotate(-4deg); }
+.n-nota i { left: 10%; right: 14%; height: 4%; border-radius: 99px; background: #d8c6d1; }
+.n-nota b { left: 10%; bottom: 10%; width: 60%; height: 9%; background: repeating-linear-gradient(90deg, #2e0020 0 3px, transparent 3px 6px); }
+.n-scan { left: 6%; width: 34%; height: 2.5%; background: var(--luz); box-shadow: 0 0 4cqw 1cqw rgba(255,92,200,.7); border-radius: 99px; animation: n-scan 4.5s infinite; }
+.n-tab { left: 50%; top: 14%; right: 6%; height: 72%; border-radius: 2cqw; background: var(--card-2); overflow: hidden; }
+.n-tab .h { left: 0; right: 0; top: 0; height: 14%; background: var(--vinho); }
+.n-tab .r { left: 6%; right: 6%; height: 9%; border-radius: 1cqw; background: #4f2a45; opacity: 0; animation: n-linha 4.5s infinite; }
+.n-tab .r.alerta { background: rgba(255,92,200,.5); }
+@keyframes n-scan { 0% { top: 12%; } 50% { top: 86%; } 100% { top: 12%; } }
+@keyframes n-linha { 0%, 20% { opacity: 0; transform: translateX(-6cqw); } 35%, 85% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+/* Avaliações */
+.a-card { left: 8%; top: 12%; width: 48%; height: 40%; background: #fff; border-radius: 2cqw; }
+.a-est { left: 6%; top: 12%; display: flex; gap: 1cqw; }
+.a-est i { position: relative; width: 5cqw; height: 5cqw; background: #e6dbe2; clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); animation: a-est 5s infinite; }
+.a-card .t { left: 6%; right: 8%; height: 9%; border-radius: 99px; background: #e9e0e6; }
+.a-resp { right: 8%; top: 50%; width: 52%; height: 38%; background: var(--magenta); border-radius: 2cqw 2cqw .4cqw 2cqw; transform-origin: right bottom; animation: a-resp 5s infinite; }
+.a-resp .t { left: 7%; height: 9%; border-radius: 99px; background: rgba(255,255,255,.75); transform: scaleX(0); transform-origin: left; animation: a-txt 5s infinite; }
+@keyframes a-est { 0%, 10% { background: #e6dbe2; } 25%, 100% { background: #FFB400; } }
+@keyframes a-resp { 0%, 30% { transform: scale(0); opacity: 0; } 40%, 100% { transform: scale(1); opacity: 1; } }
+@keyframes a-txt { 0%, 42% { transform: scaleX(0); } 70%, 100% { transform: scaleX(1); } }
+
+/* Posts */
+.c-grade { left: 8%; top: 12%; right: 8%; bottom: 12%; display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.4cqw; }
+.c-grade i { position: relative; border-radius: 1.2cqw; background: var(--card-2); }
+.c-grade i.p { animation: c-foto 6s infinite; }
+@keyframes c-foto { 0%, 10% { background: var(--card-2); transform: scale(1); } 20% { transform: scale(1.12); } 28%, 92% { background: var(--fc, var(--magenta)); transform: scale(1); } 100% { background: var(--card-2); } }
+
+/* Proposta */
+.s-sl { left: 50%; top: 50%; width: 52%; aspect-ratio: 16 / 9; border-radius: 1.6cqw; background: #fff; box-shadow: 0 2cqw 5cqw rgba(0,0,0,.4); transform: translate(-50%,-50%); animation: s-entra 6s infinite; overflow: hidden; }
+.s-sl .bar { left: 0; top: 0; bottom: 0; width: 30%; background: var(--vinho); }
+.s-sl .t1 { left: 36%; top: 22%; width: 50%; height: 10%; border-radius: 99px; background: #2e0020; }
+.s-sl .t2 { left: 36%; top: 42%; width: 40%; height: 7%; border-radius: 99px; background: #d9c8d3; }
+.s-sl .t3 { left: 36%; top: 56%; width: 46%; height: 7%; border-radius: 99px; background: #d9c8d3; }
+@keyframes s-entra { 0% { transform: translate(60%,-50%) rotate(8deg); opacity: 0; } 12%, 70% { opacity: 1; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)); } 85%, 100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)); } }
+
+/* Resumo de conversas */
+.w-bal { height: 9%; border-radius: 1.6cqw; background: #2b4a3f; animation: w-sobe 6s infinite; }
+.w-bal.eu { background: #3d5e52; }
+.w-res { left: 56%; top: 18%; right: 7%; height: 64%; border-radius: 2cqw; background: var(--card-2); }
+.w-res i { left: 10%; height: 9%; border-radius: 99px; background: var(--enfase); transform: scaleX(0); transform-origin: left; animation: w-item 6s infinite; }
+.w-res b { left: 10%; top: 8%; font-family: var(--f-sans); font-size: 4.2cqw; color: var(--ink); }
+@keyframes w-sobe { 0% { transform: translateY(10cqw); opacity: 0; } 15%, 45% { transform: none; opacity: 1; } 60%, 100% { transform: translateX(30cqw) scale(.3); opacity: 0; } }
+@keyframes w-item { 0%, 50% { transform: scaleX(0); } 65%, 100% { transform: scaleX(1); } }
+
+/* Descrições */
+.d-prod { left: 9%; top: 16%; width: 30%; aspect-ratio: 1; border-radius: 2cqw; background: linear-gradient(140deg, #f2cce6, #e680cc); }
+.d-prod::after { content: ""; position: absolute; left: 22%; top: 22%; width: 56%; height: 56%; border-radius: 30%; background: rgba(46,0,32,.25); }
+.d-etq { left: 30%; top: 12%; padding: 1cqw 2.4cqw; border-radius: 99px; background: var(--magenta); color: #fff; font-family: var(--f-sans); font-size: 3.4cqw; font-weight: 600; animation: d-etq 5s infinite; }
+.d-txt { left: 48%; right: 7%; top: 18%; bottom: 18%; }
+.d-txt i { left: 0; height: 9%; border-radius: 99px; background: #6a4260; transform: scaleX(0); transform-origin: left; animation: d-esc 5s infinite; }
+.d-txt i.t { background: var(--ink); height: 12%; }
+@keyframes d-esc { 0%, 8% { transform: scaleX(0); } 30%, 100% { transform: scaleX(1); } }
+@keyframes d-etq { 0%, 55% { transform: scale(0) rotate(-10deg); } 65%, 100% { transform: scale(1) rotate(-6deg); } }
+
+/* Reels */
+.r-fone { left: 50%; top: 6%; height: 88%; aspect-ratio: 9 / 16; border-radius: 3cqw; background: #000; border: .6cqw solid #3b2034; transform: translateX(-50%); overflow: hidden; }
+.r-cena { inset: 0; display: grid; place-items: center; font-family: var(--f-sans); color: #fff; font-weight: 700; font-size: 4.2cqw; text-align: center; animation: r-troca 6s infinite; opacity: 0; }
+.r-cena span { position: relative; }
+.r-cena:nth-child(1) { background: linear-gradient(180deg, #7a1d5e, #2e0020); animation-delay: 0s; }
+.r-cena:nth-child(2) { background: linear-gradient(180deg, #4c1a8a, #1b0a33); animation-delay: 2s; }
+.r-cena:nth-child(3) { background: linear-gradient(180deg, #a3006d, #470030); animation-delay: 4s; }
+.r-lado { top: 18%; font-family: var(--f-mono); font-size: 3cqw; color: var(--muted); }
+@keyframes r-troca { 0% { opacity: 0; transform: scale(1.1); } 6%, 30% { opacity: 1; transform: none; } 36%, 100% { opacity: 0; } }
+
+/* Calculadora */
+.k-caixa { left: 12%; top: 12%; right: 12%; bottom: 12%; border-radius: 2.4cqw; background: var(--card-2); }
+.k-trilho { left: 8%; width: 46%; height: 3%; border-radius: 99px; background: #4f2a45; }
+.k-trilho b { left: 0; top: 50%; width: 4cqw; height: 4cqw; border-radius: 50%; background: var(--luz); transform: translate(-50%,-50%); animation: k-desliza 5s infinite; }
+.k-preco { right: 8%; top: 30%; font-family: var(--f-sans); font-weight: 800; font-size: 9cqw; color: var(--ink); letter-spacing: -0.03em; }
+.k-preco::after { content: "R$ 480"; animation: k-num 5s infinite steps(1); }
+.k-btn { right: 8%; bottom: 14%; width: 36%; height: 16%; border-radius: 1.6cqw; background: #25D366; display: grid; place-items: center; color: #073; font-family: var(--f-sans); font-weight: 700; font-size: 3.6cqw; }
+@keyframes k-desliza { 0%, 100% { left: 10%; } 50% { left: 85%; } }
+@keyframes k-num { 0% { content: "R$ 480"; } 20% { content: "R$ 620"; } 40% { content: "R$ 790"; } 60% { content: "R$ 640"; } 80% { content: "R$ 520"; } }
+</style>
+
+<header class="hero">
+  <div class="wrap"><div class="max">
+    <div>
+      <div class="marca"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyODcuNjAxNiA0NC44MzU5IiB3aWR0aD0iMjg3LjYwIiBoZWlnaHQ9IjQ0Ljg0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlN5bmNvSHViIj4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI2NC41NzQyIC0zODMuODA4NikiPgo8ZyBmaWxsPSIjRkZGRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPgo8cGF0aCBkPSJNIDMwMy40MDIzNDQgMzgzLjgwODU5NCBMIDMwMy40MDIzNDQgMzk4LjUwNzgxMiBMIDI3Ni44NDc2NTYgMzk4LjUwNzgxMiBMIDI3Ni44NDc2NTYgMzk2LjA4OTg0NCBMIDMwMC45NDkyMTkgMzk2LjA4OTg0NCBMIDMwMC45NDkyMTkgMzgzLjgxNjQwNiBMIDI3MS43MzgyODEgMzgzLjgxNjQwNiBDIDI2Ny43ODEyNSAzODMuODE2NDA2IDI2NC41NzQyMTkgMzg3LjAyMzQzOCAyNjQuNTc0MjE5IDM5MC45ODA0NjkgTCAyNjQuNTc0MjE5IDQwMC4xODc1IEwgMjY0LjU5Mzc1IDQwMC4xODc1IEwgMjY0LjU5Mzc1IDQwMy42MTcxODggQyAyNjQuNTkzNzUgNDA3LjU3NDIxOSAyNjcuODAwNzgxIDQxMC43ODEyNSAyNzEuNzU3ODEyIDQxMC43ODEyNSBMIDMwMy40MDIzNDQgNDEwLjc4MTI1IEwgMzAzLjQwMjM0NCA0MjUuNTI3MzQ0IEwgMzA4LjYzMjgxMiA0MjUuNTI3MzQ0IEMgMzEyLjUyMzQzOCA0MjUuNTI3MzQ0IDMxNS42NzU3ODEgNDIyLjM3NSAzMTUuNjc1NzgxIDQxOC40ODQzNzUgTCAzMTUuNjc1NzgxIDM4My44MDg1OTQgWiBNIDMwMy40MDIzNDQgMzgzLjgwODU5NCIvPgo8cGF0aCBkPSJNIDI2NC42NTIzNDQgNDEzLjIzMDQ2OSBMIDI5Mi43NjE3MTkgNDEzLjIzMDQ2OSBMIDI5Mi43NjE3MTkgNDI1LjUwMzkwNiBMIDI3MS42OTUzMTIgNDI1LjUwMzkwNiBDIDI2Ny44MDQ2ODggNDI1LjUwMzkwNiAyNjQuNjUyMzQ0IDQyMi4zNTE1NjIgMjY0LjY1MjM0NCA0MTguNDYwOTM4IFogTSAyNjQuNjUyMzQ0IDQxMy4yMzA0NjkiLz4KPHBhdGggZD0iTSAzMzMuNDM3NSA0MTcuMTQ0NTMxIEwgMzM1LjA4MjAzMSA0MTQuMjQ2MDk0IEMgMzM3Ljk4MDQ2OSA0MTcuMDc4MTI1IDM0MS41MjM0MzggNDE4LjQ5NjA5NCAzNDUuNzEwOTM4IDQxOC40OTYwOTQgQyAzNDcuOTMzNTk0IDQxOC40OTYwOTQgMzQ5Ljg3NSA0MTguMDA3ODEyIDM1MS41MzEyNSA0MTcuMDIzNDM4IEMgMzUzLjE5MTQwNiA0MTYuMDM5MDYyIDM1NC4wMjM0MzggNDE0LjY0ODQzOCAzNTQuMDIzNDM4IDQxMi44NDM3NSBDIDM1NC4wMjM0MzggNDExLjcxNDg0NCAzNTMuNjUyMzQ0IDQxMC43OTY4NzUgMzUyLjkxMDE1NiA0MTAuMDg5ODQ0IEMgMzUyLjE2Nzk2OSA0MDkuMzgyODEyIDM1MS4yNjU2MjUgNDA4LjgzMjAzMSAzNTAuMjAzMTI1IDQwOC40NDUzMTIgQyAzNDkuMTQwNjI1IDQwOC4wNTg1OTQgMzQ3LjcyMjY1NiA0MDcuNjQwNjI1IDM0NS45NTMxMjUgNDA3LjE5MTQwNiBDIDM0My42MzI4MTIgNDA2LjYwOTM3NSAzNDEuNjkxNDA2IDQwNiAzNDAuMTI4OTA2IDQwNS4zNTU0NjkgQyAzMzguNTY2NDA2IDQwNC43MTA5MzggMzM3LjI4MTI1IDQwMy44MDg1OTQgMzM2LjI2NTYyNSA0MDIuNjQ4NDM4IEMgMzM1LjI1IDQwMS40ODgyODEgMzM0Ljc0MjE4OCA0MDAuMDA3ODEyIDMzNC43NDIxODggMzk4LjIwMzEyNSBDIDMzNC43NDIxODggMzk2LjM5ODQzOCAzMzUuMjUgMzk0Ljg1OTM3NSAzMzYuMjY1NjI1IDM5My41ODk4NDQgQyAzMzcuMjgxMjUgMzkyLjMxNjQwNiAzMzguNjI1IDM5MS4zNTkzNzUgMzQwLjI5Njg3NSAzOTAuNzE0ODQ0IEMgMzQxLjk3MjY1NiAzOTAuMDcwMzEyIDM0My43NzczNDQgMzg5Ljc0NjA5NCAzNDUuNzEwOTM4IDM4OS43NDYwOTQgQyAzNDkuODM1OTM4IDM4OS43NDYwOTQgMzUzLjM0Mzc1IDM5MC45MDYyNSAzNTYuMjQ2MDk0IDM5My4yMjY1NjIgTCAzNTQuNjQ4NDM4IDM5Ni4xNzE4NzUgQyAzNTIuMTY3OTY5IDM5NC4yMzgyODEgMzQ5LjE4NzUgMzkzLjI3MzQzOCAzNDUuNzEwOTM4IDM5My4yNzM0MzggQyAzNDMuOTA2MjUgMzkzLjI3MzQzOCAzNDIuMjgxMjUgMzkzLjY5MTQwNiAzNDAuODMyMDMxIDM5NC41MzEyNSBDIDMzOS4zODI4MTIgMzk1LjM2NzE4OCAzMzguNjU2MjUgMzk2LjU5Mzc1IDMzOC42NTYyNSAzOTguMjAzMTI1IEMgMzM4LjY1NjI1IDM5OS4yMzQzNzUgMzM4Ljk5NjA5NCA0MDAuMDc4MTI1IDMzOS42NzE4NzUgNDAwLjczODI4MSBDIDM0MC4zNDc2NTYgNDAxLjM5ODQzOCAzNDEuMjA3MDMxIDQwMS45MjE4NzUgMzQyLjI1MzkwNiA0MDIuMzA4NTk0IEMgMzQzLjMwNDY4OCA0MDIuNjk1MzEyIDM0NC42OTUzMTIgNDAzLjExMzI4MSAzNDYuNDMzNTk0IDQwMy41NjY0MDYgQyAzNDguNzg1MTU2IDQwNC4xNDQ1MzEgMzUwLjc4NTE1NiA0MDQuNzgxMjUgMzUyLjQyNTc4MSA0MDUuNDcyNjU2IEMgMzU0LjA3MDMxMiA0MDYuMTY3OTY5IDM1NS40MjE4NzUgNDA3LjEwOTM3NSAzNTYuNDg0Mzc1IDQwOC4zMDA3ODEgQyAzNTcuNTUwNzgxIDQwOS40OTIxODggMzU4LjA4MjAzMSA0MTEuMDA3ODEyIDM1OC4wODIwMzEgNDEyLjg0Mzc1IEMgMzU4LjA4MjAzMSA0MTQuODcxMDk0IDM1Ny40ODQzNzUgNDE2LjU4MjAzMSAzNTYuMjkyOTY5IDQxNy45NjQ4NDQgQyAzNTUuMTAxNTYyIDQxOS4zNTE1NjIgMzUzLjU2MjUgNDIwLjM3NSAzNTEuNjc5Njg4IDQyMS4wMzUxNTYgQyAzNDkuNzkyOTY5IDQyMS42OTUzMTIgMzQ3Ljc4OTA2MiA0MjIuMDIzNDM4IDM0NS42NjQwNjIgNDIyLjAyMzQzOCBDIDM0MC41NzQyMTkgNDIyLjAyMzQzOCAzMzYuNDk2MDk0IDQyMC4zOTg0MzggMzMzLjQzNzUgNDE3LjE0NDUzMSIvPgo8cGF0aCBkPSJNIDM2OC40NDUzMTIgNDI0LjMyMDMxMiBDIDM2OS4yOTY4NzUgNDIzLjc1MzkwNiAzNzAuMTA5Mzc1IDQyMi42Njc5NjkgMzcwLjg4MjgxMiA0MjEuMDU4NTk0IEwgMzcxLjQxNzk2OSA0MTkuOTk2MDk0IEwgMzYwLjgzNTkzOCAzOTguMDA3ODEyIEwgMzY0LjY1MjM0NCAzOTguMDA3ODEyIEwgMzcyLjA0Mjk2OSA0MTMuODA4NTk0IEMgMzcyLjI2OTUzMSA0MTQuMjYxNzE5IDM3Mi40ODQzNzUgNDE0Ljc3NzM0NCAzNzIuNjk1MzEyIDQxNS4zNTU0NjkgQyAzNzIuOTA2MjUgNDE1LjkzNzUgMzczLjA0Mjk2OSA0MTYuMzA0Njg4IDM3My4xMDkzNzUgNDE2LjQ2ODc1IEMgMzczLjE3MTg3NSA0MTYuMjQyMTg4IDM3My4zMTY0MDYgNDE1Ljg1NTQ2OSAzNzMuNTQyOTY5IDQxNS4zMDg1OTQgQyAzNzMuNzY1NjI1IDQxNC43NjE3MTkgMzczLjk5MjE4OCA0MTQuMjE0ODQ0IDM3NC4yMTg3NSA0MTMuNjY0MDYyIEwgMzgxLjIyNjU2MiAzOTguMDA3ODEyIEwgMzg0Ljk5MjE4OCAzOTguMDA3ODEyIEwgMzczLjc4NTE1NiA0MjIuNjk5MjE5IEMgMzcyLjk3NjU2MiA0MjQuNDQxNDA2IDM3Mi4xMDE1NjIgNDI1Ljc0NjA5NCAzNzEuMTQ4NDM4IDQyNi42MTMyODEgQyAzNzAuMTk5MjE5IDQyNy40ODQzNzUgMzY5LjI1IDQyOC4wMzkwNjIgMzY4LjMwMDc4MSA0MjguMjgxMjUgQyAzNjcuMzQ3NjU2IDQyOC41MjM0MzggMzY2LjI5Mjk2OSA0MjguNjQ0NTMxIDM2NS4xMzI4MTIgNDI4LjY0NDUzMSBMIDM2NS4xMzI4MTIgNDI1LjE2NDA2MiBDIDM2Ni40ODgyODEgNDI1LjE2NDA2MiAzNjcuNTg5ODQ0IDQyNC44ODI4MTIgMzY4LjQ0NTMxMiA0MjQuMzIwMzEyIi8+CjxwYXRoIGQ9Ik0gMzkyLjE0NDUzMSAzOTguMDA3ODEyIEwgMzkyLjE0NDUzMSA0MDIuMDE5NTMxIEMgMzkyLjk0OTIxOSA0MDAuNjAxNTYyIDM5NC4wNzgxMjUgMzk5LjUgMzk1LjUyNzM0NCAzOTguNzEwOTM4IEMgMzk2Ljk3NjU2MiAzOTcuOTIxODc1IDM5OC41NzAzMTIgMzk3LjUyNzM0NCA0MDAuMzEyNSAzOTcuNTI3MzQ0IEMgNDA1Ljk4MDQ2OSAzOTcuNTI3MzQ0IDQwOC44MTY0MDYgNDAwLjc4MTI1IDQwOC44MTY0MDYgNDA3LjI4OTA2MiBMIDQwOC44MTY0MDYgNDIxLjUzOTA2MiBMIDQwNS4xNDA2MjUgNDIxLjUzOTA2MiBMIDQwNS4xNDA2MjUgNDA3Ljc2OTUzMSBDIDQwNS4xNDA2MjUgNDA1LjUxNTYyNSA0MDQuNjgzNTk0IDQwMy44Mzk4NDQgNDAzLjc2NTYyNSA0MDIuNzQ2MDk0IEMgNDAyLjg0NzY1NiA0MDEuNjQ4NDM4IDQwMS4zNTU0NjkgNDAxLjEwMTU2MiAzOTkuMjk2ODc1IDQwMS4xMDE1NjIgQyAzOTcuOTQxNDA2IDQwMS4xMDE1NjIgMzk2LjcxODc1IDQwMS40MjU3ODEgMzk1LjYyNSA0MDIuMDY2NDA2IEMgMzk0LjUyNzM0NCA0MDIuNzE0ODQ0IDM5My42NzU3ODEgNDAzLjU4OTg0NCAzOTMuMDYyNSA0MDQuNzAzMTI1IEMgMzkyLjQ0OTIxOSA0MDUuODEyNSAzOTIuMTQ0NTMxIDQwNy4wMTE3MTkgMzkyLjE0NDUzMSA0MDguMzAwNzgxIEwgMzkyLjE0NDUzMSA0MjEuNTM5MDYyIEwgMzg4LjQ3MjY1NiA0MjEuNTM5MDYyIEwgMzg4LjQ3MjY1NiAzOTguMDA3ODEyIFogTSAzOTIuMTQ0NTMxIDM5OC4wMDc4MTIiLz4KPHBhdGggZD0iTSA0MTkuNzgxMjUgNDIwLjQwNjI1IEMgNDE3Ljg4MjgxMiA0MTkuMzI4MTI1IDQxNi4zODI4MTIgNDE3Ljg1NTQ2OSA0MTUuMjg5MDYyIDQxNS45ODQzNzUgQyA0MTQuMTk1MzEyIDQxNC4xMTcxODggNDEzLjY0NDUzMSA0MTIuMDU0Njg4IDQxMy42NDQ1MzEgNDA5LjgwMDc4MSBDIDQxMy42NDQ1MzEgNDA3LjU0Njg3NSA0MTQuMTk1MzEyIDQwNS40ODQzNzUgNDE1LjI4OTA2MiA0MDMuNjEzMjgxIEMgNDE2LjM4MjgxMiA0MDEuNzQ2MDk0IDQxNy44ODI4MTIgNDAwLjI2NTYyNSA0MTkuNzgxMjUgMzk5LjE2Nzk2OSBDIDQyMS42ODM1OTQgMzk4LjA3NDIxOSA0MjMuNzYxNzE5IDM5Ny41MjczNDQgNDI2LjAxNTYyNSAzOTcuNTI3MzQ0IEMgNDI3LjYyNSAzOTcuNTI3MzQ0IDQyOS4xNDg0MzggMzk3LjgwMDc4MSA0MzAuNTgyMDMxIDM5OC4zNDc2NTYgQyA0MzIuMDE1NjI1IDM5OC44OTQ1MzEgNDMzLjI5Njg3NSAzOTkuNjY3OTY5IDQzNC40MjE4NzUgNDAwLjY2Nzk2OSBMIDQzMi4xMDU0NjkgNDAzLjI3NzM0NCBDIDQzMS4zNjMyODEgNDAyLjU5NzY1NiA0MzAuNDc2NTYyIDQwMi4wNjY0MDYgNDI5LjQ0OTIxOSA0MDEuNjc5Njg4IEMgNDI4LjQxNDA2MiA0MDEuMjkyOTY5IDQyNy4yODkwNjIgNDAxLjEwMTU2MiA0MjYuMDY2NDA2IDQwMS4xMDE1NjIgQyA0MjQuNDUzMTI1IDQwMS4xMDE1NjIgNDIyLjk4ODI4MSA0MDEuNDgwNDY5IDQyMS42Njc5NjkgNDAyLjIzODI4MSBDIDQyMC4zNDc2NTYgNDAyLjk5NjA5NCA0MTkuMzA4NTk0IDQwNC4wMzUxNTYgNDE4LjU1MDc4MSA0MDUuMzU1NDY5IEMgNDE3Ljc5Mjk2OSA0MDYuNjc1NzgxIDQxNy40MTQwNjIgNDA4LjE1NjI1IDQxNy40MTQwNjIgNDA5LjgwMDc4MSBDIDQxNy40MTQwNjIgNDExLjQxMDE1NiA0MTcuNzg1MTU2IDQxMi44NzUgNDE4LjUyNzM0NCA0MTQuMTk1MzEyIEMgNDE5LjI2NTYyNSA0MTUuNTE1NjI1IDQyMC4zMDQ2ODggNDE2LjU1ODU5NCA0MjEuNjQ0NTMxIDQxNy4zMTI1IEMgNDIyLjk4MDQ2OSA0MTguMDcwMzEyIDQyNC40ODgyODEgNDE4LjQ0OTIxOSA0MjYuMTYwMTU2IDQxOC40NDkyMTkgQyA0MjcuNDgwNDY5IDQxOC40NDkyMTkgNDI4LjcyMjY1NiA0MTguMjE0ODQ0IDQyOS44ODI4MTIgNDE3Ljc0NjA5NCBDIDQzMS4wNDI5NjkgNDE3LjI4MTI1IDQzMi4wMzkwNjIgNDE2LjYyODkwNiA0MzIuODc4OTA2IDQxNS43OTI5NjkgTCA0MzUuMDAzOTA2IDQxOC41NDI5NjkgQyA0MzMuODQzNzUgNDE5LjY0MDYyNSA0MzIuNDkyMTg4IDQyMC40OTYwOTQgNDMwLjk0NTMxMiA0MjEuMTA1NDY5IEMgNDI5LjM5ODQzOCA0MjEuNzE4NzUgNDI3Ljc1MzkwNiA0MjIuMDIzNDM4IDQyNi4wMTU2MjUgNDIyLjAyMzQzOCBDIDQyMy43NjE3MTkgNDIyLjAyMzQzOCA0MjEuNjgzNTk0IDQyMS40ODQzNzUgNDE5Ljc4MTI1IDQyMC40MDYyNSIvPgo8cGF0aCBkPSJNIDQ1NC42NDQ1MzEgNDE3LjMxMjUgQyA0NTUuOTQ5MjE5IDQxNi41NTg1OTQgNDU2Ljk4MDQ2OSA0MTUuNTE1NjI1IDQ1Ny43MzgyODEgNDE0LjE5NTMxMiBDIDQ1OC40OTYwOTQgNDEyLjg3NSA0NTguODcxMDk0IDQxMS40MTAxNTYgNDU4Ljg3MTA5NCA0MDkuODAwNzgxIEMgNDU4Ljg3MTA5NCA0MDguMTU2MjUgNDU4LjQ5NjA5NCA0MDYuNjc1NzgxIDQ1Ny43MzgyODEgNDA1LjM1NTQ2OSBDIDQ1Ni45ODA0NjkgNDA0LjAzNTE1NiA0NTUuOTQ5MjE5IDQwMi45OTYwOTQgNDU0LjY0NDUzMSA0MDIuMjM4MjgxIEMgNDUzLjMzOTg0NCA0MDEuNDgwNDY5IDQ1MS44ODI4MTIgNDAxLjEwMTU2MiA0NTAuMjczNDM4IDQwMS4xMDE1NjIgQyA0NDguNjYwMTU2IDQwMS4xMDE1NjIgNDQ3LjIwMzEyNSA0MDEuNDgwNDY5IDQ0NS44OTg0MzggNDAyLjIzODI4MSBDIDQ0NC41OTM3NSA0MDIuOTk2MDk0IDQ0My41NjI1IDQwNC4wMzUxNTYgNDQyLjgwODU5NCA0MDUuMzU1NDY5IEMgNDQyLjA1MDc4MSA0MDYuNjc1NzgxIDQ0MS42NzE4NzUgNDA4LjE1NjI1IDQ0MS42NzE4NzUgNDA5LjgwMDc4MSBDIDQ0MS42NzE4NzUgNDExLjQxMDE1NiA0NDIuMDUwNzgxIDQxMi44NzUgNDQyLjgwODU5NCA0MTQuMTk1MzEyIEMgNDQzLjU2MjUgNDE1LjUxNTYyNSA0NDQuNTkzNzUgNDE2LjU1ODU5NCA0NDUuODk4NDM4IDQxNy4zMTI1IEMgNDQ3LjIwMzEyNSA0MTguMDcwMzEyIDQ0OC42NjAxNTYgNDE4LjQ0OTIxOSA0NTAuMjczNDM4IDQxOC40NDkyMTkgQyA0NTEuODgyODEyIDQxOC40NDkyMTkgNDUzLjMzOTg0NCA0MTguMDcwMzEyIDQ1NC42NDQ1MzEgNDE3LjMxMjUgTSA0NDQuMDM5MDYyIDQyMC4zODI4MTIgQyA0NDIuMTM2NzE5IDQxOS4yODUxNTYgNDQwLjY0MDYyNSA0MTcuODA0Njg4IDQzOS41NDY4NzUgNDE1LjkzNzUgQyA0MzguNDQ5MjE5IDQxNC4wNjY0MDYgNDM3LjkwMjM0NCA0MTIuMDIzNDM4IDQzNy45MDIzNDQgNDA5LjgwMDc4MSBDIDQzNy45MDIzNDQgNDA3LjU0Njg3NSA0MzguNDQ5MjE5IDQwNS40ODQzNzUgNDM5LjU0Njg3NSA0MDMuNjEzMjgxIEMgNDQwLjY0MDYyNSA0MDEuNzQ2MDk0IDQ0Mi4xMzY3MTkgNDAwLjI2NTYyNSA0NDQuMDM5MDYyIDM5OS4xNjc5NjkgQyA0NDUuOTM3NSAzOTguMDc0MjE5IDQ0OC4wMTU2MjUgMzk3LjUyNzM0NCA0NTAuMjczNDM4IDM5Ny41MjczNDQgQyA0NTIuNTI3MzQ0IDM5Ny41MjczNDQgNDU0LjYwNTQ2OSAzOTguMDc0MjE5IDQ1Ni41MDM5MDYgMzk5LjE2Nzk2OSBDIDQ1OC40MDYyNSA0MDAuMjY1NjI1IDQ1OS45MDIzNDQgNDAxLjc0NjA5NCA0NjEgNDAzLjYxMzI4MSBDIDQ2Mi4wOTM3NSA0MDUuNDg0Mzc1IDQ2Mi42NDA2MjUgNDA3LjU0Njg3NSA0NjIuNjQwNjI1IDQwOS44MDA3ODEgQyA0NjIuNjQwNjI1IDQxMi4wMjM0MzggNDYyLjA5Mzc1IDQxNC4wNjY0MDYgNDYxIDQxNS45Mzc1IEMgNDU5LjkwMjM0NCA0MTcuODA0Njg4IDQ1OC40MDYyNSA0MTkuMjg1MTU2IDQ1Ni41MDM5MDYgNDIwLjM4MjgxMiBDIDQ1NC42MDU0NjkgNDIxLjQ3NjU2MiA0NTIuNTI3MzQ0IDQyMi4wMjM0MzggNDUwLjI3MzQzOCA0MjIuMDIzNDM4IEMgNDQ4LjAxNTYyNSA0MjIuMDIzNDM4IDQ0NS45Mzc1IDQyMS40NzY1NjIgNDQ0LjAzOTA2MiA0MjAuMzgyODEyIi8+CjxwYXRoIGQ9Ik0gNDc0LjYyNSAzOTAuMjMwNDY5IEwgNDc0LjYyNSA0MDIuNDUzMTI1IEwgNDg4LjAwNzgxMiA0MDIuNDUzMTI1IEwgNDg4LjAwNzgxMiAzOTAuMjMwNDY5IEwgNDk0Ljc3MzQzOCAzOTAuMjMwNDY5IEwgNDk0Ljc3MzQzOCA0MTguMzYzMjgxIEMgNDk0Ljc3MzQzOCA0MjAuMTE3MTg4IDQ5My4zNTE1NjIgNDIxLjUzOTA2MiA0OTEuNTk3NjU2IDQyMS41MzkwNjIgTCA0ODguMDA3ODEyIDQyMS41MzkwNjIgTCA0ODguMDA3ODEyIDQwOC4yNTM5MDYgTCA0NzQuNjI1IDQwOC4yNTM5MDYgTCA0NzQuNjI1IDQyMS41MzkwNjIgTCA0NjcuODU5Mzc1IDQyMS41MzkwNjIgTCA0NjcuODU5Mzc1IDM5MC4yMzA0NjkgWiBNIDQ3NC42MjUgMzkwLjIzMDQ2OSIvPgo8cGF0aCBkPSJNIDUwMi4wNDY4NzUgNDE5LjQzNzUgQyA1MDAuNzA3MDMxIDQxNy43MTQ4NDQgNTAwLjAzOTA2MiA0MTUuMTc5Njg4IDUwMC4wMzkwNjIgNDExLjgyODEyNSBMIDUwMC4wMzkwNjIgMzk3LjM4MjgxMiBMIDUwNi41MTU2MjUgMzk3LjM4MjgxMiBMIDUwNi41MTU2MjUgNDEwLjk1NzAzMSBDIDUwNi41MTU2MjUgNDEyLjYzMjgxMiA1MDYuODc1IDQxMy44NzUgNTA3LjYwMTU2MiA0MTQuNjc5Njg4IEMgNTA4LjMyODEyNSA0MTUuNDg0Mzc1IDUwOS40NDUzMTIgNDE1Ljg4NjcxOSA1MTAuOTYwOTM4IDQxNS44ODY3MTkgQyA1MTIuNTcwMzEyIDQxNS44ODY3MTkgNTEzLjgxMjUgNDE1LjMwMDc4MSA1MTQuNjc5Njg4IDQxNC4xMjUgQyA1MTUuNTUwNzgxIDQxMi45NDkyMTkgNTE1Ljk4NDM3NSA0MTEuNDkyMTg4IDUxNS45ODQzNzUgNDA5Ljc1IEwgNTE1Ljk4NDM3NSAzOTcuMzgyODEyIEwgNTIyLjQ2MDkzOCAzOTcuMzgyODEyIEwgNTIyLjQ2MDkzOCA0MjEuNTM5MDYyIEwgNTE2LjM3MTA5NCA0MjEuNTM5MDYyIEwgNTE2LjM3MTA5NCA0MTguMTYwMTU2IEMgNTE1LjY2NDA2MiA0MTkuMzE2NDA2IDUxNC41OTM3NSA0MjAuMjUzOTA2IDUxMy4xNjAxNTYgNDIwLjk2MDkzOCBDIDUxMS43MjY1NjIgNDIxLjY2Nzk2OSA1MTAuMjg1MTU2IDQyMi4wMjM0MzggNTA4LjgzNTkzOCA0MjIuMDIzNDM4IEMgNTA1LjY0NDUzMSA0MjIuMDIzNDM4IDUwMy4zODI4MTIgNDIxLjE2NDA2MiA1MDIuMDQ2ODc1IDQxOS40Mzc1Ii8+CjxwYXRoIGQ9Ik0gNTQzLjkxNDA2MiA0MTQuMTcxODc1IEMgNTQ1LjA0Mjk2OSA0MTIuOTMzNTk0IDU0NS42MDU0NjkgNDExLjM2MzI4MSA1NDUuNjA1NDY5IDQwOS40NjA5MzggQyA1NDUuNjA1NDY5IDQwNy41NTg1OTQgNTQ1LjA0Mjk2OSA0MDUuOTg4MjgxIDU0My45MTQwNjIgNDA0Ljc1IEMgNTQyLjc4NTE1NiA0MDMuNTExNzE5IDU0MS4zNTE1NjIgNDAyLjg5MDYyNSA1MzkuNjEzMjgxIDQwMi44OTA2MjUgQyA1MzcuOTM3NSA0MDIuODkwNjI1IDUzNi41NjI1IDQwMy41MTE3MTkgNTM1LjQ4MDQ2OSA0MDQuNzUgQyA1MzQuNDAyMzQ0IDQwNS45ODgyODEgNTMzLjg2MzI4MSA0MDcuNTU4NTk0IDUzMy44NjMyODEgNDA5LjQ2MDkzOCBDIDUzMy44NjMyODEgNDExLjM5NDUzMSA1MzQuNDEwMTU2IDQxMi45NzI2NTYgNTM1LjUwNzgxMiA0MTQuMTk1MzEyIEMgNTM2LjYwMTU2MiA0MTUuNDIxODc1IDUzNy45NzI2NTYgNDE2LjAzMTI1IDUzOS42MTMyODEgNDE2LjAzMTI1IEMgNTQxLjM1MTU2MiA0MTYuMDMxMjUgNTQyLjc4NTE1NiA0MTUuNDE0MDYyIDU0My45MTQwNjIgNDE0LjE3MTg3NSBNIDUzNi45MDYyNSA0MjEuMTc5Njg4IEMgNTM1LjUyMzQzOCA0MjAuNjE3MTg4IDUzNC4zOTQ1MzEgNDE5Ljc2OTUzMSA1MzMuNTIzNDM4IDQxOC42NDA2MjUgTCA1MzMuNTIzNDM4IDQyMS41NDI5NjkgTCA1MjcuMzkwNjI1IDQyMS41NDI5NjkgTCA1MjcuMzkwNjI1IDM4OS43NDYwOTQgTCA1MzMuODYzMjgxIDM4OS43NDYwOTQgTCA1MzMuODYzMjgxIDQwMC4wODU5MzggQyA1MzQuNzM0Mzc1IDM5OS4wNTg1OTQgNTM1LjgxMjUgMzk4LjI2NTYyNSA1MzcuMTAxNTYyIDM5Ny43MTg3NSBDIDUzOC4zOTA2MjUgMzk3LjE3MTg3NSA1MzkuNzQyMTg4IDM5Ni44OTg0MzggNTQxLjE2MDE1NiAzOTYuODk4NDM4IEMgNTQzLjMxNjQwNiAzOTYuODk4NDM4IDU0NS4yMzQzNzUgMzk3LjQ1MzEyNSA1NDYuOTEwMTU2IDM5OC41NjY0MDYgQyA1NDguNTg1OTM4IDM5OS42NzU3ODEgNTQ5Ljg3ODkwNiA0MDEuMTkxNDA2IDU1MC44MDA3ODEgNDAzLjEwOTM3NSBDIDU1MS43MTg3NSA0MDUuMDIzNDM4IDU1Mi4xNzU3ODEgNDA3LjE0MDYyNSA1NTIuMTc1NzgxIDQwOS40NjA5MzggQyA1NTIuMTc1NzgxIDQxMS43ODEyNSA1NTEuNzIyNjU2IDQxMy44OTg0MzggNTUwLjgyNDIxOSA0MTUuODE2NDA2IEMgNTQ5LjkyMTg3NSA0MTcuNzMwNDY5IDU0OC42NDA2MjUgNDE5LjI0NjA5NCA1NDYuOTgwNDY5IDQyMC4zNTkzNzUgQyA1NDUuMzI0MjE5IDQyMS40Njg3NSA1NDMuNDE0MDYyIDQyMi4wMjM0MzggNTQxLjI1NzgxMiA0MjIuMDIzNDM4IEMgNTM5Ljc0MjE4OCA0MjIuMDIzNDM4IDUzOC4yOTI5NjkgNDIxLjc0MjE4OCA1MzYuOTA2MjUgNDIxLjE3OTY4OCIvPgo8L2c+CjxnIGZpbGw9IiNGRkZGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjAuMzUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgo8cGF0aCBkPSJNIDI4OC44MjAzMTIgNDI1LjUwMzkwNiBMIDI4OC44MjAzMTIgNDEwLjc3MzQzOCBMIDMwMS4wOTM3NSA0MTAuNzczNDM4IEwgMzAxLjA5Mzc1IDQxOC42OTE0MDYgQyAzMDEuMDkzNzUgNDIyLjQ1MzEyNSAyOTguMDQyOTY5IDQyNS41MDM5MDYgMjk0LjI4MTI1IDQyNS41MDM5MDYgWiBNIDI4OC44MjAzMTIgNDI1LjUwMzkwNiIvPgo8L2c+CjwvZz4KPC9zdmc+Cg==" alt="SyncoHub"><span>Feira do Empreendedor 2026 · estande 127</span></div>
+      <h1>Vitrine<br>de <span>IA</span></h1>
+      <p class="sub">Dez coisas que você já pode fazer hoje com IA. Cada uma vem com o prompt pronto para copiar e o passo a passo para fazer sozinho.</p>
+      <div class="contagem"><div><b>10</b>usos prontos</div><div><b>1</b>ferramenta: o Claude</div><div><b>0</b>linha de código</div></div>
+    </div>
+    <div class="campo-hero" aria-hidden="true">
+      <div class="tela" id="telaHero"></div>
+      <div class="entrada"><span class="txt" id="txtHero"></span><span class="enviar"><svg viewBox="0 0 24 24" fill="#fff"><path d="M3 20.5V14l9-2-9-2V3.5L22 12z"/></svg></span></div>
+    </div>
+  </div></div>
+</header>
+
+<section class="wrap" id="vitrine">
+  <div class="max">
+    <div class="sec-h">
+      <div><h2>Escolha uma peça da vitrine</h2></div>
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por tipo"></div>
+    </div>
+    <div class="vitrine" id="grade"></div>
+  </div>
+</section>
+
+<section class="balcao" id="balcao">
+  <div class="wrap"><div class="max">
+    <div class="topo"><span class="selo" id="dCat"></span><span class="selo claro" id="dTempo"></span><span class="selo claro" id="dFerr"></span></div>
+    <h2 id="dNome"></h2>
+    <p class="resumo" id="dResumo"></p>
+    <div class="grande" id="dCena" aria-hidden="true"></div>
+
+    <div class="campo">
+      <div class="cab"><span class="bolas"><i></i><i></i><i></i></span><span>O prompt</span><span class="copiado" id="copiado" aria-live="polite"></span>
+        <button class="copiar" type="button" id="copiar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar prompt</button></div>
+      <pre id="dPrompt"></pre>
+      <div class="anexo" id="dAnexo"></div>
+    </div>
+    <p class="dica-ph">Troque o que está <b>[entre colchetes]</b> pelas informações do seu negócio antes de enviar.</p>
+
+    <h3 class="passos-h">Passo a passo</h3>
+    <ol class="passos" id="dPassos"></ol>
+    <div class="extra"><div class="dica"><b>Dica de quem já fez</b><span id="dDica"></span></div><div class="cuidado"><b>Cuidado</b><span id="dCuidado"></span></div></div>
+    <div class="nav-pecas"><button type="button" id="ant">← Anterior</button><button type="button" id="prox">Próxima peça →</button></div>
+  </div></div>
+</section>
+
+<section class="final wrap">
+  <div class="max caixa">
+    <div style="position:relative;z-index:1">
+      <h2>Fazer na mão uma vez é ótimo. Todo dia, sozinho, é outra coisa.</h2>
+      <p>Com o prompt, você faz cada uma dessas tarefas em minutos. A SyncoHub transforma as que se repetem em automação: a planilha vira painel toda segunda, as notas viram lançamento quando chegam, o WhatsApp responde e agenda sozinho.</p>
+      <a class="botao" href="https://wa.me/5511941768980?text=Vi%20a%20Vitrine%20de%20IA%20e%20quero%20conversar" target="_blank" rel="noopener">Conversar com a SyncoHub</a>
+      <small>WhatsApp (11) 97661-4047 · syncohub.com.br · @syncohub.ia</small>
+    </div>
+    <div class="lado">
+      <div><b>Com o prompt</b>Você faz, quando lembra, em minutos.</div>
+      <div><b>Com automação</b>Acontece sozinho, no horário certo, ligado aos seus sistemas.</div>
+      <div><b>Com agente de IA</b>Conversa com o cliente no WhatsApp e resolve, como a Synthia do estande.</div>
+    </div>
+  </div>
+</section>
+<p class="fonte wrap"><span class="max" style="display:block">Para os usos que criam ou editam arquivos, o Claude precisa do recurso Code execution and file creation ligado, disponível em todos os planos, com limite de 30 MB por arquivo. Fonte: <a href="https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude" target="_blank" rel="noopener">Central de Ajuda do Claude</a>, consultada em 16/10/2026.</span></p>
+
+<script>
+const ATIVAR = ['Ligue a criação de arquivos', 'No Claude, abra Configurações e, em Capabilities, ative “Code execution and file creation”. É o que deixa o Claude abrir, editar e devolver arquivos.'];
+const PECAS = [
+ { id: 'video', nome: 'Editar vídeo para Reels', cat: 'Conteúdo', tempo: '10 min', ferr: 'Claude + seu vídeo',
+   resumo: 'Corte os trechos parados, deixe o vídeo na vertical, acelere e coloque um título fixo. Sem abrir editor, sem timeline.',
+   frase: 'Corta os silêncios e deixa vertical pro Reels',
+   anexos: ['video.mp4'],
+   prompt: 'Você é meu editor de vídeo. No vídeo anexo:\n1. Corte os trechos em que fico parado ou em silêncio por mais de 1 segundo.\n2. Deixe no formato vertical 9:16 (1080 × 1920), com meu rosto centralizado.\n3. Coloque o título fixo "[título do vídeo]" no topo, em letras brancas sobre uma faixa [cor da sua marca].\n4. Exporte em MP4, com no máximo [60] segundos.\nAntes de exportar, me diga quais trechos vai cortar e a duração final.',
+   passos: [ATIVAR, ['Grave curto', 'Vídeos de até 1 minuto, com até 30 MB, funcionam melhor. Para Reels, grave na vertical e com boa luz.'], ['Anexe e cole', 'Clique no clipe da conversa, anexe o vídeo e cole o prompt trocando o que está entre colchetes.'], ['Ajuste o plano', 'O Claude mostra o que vai cortar. Responda como falaria com um editor: “mantém o começo”, “corta mais rápido”.'], ['Baixe e poste', 'O MP4 aparece na conversa para baixar. No próximo vídeo, é só anexar e colar o mesmo prompt.']],
+   dica: 'Peça três versões com títulos diferentes e poste a que tiver o título mais claro. Guarde o prompt num Projeto do Claude para reaproveitar.',
+   cuidado: 'Arquivos acima de 30 MB não passam. Comprima o vídeo ou corte em partes antes de enviar.' },
+ { id: 'painel', nome: 'Planilha de vendas vira painel', cat: 'Gestão', tempo: '5 min', ferr: 'Claude + Excel ou CSV',
+   resumo: 'A planilha que ninguém olha vira gráficos e um resumo em português do que mudou no mês.',
+   frase: 'Transforma essa planilha num painel de vendas',
+   anexos: ['vendas.xlsx'],
+   prompt: 'Anexei a planilha de vendas dos últimos [6 meses]. Monte um painel com:\n- faturamento por mês, com a variação em relação ao mês anterior;\n- os 10 produtos que mais vendem e os 10 que menos vendem;\n- ticket médio e quantos clientes compraram mais de uma vez.\nDepois escreva, em 5 frases simples, o que mudou e o que eu deveria olhar primeiro. Faça o painel como artefato interativo.',
+   passos: [ATIVAR, ['Exporte do seu sistema', 'No ERP, na loja virtual ou no sistema de caixa, exporte as vendas em Excel ou CSV. Uma linha por venda é o ideal.'], ['Anexe e cole', 'Anexe o arquivo e cole o prompt. O Claude lê as colunas sozinho e pergunta se algo não estiver claro.'], ['Explore o painel', 'O painel abre ao lado da conversa. Pergunte o que quiser: “e só a loja do centro?”, “compara com o ano passado”.'], ['Repita todo mês', 'Mande a planilha nova na mesma conversa e peça: “atualiza o painel com este mês”.']],
+   dica: 'Peça “o que eu não estou vendo?” no fim. É quando aparecem padrões como dia da semana fraco ou cliente que sumiu.',
+   cuidado: 'Confira dois ou três números com o seu sistema antes de tomar decisão. Coluna mal nomeada gera leitura errada.' },
+ { id: 'notas', nome: 'Notas e boletos viram planilha', cat: 'Financeiro', tempo: '5 min', ferr: 'Claude + fotos',
+   resumo: 'Foto de nota fiscal e boleto vira planilha organizada, com o que vence na semana em destaque.',
+   frase: 'Lê essas notas e monta a planilha de contas a pagar',
+   anexos: ['nota-01.jpg', 'boleto-02.jpg', '+ 8 fotos'],
+   prompt: 'Anexei fotos de notas fiscais e boletos. Para cada documento, extraia: fornecedor, CNPJ, número, data de emissão, vencimento, valor total e forma de pagamento.\nMonte uma planilha Excel com uma linha por documento, some o total por fornecedor e destaque em vermelho o que vence nos próximos 7 dias.\nSe algum campo estiver ilegível, escreva "conferir" em vez de adivinhar.',
+   passos: [ATIVAR, ['Fotografe direito', 'Documento reto, com luz, sem dedo na frente. PDF da nota eletrônica é ainda melhor.'], ['Anexe em lote', 'Até 20 arquivos por mensagem. Cole o prompt junto.'], ['Confira os “conferir”', 'O Claude marca o que não conseguiu ler. Corrija só essas linhas.'], ['Baixe a planilha', 'O arquivo Excel aparece pronto na conversa para baixar ou levar para o seu sistema.']],
+   dica: 'Peça para o Claude separar por categoria (aluguel, fornecedor, imposto). No fim do mês você tem o retrato das despesas.',
+   cuidado: 'Antes de pagar, confira o código de barras do boleto no app do banco. A planilha organiza, não substitui a conferência.' },
+ { id: 'avaliacoes', nome: 'Responder avaliações do Google', cat: 'Vendas', tempo: '3 min', ferr: 'Claude',
+   resumo: 'Respostas que soam como você, citam o que o cliente disse e transformam reclamação em contato.',
+   frase: 'Responde essas avaliações do Google no nosso tom',
+   anexos: [],
+   prompt: 'Você responde avaliações do Google da [nome da empresa], uma [tipo de negócio] em [bairro, cidade]. Nosso tom é [próximo e direto].\nPara cada avaliação abaixo, escreva uma resposta de até 4 linhas:\n- agradeça citando algo específico que a pessoa disse;\n- se for crítica, reconheça sem se justificar e ofereça contato pelo [WhatsApp];\n- nunca prometa desconto nem invente informação.\n\nAvaliações:\n[cole aqui]',
+   passos: [['Copie as avaliações', 'No Perfil da Empresa no Google, copie as avaliações ainda sem resposta.'], ['Crie um Projeto', 'No Claude, crie um Projeto “Avaliações” e cole nas instruções o seu tom e as regras. Assim não precisa repetir.'], ['Cole e gere', 'Cole as avaliações e peça as respostas. Leia cada uma antes de publicar.'], ['Toda semana', 'Separe 10 minutos na segunda. Avaliação respondida rápido conta para o cliente que está escolhendo.']],
+   dica: 'Peça duas versões para as críticas: uma mais curta e outra mais acolhedora. Escolha a que combina com o caso.',
+   cuidado: 'Não cole nome completo, telefone ou dados de saúde de clientes. A avaliação pública já basta.' },
+ { id: 'posts', nome: 'Calendário de posts do mês', cat: 'Conteúdo', tempo: '10 min', ferr: 'Claude + fotos',
+   resumo: 'Fotos que já estão no seu celular viram um mês de posts, com legenda pronta e chamada para o WhatsApp.',
+   frase: 'Monta meu calendário de posts de novembro',
+   anexos: ['produto-1.jpg', 'loja.jpg', '+ 10 fotos'],
+   prompt: 'Sou dono(a) de [tipo de negócio] e quero postar [3] vezes por semana no Instagram em [mês].\nAnexei fotos de produtos e do dia a dia. Monte um calendário em tabela com: data, formato (carrossel, Reels ou foto), qual foto usar, título de até 8 palavras, legenda pronta com chamada para o WhatsApp e 5 hashtags do meu bairro ou cidade.\nInclua 2 datas comemorativas do mês que combinem com o negócio.',
+   passos: [['Separe 10 a 15 fotos', 'Produto, bastidor, equipe, cliente feliz (com autorização). Variedade ajuda.'], ['Anexe e cole', 'Mande as fotos com o prompt. O Claude olha cada imagem e escolhe onde usar.'], ['Peça a planilha', 'Se quiser levar para o celular, peça: “exporta em Excel”. Precisa da criação de arquivos ligada.'], ['Agende de uma vez', 'Use o Meta Business Suite para agendar o mês inteiro num domingo à tarde.']],
+   dica: 'Diga quais posts deram mais resultado no mês passado. O Claude ajusta o calendário para repetir o que funcionou.',
+   cuidado: 'Releia datas comemorativas e preços antes de agendar. A IA pode errar o dia de uma data móvel.' },
+ { id: 'proposta', nome: 'Proposta comercial em PowerPoint', cat: 'Vendas', tempo: '8 min', ferr: 'Claude + seu escopo',
+   resumo: 'Do resumo da conversa com o cliente para uma proposta de 8 slides, com as suas cores, pronta para enviar.',
+   frase: 'Faz a proposta para o cliente em PowerPoint',
+   anexos: ['logo.png'],
+   prompt: 'Monte uma proposta comercial em PowerPoint, com 8 slides, para [nome do cliente], que precisa de [o que ele pediu]. Use as cores [cores da marca] e o logo anexo.\nSlides: capa, o que entendemos do problema, a solução, como funciona em 4 passos, cronograma, investimento, por que nós, próximos passos.\nLinguagem simples, sem jargão, frases curtas.\n\nInformações: [cole o escopo, o preço e os prazos]',
+   passos: [ATIVAR, ['Junte o que sabe', 'Anote o que o cliente pediu, o preço e o prazo. Pode ser em tópicos, do jeito que estiver.'], ['Anexe o logo e cole', 'O Claude usa as suas cores e o logo em todos os slides.'], ['Revise slide a slide', 'Peça ajustes: “o slide 3 está longo”, “troca o título do 6”. Ele refaz só o que você pediu.'], ['Baixe e envie', 'O arquivo .pptx abre no PowerPoint ou no Google Apresentações.']],
+   dica: 'Na primeira vez, peça também um modelo em branco com a sua identidade. Nas próximas, anexe o modelo e só troque o conteúdo.',
+   cuidado: 'Confira preço, prazo e nome do cliente em todos os slides antes de enviar.' },
+ { id: 'whatsapp', nome: 'O que os clientes pedem no WhatsApp', cat: 'Gestão', tempo: '5 min', ferr: 'Claude + conversas exportadas',
+   resumo: 'Centenas de mensagens viram a lista das perguntas que mais se repetem, com a resposta pronta para cada uma.',
+   frase: 'Lê essas conversas e me diz o que mais perguntam',
+   anexos: ['conversa-cliente-1.txt', '+ 9 conversas'],
+   prompt: 'Anexei conversas exportadas do WhatsApp da empresa. Leia tudo e me entregue:\n1. As 10 perguntas que mais se repetem, com quantas vezes cada uma apareceu.\n2. As reclamações mais comuns.\n3. Quanto tempo, em média, demoramos para responder, pelos horários das mensagens.\n4. Uma resposta curta e pronta para cada uma das 10 perguntas.\nNão repita nomes nem telefones de clientes no resultado.',
+   passos: [['Exporte as conversas', 'No WhatsApp, abra a conversa, toque em Mais e em Exportar conversa, sem mídia. Sai um arquivo .txt.'], ['Junte 10 a 20', 'Escolha conversas variadas: venda, dúvida, reclamação. Até 20 arquivos por vez.'], ['Anexe e cole', 'Mande os arquivos com o prompt.'], ['Use as respostas', 'Salve as respostas como mensagens rápidas no WhatsApp Business. Elas também são a base de um agente de IA.']],
+   dica: 'Peça “em que horário chegam mais mensagens?”. A resposta mostra quando você mais precisa de ajuda no atendimento.',
+   cuidado: 'Conversas têm dados pessoais. Use conversas de clientes, não pessoais, e apague os arquivos depois.' },
+ { id: 'descricoes', nome: 'Descrição de produtos para a loja virtual', cat: 'Vendas', tempo: '6 min', ferr: 'Claude + fotos ou lista',
+   resumo: 'Título que o cliente acha na busca, benefícios claros e uma planilha pronta para importar na loja.',
+   frase: 'Escreve a descrição desses produtos pra loja',
+   anexos: ['produtos.csv', 'fotos.zip'],
+   prompt: 'Escreva descrições para os produtos da lista anexa, para a loja virtual da [empresa].\nPara cada produto:\n- título com até 60 caracteres, com a palavra que o cliente buscaria;\n- 3 benefícios em frases curtas;\n- medidas e material, só o que estiver na lista. Se faltar, escreva [preencher];\n- uma frase final que convide a comprar.\nEntregue numa planilha com as mesmas colunas da minha, pronta para importar.',
+   passos: [ATIVAR, ['Exporte os produtos', 'Na Nuvemshop, Shopify ou outra plataforma, exporte a lista de produtos em CSV.'], ['Anexe e cole', 'Se tiver fotos, mande junto. O Claude descreve melhor o que ele vê.'], ['Revise os [preencher]', 'Complete o que faltou. Nada de medida inventada.'], ['Importe de volta', 'Suba a planilha na plataforma. Todos os produtos atualizam de uma vez.']],
+   dica: 'Peça a mesma descrição em versão curta para o catálogo do WhatsApp Business.',
+   cuidado: 'Teste a importação com 3 produtos antes de subir a lista inteira.' },
+ { id: 'reels', nome: 'Roteiro de Reels de 30 segundos', cat: 'Conteúdo', tempo: '3 min', ferr: 'Claude',
+   resumo: 'Três roteiros com gancho, cenas, texto na tela e chamada final, no seu jeito de falar.',
+   frase: 'Cria 3 roteiros de Reels sobre o nosso serviço',
+   anexos: [],
+   prompt: 'Crie 3 roteiros de Reels de até 30 segundos para [tipo de negócio], sobre [tema].\nCada roteiro com:\n- gancho nos 2 primeiros segundos;\n- 3 cenas: o que filmar e o que falar;\n- o texto que aparece na tela;\n- chamada final para o WhatsApp.\nFale como gente, sem bordão de internet. Público: [quem é o seu cliente].',
+   passos: [['Escolha um tema', 'Uma pergunta que o cliente sempre faz é o melhor tema. Veja a peça do WhatsApp.'], ['Cole o prompt', 'Diga também quem é o seu cliente. Muda tudo no roteiro.'], ['Grave as cenas', 'Grave cada cena separada, na vertical. Errou, grava de novo só aquela.'], ['Edite com o Claude', 'Use a peça “Editar vídeo para Reels” para juntar, cortar e colocar o título.']],
+   dica: 'Leia o roteiro em voz alta antes de gravar. Se travar, peça: “deixa mais falado”.',
+   cuidado: 'Música de fundo precisa ser liberada no Instagram. Use as do próprio app.' },
+ { id: 'calculadora', nome: 'Calculadora de orçamento para o seu site', cat: 'Vendas', tempo: '10 min', ferr: 'Claude + sua tabela',
+   resumo: 'O cliente escolhe as opções, vê o preço na hora e manda o pedido pronto no seu WhatsApp.',
+   frase: 'Cria uma calculadora de orçamento com a minha tabela',
+   anexos: ['tabela-precos.xlsx'],
+   prompt: 'Crie uma calculadora de orçamento para a [empresa], que vende [produto ou serviço].\nO cliente escolhe [as opções: tamanho, material, quantidade] e vê o preço na hora, calculado pela tabela abaixo.\nNo fim, um botão "Pedir pelo WhatsApp" que abre a conversa com o número [seu número] e o resumo do pedido já escrito.\nVisual limpo, nas cores [cores da marca], funcionando bem no celular.\n\nTabela de preços: [cole aqui]',
+   passos: [['Organize a tabela', 'Preço por opção, ou a regra de cálculo. Do jeito que você faz hoje no papel.'], ['Cole o prompt', 'O Claude cria a calculadora como artefato, e ela aparece funcionando ao lado da conversa.'], ['Teste como cliente', 'Faça três orçamentos e compare com o seu cálculo. Peça ajustes até bater.'], ['Compartilhe', 'Publique o artefato e use o link no Instagram, no Google e no status do WhatsApp.']],
+   dica: 'Peça um campo de CEP ou bairro para já saber de onde o pedido vem.',
+   cuidado: 'Quando mudar o preço, atualize a tabela e peça ao Claude para refazer. A calculadora não muda sozinha.' },
+];
+
+const CENAS = {
+ video: () => `<div class="v-fone"><div class="v-img"></div><div class="v-rosto"></div><div class="v-corpo"></div><div class="v-titulo"></div></div>
+   <span class="lbl v-tag">trechos parados</span><div class="v-linha"><i class="f"></i><i class="s"></i><i class="f"></i><i class="s"></i><i class="f"></i></div><div class="v-play"></div><span class="v-tesoura">✂</span><span class="lbl v-tag b">9:16 · pronto para Reels</span>`,
+ painel: () => `<div class="p-tab">${[14,26,38,50,62,74].map(t => `<i style="top:${t}%;right:${8 + (t % 3) * 8}%"></i>`).join('')}</div><span class="p-seta">→</span>
+   <div class="p-graf">${[34,52,44,66,58,80].map((h, i) => `<i style="left:${8 + i * 15}%;height:${h * .62}%;animation-delay:${i * .12}s"></i>`).join('')}<svg viewBox="0 0 100 60" preserveAspectRatio="none"><path d="M2 50 L20 38 L36 44 L52 26 L68 32 L96 8" fill="none" stroke="#F9EEF5" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></div>`,
+ notas: () => `<div class="n-nota">${[10,18,26,34,44,52].map(t => `<i style="top:${t}%"></i>`).join('')}<b></b></div><div class="n-scan"></div>
+   <div class="n-tab"><div class="h"></div>${[22,36,50,64,78].map((t, i) => `<div class="r${i === 2 ? ' alerta' : ''}" style="top:${t}%;animation-delay:${i * .35}s"></div>`).join('')}</div>`,
+ avaliacoes: () => `<div class="a-card"><div class="a-est">${[0,1,2,3,4].map(i => `<i style="animation-delay:${i * .12}s"></i>`).join('')}</div><div class="t" style="top:48%"></div><div class="t" style="top:66%;right:30%"></div></div>
+   <div class="a-resp"><div class="t" style="top:22%;right:10%"></div><div class="t" style="top:44%;right:22%;animation-delay:.2s"></div><div class="t" style="top:66%;right:40%;animation-delay:.4s"></div></div>`,
+ posts: () => `<div class="c-grade">${Array.from({ length: 28 }, (_, i) => { const p = [1,3,5,8,10,12,15,17,19,22,24,26].includes(i); const cores = ['#CC0099','#E680CC','#990066','#FF5CC8']; return `<i class="${p ? 'p' : ''}" style="${p ? `--fc:${cores[i % 4]};animation-delay:${(i / 28 * 2.4).toFixed(2)}s` : ''}"></i>`; }).join('')}</div>`,
+ proposta: () => [[-26,-18,-8],[0,0,0],[26,18,8]].map(([dx, dy, r], i) => `<div class="s-sl" style="--dx:${dx}cqw;--dy:${dy}cqw;--rot:${r}deg;animation-delay:${i * .4}s"><div class="bar"></div><div class="t1"></div><div class="t2"></div><div class="t3"></div></div>`).join(''),
+ whatsapp: () => [[8,14,30,''],[18,28,24,'eu'],[6,42,36,''],[16,56,26,'eu'],[8,70,32,'']].map(([l, t, w, c], i) => `<div class="w-bal ${c}" style="left:${l}%;top:${t}%;width:${w}%;animation-delay:${i * .25}s"></div>`).join('') +
+   `<div class="w-res"><b>As 10 mais pedidas</b><i style="top:32%;right:14%"></i><i style="top:48%;right:30%;animation-delay:.2s"></i><i style="top:64%;right:22%;animation-delay:.4s"></i><i style="top:80%;right:40%;animation-delay:.6s"></i></div>`,
+ descricoes: () => `<div class="d-prod"></div><span class="d-etq">Mais vendido</span><div class="d-txt"><i class="t" style="top:0;right:10%"></i><i style="top:26%;right:4%;animation-delay:.2s"></i><i style="top:42%;right:20%;animation-delay:.4s"></i><i style="top:58%;right:12%;animation-delay:.6s"></i><i style="top:74%;right:34%;animation-delay:.8s"></i></div>`,
+ reels: () => `<div class="r-fone"><div class="r-cena"><span>Gancho<br>2 segundos</span></div><div class="r-cena"><span>Cena 2<br>o problema</span></div><div class="r-cena"><span>Chama no<br>WhatsApp</span></div></div><span class="r-lado" style="left:8%">0:00 gancho</span><span class="r-lado" style="left:8%;top:38%">0:02 cenas</span><span class="r-lado" style="left:8%;top:58%">0:25 chamada</span>`,
+ calculadora: () => `<div class="k-caixa"><span class="lbl" style="left:8%;top:14%">Tamanho</span><div class="k-trilho" style="top:30%"><b></b></div><span class="lbl" style="left:8%;top:46%">Quantidade</span><div class="k-trilho" style="top:62%"><b style="animation-delay:-1.6s"></b></div><div class="k-preco"></div><div class="k-btn">Pedir no WhatsApp</div></div>`,
+};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cena = id => `<div class="cena">${CENAS[id]()}</div>`;
+const realça = t => esc(t).replace(/\[([^\]]+)\]/g, '<span class="ph">[$1]</span>');
+
+/* Vitrine */
+const CATS = ['Todas', ...new Set(PECAS.map(p => p.cat))];
+$('#chips').innerHTML = CATS.map((c, i) => `<button class="chip" type="button" data-c="${i ? c : ''}" aria-pressed="${i === 0}">${c}</button>`).join('');
+$('#grade').innerHTML = PECAS.map((p, i) => `<button class="peca" type="button" data-i="${i}" data-cat="${p.cat}" aria-controls="balcao"><div class="mini">${cena(p.id)}</div><h3>${esc(p.nome)}</h3><div class="rod"><span class="tag">${p.cat}</span><span>${p.tempo}</span></div></button>`).join('');
+$('#chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  document.querySelectorAll('.peca').forEach(x => x.hidden = !!b.dataset.c && x.dataset.cat !== b.dataset.c);
+});
+
+/* Balcão */
+let atual = 0, digitando = null;
+function mostra(i, rolar) {
+  atual = (i + PECAS.length) % PECAS.length;
+  const p = PECAS[atual];
+  document.querySelectorAll('.peca').forEach(x => x.setAttribute('aria-current', String(+x.dataset.i === atual)));
+  $('#dCat').textContent = p.cat; $('#dTempo').textContent = 'Leva ' + p.tempo; $('#dFerr').textContent = p.ferr;
+  $('#dNome').textContent = p.nome; $('#dResumo').textContent = p.resumo;
+  $('#dCena').innerHTML = cena(p.id);
+  $('#dAnexo').innerHTML = p.anexos.map(a => `<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.5 12.6 21a5.5 5.5 0 0 1-7.8-7.8l8.5-8.5a3.7 3.7 0 0 1 5.2 5.2L10 18.4a1.8 1.8 0 0 1-2.6-2.6l7.8-7.8"/></svg>${esc(a)}</span>`).join('');
+  $('#dPassos').innerHTML = p.passos.map(([t, d]) => `<li class="passo"><h4>${esc(t)}</h4><p>${esc(d)}</p></li>`).join('');
+  $('#dDica').textContent = p.dica; $('#dCuidado').textContent = p.cuidado;
+  $('#copiado').textContent = '';
+  digita(p.prompt);
+  try { history.replaceState(null, '', '#' + p.id); } catch (e) {}
+  if (rolar) $('#balcao').scrollIntoView({ behavior: reduz ? 'auto' : 'smooth' });
+}
+function digita(texto) {
+  clearInterval(digitando);
+  const pre = $('#dPrompt');
+  if (reduz) { pre.innerHTML = realça(texto); return; }
+  let n = 0; const passo = Math.max(3, Math.ceil(texto.length / 90));
+  digitando = setInterval(() => {
+    n = Math.min(texto.length, n + passo);
+    pre.innerHTML = realça(texto.slice(0, n)) + (n < texto.length ? '<span style="color:var(--luz)">▍</span>' : '');
+    if (n >= texto.length) clearInterval(digitando);
+  }, 16);
+}
+$('#grade').addEventListener('click', e => { const b = e.target.closest('.peca'); if (b) mostra(+b.dataset.i, true); });
+$('#ant').onclick = () => mostra(atual - 1, true);
+$('#prox').onclick = () => mostra(atual + 1, true);
+$('#copiar').addEventListener('click', async () => {
+  const t = PECAS[atual].prompt;
+  try { await navigator.clipboard.writeText(t); $('#copiado').textContent = 'Prompt copiado'; }
+  catch (e) {
+    const r = document.createRange(); r.selectNodeContents($('#dPrompt'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    $('#copiado').textContent = 'Selecionado. Use Ctrl+C para copiar';
+  }
+});
+const inicial = PECAS.findIndex(p => '#' + p.id === location.hash);
+mostra(inicial >= 0 ? inicial : 0, false);
+
+/* Campo do topo: frases que se digitam, com a cena correspondente */
+const tela = $('#telaHero'), txt = $('#txtHero');
+tela.innerHTML = PECAS.map(p => `<div class="cena-wrap" style="position:absolute;inset:0">${cena(p.id)}</div>`).join('');
+const wraps = [...tela.children];
+let h = 0;
+function rodaHero() {
+  const p = PECAS[h % PECAS.length];
+  wraps.forEach((w, i) => { w.style.opacity = i === h % PECAS.length ? 1 : 0; w.style.transition = 'opacity .5s'; });
+  if (reduz) { txt.textContent = p.frase; return; }
+  let n = 0;
+  const t = setInterval(() => {
+    txt.textContent = p.frase.slice(0, ++n);
+    if (n >= p.frase.length) { clearInterval(t); setTimeout(() => { h++; rodaHero(); }, 2600); }
+  }, 38);
+}
+rodaHero();
+</script>
